@@ -69,7 +69,9 @@ map ,s :source %<CR>
 map ,ed :e $MYVIMRC<CR>
 map ,n :NERDTreeToggle<CR>
 map ,l :TlistToggle<CR>
-map ,t :TMiniBufExplorer<CR>
+"map ,t :TMiniBufExplorer<CR>
+map ,t :BufExplorer<cr>
+
 map <leader>o :only<CR>
 map <leader>s :call ToggleScratch()<CR>
 map <leader>i :vsp<cr>
@@ -124,12 +126,12 @@ let NERDTreeShowHidden=0
 
 " Minibuffer Explorer Settings
 "let g:miniBufExplorerMoreThanOne=0
-let g:miniBufExplUseSingleClick=1
-let g:miniBufExplModSelTarget=1
-let g:miniBuExplSplitToEdge=0
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-let g:miniBufExplMapCTabSwitchBufs = 1
+"let g:miniBufExplUseSingleClick=1
+"let g:miniBufExplModSelTarget=1
+"let g:miniBuExplSplitToEdge=0
+"let g:miniBufExplMapWindowNavVim = 1
+"let g:miniBufExplMapWindowNavArrows = 1
+"let g:miniBufExplMapCTabSwitchBufs = 1
 
 let Tlist_Ctags_Cmd="/opt/local/bin/ctags"
 
