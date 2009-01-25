@@ -1,6 +1,6 @@
-------------------
+"------------------
 " Начальные необходимые настройки
-------------------
+"------------------
 set nocompatible
 set ruler
 set visualbell"
@@ -9,9 +9,9 @@ filetype on
 filetype plugin on
 filetype indent on
 
-------------------
+"------------------
 " Внешний вид
-------------------
+"------------------
 colorscheme wombat
 syntax on
 
@@ -49,9 +49,9 @@ set laststatus=2
 
 set statusline=%{&ff}\ %<%f\ %Y\ %=%03p%%[%04l,%04v]\ %L
 
-------------------
+"------------------
 " Настройки ввода и шорткаты
-------------------
+"------------------
 set backspace=indent,eol,start
 
 let mapleader="."
@@ -119,9 +119,9 @@ nnoremap <leader>b :BufExplorer<cr>
 " inoremap ""     ""
 " 
 "-------------------------------------------------- 
-------------------
+"------------------
 " Настройки плагинов
-------------------
+"------------------
 let NERDTreeShowHidden=0
 
 " Minibuffer Explorer Settings
@@ -137,9 +137,9 @@ let Tlist_Ctags_Cmd="/opt/local/bin/ctags"
 
 let g:fuzzy_matching_limit = 70
 
-------------------
+"------------------
 " Настройки, ещё не проверенные
-------------------
+"------------------
 
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
