@@ -15,8 +15,6 @@ filetype indent on
 colorscheme wombat
 syntax on
 
-set timeoutlen=250
-
 set hidden
 set shortmess=atI
 set lines=35 columns=120
@@ -41,7 +39,7 @@ set showmatch
 set background=dark
 set imd
 
-set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
+"set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
 
 " Строка состояния P.S. надо сделать более информативной
 set laststatus=2
@@ -55,6 +53,7 @@ set statusline=%{&ff}\ %<%f\ %Y\ %=%03p%%[%04l,%04v]\ %L
 set backspace=indent,eol,start
 
 let mapleader="."
+let maplocalleader="\"
 
 " Быстрый и простой make
 if filereadable("Makefile")
@@ -65,17 +64,18 @@ else
 endif
 
 
-map ,s :source %<CR>
-map ,ed :e $MYVIMRC<CR>
-map ,n :NERDTreeToggle<CR>
-map ,l :TlistToggle<CR>
+"map ,s :source %<CR>
 "map ,t :TMiniBufExplorer<CR>
-map ,t :BufExplorer<cr>
 
+map <leader>nt :NERDTreeToggle<CR>
+map <leader>tl :TlistToggle<CR>
+map <leader>ed :e $MYVIMRC<CR>
 map <leader>o :only<CR>
-map <leader>s :call ToggleScratch()<CR>
-map <leader>i :vsp<cr>
-map <leader>l :sp<CR>
+map <leader>sc :call ToggleScratch()<CR>
+map <leader>vsp :vsp<cr>
+map <leader>sp :sp<CR>
+map <C-f> zc "fold code
+map <C-d> zo "unfold folded code
 
 nnoremap <c-t> :FuzzyFinderTextMate<CR>
 "map to bufexplorer
@@ -168,8 +168,8 @@ runtime! macros/matchit.vim
 
 
 "folding settings
-set foldmethod=indent   "fold based on indent
-set foldnestmax=3       "deepest fold is 3 levels
+set foldmethod=syntax  "fold based on indent
+set foldnestmax=5       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
 set wildmode=list:longest,full   "make cmdline tab completion similar to bash
