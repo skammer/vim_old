@@ -45,7 +45,21 @@ set imd
 set laststatus=2
 "set statusline=%<%f\ %h%m%r%=%-20.(line=%l,col=%c%V,totlin=%L%)\%h%m%r%=%-40(,%n%Y%)\%P
 
-set statusline=%{&ff}\ %<%f\ %Y\ %=%03p%%[%04l,%04v]\ %L
+set statusline=%<%{&ff}\ %f\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %{CountLettersInCurrentBuffer()}\ %=%03p%%\ [%04l,%04v]\ %L
+
+fu! CountLettersInCurrentLine()
+  let string = strlen(getline("."))
+  return string
+endf
+
+fu! CountLettersInCurrentBuffer()
+  let lines = getbufline(bufnr(bufname("%")), 1, "$")
+  let number = 0
+  for item in lines
+    let number += strlen(item)
+  endfor
+  return number
+endfu
 
 "------------------
 " Настройки ввода и шорткаты
@@ -71,13 +85,12 @@ map <leader>nt :NERDTreeToggle<CR>
 map <leader>tl :TlistToggle<CR>
 map <leader>ed :e $MYVIMRC<CR>
 map <leader>o :only<CR>
-map <leader>sc :call ToggleScratch()<CR>
 map <leader>vsp :vsp<cr>
 map <leader>sp :sp<CR>
 map <C-f> zc "fold code
 map <C-d> zo "unfold folded code
 
-nnoremap <c-t> :FuzzyFinderTextMate<CR>
+nnoremap <c-t>t :FuzzyFinderTextMate<CR>
 "map to bufexplorer
 nnoremap <leader>b :BufExplorer<cr>
 
@@ -195,3 +208,16 @@ command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
       \ laborum
 
 
+" TwitVim related stuff
+fu! LoginTwitter()
+let a:user=input("Your twitter login: ")
+let a:pswd=inputsecret(a:user."'s password: ")
+let g:twitvim_login=a:user.':'.a:pswd
+echo "Credentials are saved"
+endf
+command! Twil :call LoginTwitter()
+"twittervim mappings
+nmap <C-t>p :PosttoTwitter<cr>
+nmap <C-t>f :FriendsTwitter<cr>
+nmap <C-t>l :Twil<cr>
+nmap <C-t>b :BPosttoTwitter<cr>

@@ -536,7 +536,7 @@ if !exists('g:AutoComplPop_NotEnableAtStartup')
 endif
 "...........................................................................
 if !exists('g:AutoComplPop_MappingDriven')
-  let g:AutoComplPop_MappingDriven = 0
+  let g:AutoComplPop_MappingDriven = 1
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_IgnoreCaseOption')
@@ -548,7 +548,7 @@ if !exists('g:AutoComplPop_CompleteOption')
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_CompleteoptPreview')
-  let g:AutoComplPop_CompleteoptPreview = 0
+  let g:AutoComplPop_CompleteoptPreview = 1
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_BehaviorKeywordLength')
