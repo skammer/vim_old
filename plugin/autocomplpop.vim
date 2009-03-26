@@ -510,7 +510,13 @@ function! s:FeedMapping.map()
         \ 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
         \ '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
         \ '-', '_', '~', '^', '.', ',', ':', '!', '#', '=', '%', '$', '@', '<', '>', '/', '\',
-        \ '<Space>', '<C-h>', '<BS>', ]
+        \ '<Space>', '<C-h>', '<BS>',
+        \ 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л',
+        \ 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш',
+        \ 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
+        \ 'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л',
+        \ 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш',
+        \ 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', ]
 
   for key in self.keys
     execute printf('inoremap <silent> %s %s<C-r>=<SID>GetPopupFeeder().feed()<CR>',
@@ -536,7 +542,7 @@ if !exists('g:AutoComplPop_NotEnableAtStartup')
 endif
 "...........................................................................
 if !exists('g:AutoComplPop_MappingDriven')
-  let g:AutoComplPop_MappingDriven = 1
+  let g:AutoComplPop_MappingDriven = 0
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_IgnoreCaseOption')
@@ -548,7 +554,7 @@ if !exists('g:AutoComplPop_CompleteOption')
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_CompleteoptPreview')
-  let g:AutoComplPop_CompleteoptPreview = 1
+  let g:AutoComplPop_CompleteoptPreview = 0
 endif
 ".........................................................................
 if !exists('g:AutoComplPop_BehaviorKeywordLength')
