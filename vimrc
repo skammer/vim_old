@@ -1,3 +1,5 @@
+"set backspace&
+
 "------------------
 " Начальные необходимые настройки
 "------------------
@@ -18,7 +20,7 @@ syntax on
 set hidden
 set shortmess=atI
 set lines=35 columns=120
-set transparency=5
+"set transparency=5
 set showcmd
 " Нумерация строк
 set nu
@@ -45,7 +47,9 @@ set imd
 set laststatus=2
 "set statusline=%<%f\ %h%m%r%=%-20.(line=%l,col=%c%V,totlin=%L%)\%h%m%r%=%-40(,%n%Y%)\%P
 
-set statusline=%<%{&ff}\ %f\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %{CountLettersInCurrentBuffer()}\ %=%03p%%\ [%04l,%04v]\ %L
+"set statusline=%<%{&ff}\ %t\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %{CountLettersInCurrentBuffer()}\ %=%03p%%\ [%04l,%04v]\ %L
+"set statusline=%<%{&ff}\ %t\ %Y\ %n\ %=%03p%%\ [%04l,%04v]\ %L
+set statusline=%<%{&ff}\ %t\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %=%03p%%\ [%04l,%04v]\ %L
 
 fu! CountLettersInCurrentLine()
   let string = StrLen(getline("."))
@@ -99,7 +103,9 @@ map <C-d> zo "unfold folded code
 nnoremap <c-t>t :FuzzyFinderTextMate<CR>
 "map to bufexplorer
 nnoremap <leader>b :BufExplorer<cr>
-
+imap <D-Enter> <Esc>o
+imap <D-S-Enter> <Esc>O
+"imap <D-Enter> <Esc>A<cr>
 
 " Настройки завершения скобок
 "--------------------------------------------------
