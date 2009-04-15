@@ -105,6 +105,56 @@ nnoremap <c-t>t :FuzzyFinderTextMate<CR>
 nnoremap <leader>b :BufExplorer<cr>
 imap <D-Enter> <Esc>o
 imap <D-S-Enter> <Esc>O
+
+" Рубиистические всякие вкусности
+
+" plain annotations
+map <silent> <D-r> !xmpfilter -a<cr>
+nmap <silent> <D-r> V<D-r>
+imap <silent> <D-r> <ESC><D-r>a
+
+" Annotate the full buffer
+" I actually prefer ggVG to %; it's a sort of poor man's visual bell 
+nmap <silent> <D-R> mzggVG!xmpfilter -a<cr>'z
+imap <silent> <D-R> <ESC><D-R>
+
+" assertions
+nmap <silent> <C-D-r> mzggVG!xmpfilter -u<cr>'z
+imap <silent> <C-D-r> <ESC><C-D-r>a
+
+" Add # => markers
+vmap <silent> <localleader>a3 !xmpfilter -m<cr>
+nmap <silent> <localleader>a3 V<localleader>a3
+imap <silent> <localleader>a3 <ESC><localleader>a3a
+
+" Remove # => markers
+vmap <silent> <localleader>r3 ms:call RemoveRubyEval()<CR>
+nmap <silent> <localleader>r3 V<localleader>r3
+imap <silent> <localleader>r3 <ESC><localleader>r3a
+
+function! RemoveRubyEval() range
+  let begv = a:firstline
+  let endv = a:lastline
+  normal Hmt
+  set lz
+  execute ":" . begv . "," . endv . 's/\s*# \(=>\|!!\).*$//e'
+  normal 'tzt`s
+  set nolz
+  redraw
+endfunction
+set invfullsreen
+fu! ToggleFullscreen()
+  if &go == "amge"
+    exec 'set go='."amg"
+    exec 'set invfullscreen'
+  else
+    exec 'set go='."amge"
+    exec 'set invfullscreen'
+  endif
+endf
+
+map <D-D> :call ToggleFullscreen()<cr>
+
 "imap <D-Enter> <Esc>A<cr>
 
 " Настройки завершения скобок
@@ -193,8 +243,8 @@ runtime! macros/matchit.vim
 
 
 "folding settings
-set foldmethod=syntax  "fold based on indent
-set foldnestmax=5       "deepest fold is 3 levels
+set foldmethod=indent   "fold based on indent
+set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
 set wildmode=list:longest,full   "make cmdline tab completion similar to bash
