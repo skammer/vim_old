@@ -99,6 +99,8 @@ map <leader>vsp :vsp<cr>
 map <leader>sp :sp<CR>
 map <C-f> zc "fold code
 map <C-d> zo "unfold folded code
+map <D-d> za
+imap <silent> <D-/> <Esc>,c<Space>a
 
 nnoremap <c-t>t :FuzzyFinderTextMate<CR>
 "map to bufexplorer
@@ -153,7 +155,12 @@ fu! ToggleFullscreen()
   endif
 endf
 
-map <D-D> :call ToggleFullscreen()<cr>
+imap <D-D> <Esc>:call ToggleFullscreen()<cr>a
+vmap <D-D> ms:call ToggleFullscreen()<cr>
+nmap <D-D> V<D-D>
+
+map <S-D-Left> :bp<cr>
+map <S-D-Right> :bn<cr>
 
 "imap <D-Enter> <Esc>A<cr>
 
@@ -243,7 +250,7 @@ runtime! macros/matchit.vim
 
 
 "folding settings
-set foldmethod=indent   "fold based on indent
+set foldmethod=syntax   "fold based on indent
 set foldnestmax=3       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
 
