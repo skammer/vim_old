@@ -101,6 +101,8 @@ map <C-f> zc "fold code
 map <C-d> zo "unfold folded code
 map <D-d> za
 imap <silent> <D-/> <Esc>,c<Space>a
+vmap <silent> <D-/> ,c<Space>
+nmap <silent> <D-/> V,c<Space>
 
 nnoremap <c-t>t :FuzzyFinderTextMate<CR>
 "map to bufexplorer
