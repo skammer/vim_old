@@ -16,7 +16,7 @@ set cpo&vim
 
 " Script Variables: {{{
 let s:menuFile = strpart(&rtp, 0, stridx(&rtp, ',')) . '/plugin/ColorSchemes.vim'
-let s:menuName = '&ColorSchemes'
+let s:menuName = 'Plugin.&ColorSchemes'
 let s:xdigit = '[0123456789ABCDEFabcdef]'
 let s:hexvals = { 0:0, 1:1, 2:2, 3:3,
 			\4:4, 5:5, 6:6, 7:7,

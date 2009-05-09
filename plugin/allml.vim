@@ -214,9 +214,9 @@ function! s:Init()
     endif
     " <% %>
     if &ft == "eruby"
-        inoremap  <buffer> <C-X>- <%<Space><Space>-%><Esc>3hi
-        inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>-%><Esc>F<NL>s
-        "let b:surround_45 = "<% \r -%>"
+        inoremap  <buffer> <C-X>- <%<Space><Space>%><Esc>2hi
+        inoremap  <buffer> <C-X>_ <C-V><NL><Esc>I<%<Space><Esc>A<Space>%><Esc>F<NL>s
+        "let b:surround_45 = "<% \r %>"
     elseif &ft == "cf"
         inoremap  <buffer> <C-X>- <cf><Left>
         inoremap  <buffer> <C-X>_ <cfset ><Left>

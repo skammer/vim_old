@@ -1,467 +1,518 @@
-"ColorScheme menu generated Sat 01 Sep 2007 23:21:10 NZST
+"ColorScheme menu generated Sat May  2 23:34:52 2009
 
 "Themes by color:
 
 
 "submenu black
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).adrian  :colo adrian<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*af  :colo af<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).billw  :colo billw<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*black_angus  :colo black_angus<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).blackbeauty  :colo blackbeauty<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).blacksea  :colo blacksea<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).blugrine  :colo blugrine<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).brookstream  :colo brookstream<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).candy  :colo candy<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).colorer  :colo colorer<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dante  :colo dante<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).darkblack  :colo darkblack<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).darkocean  :colo darkocean<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_blue  :colo dw_blue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_cyan  :colo dw_cyan<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_green  :colo dw_green<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_orange  :colo dw_orange<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_purple  :colo dw_purple<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_red  :colo dw_red<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).dw_yellow  :colo dw_yellow<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).elflord  :colo elflord<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).fnaqevan  :colo fnaqevan<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).golden  :colo golden<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).gothic  :colo gothic<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdblue  :colo hhdblue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdcyan  :colo hhdcyan<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdgray  :colo hhdgray<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdgreen  :colo hhdgreen<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdmagenta  :colo hhdmagenta<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdred  :colo hhdred<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).hhdyellow  :colo hhdyellow<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*inkpot  :colo inkpot<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).jhdark  :colo jhdark<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).koehler  :colo koehler<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).less  :colo less<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).manxome  :colo manxome<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).matrix  :colo matrix<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).metacosm  :colo metacosm<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*motus  :colo motus<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).murphy  :colo murphy<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).neverness  :colo neverness<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).nightwish  :colo nightwish<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).oceanblack  :colo oceanblack<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).pablo  :colo pablo<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).potts  :colo potts<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*ps_color  :colo ps_color<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).putty  :colo putty<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).redblack  :colo redblack<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).relaxedgreen  :colo relaxedgreen<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).revolutions  :colo revolutions<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).ron  :colo ron<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).sean  :colo sean<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).tango  :colo tango<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*torte  :colo torte<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).vibrantink  :colo vibrantink<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).*vividchalk  :colo vividchalk<CR>
-9000amenu &ColorSchemes.&Colors\ (190).black\ (57).wintersday  :colo wintersday<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).blugrine  :colo blugrine<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).brookstream  :colo brookstream<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).candy  :colo candy<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).chlordane  :colo chlordane<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).darkocean  :colo darkocean<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_blue  :colo dw_blue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_cyan  :colo dw_cyan<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_green  :colo dw_green<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_orange  :colo dw_orange<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_purple  :colo dw_purple<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_red  :colo dw_red<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).dw_yellow  :colo dw_yellow<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).fnaqevan  :colo fnaqevan<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).gothic  :colo gothic<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).*inkpot  :colo inkpot<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).jhdark  :colo jhdark<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).leo  :colo leo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).manxome  :colo manxome<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).matrix  :colo matrix<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).neverness  :colo neverness<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).oceanblack  :colo oceanblack<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).pablo  :colo pablo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).*ps_color  :colo ps_color<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).relaxedgreen  :colo relaxedgreen<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).revolutions  :colo revolutions<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).tango  :colo tango<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).black\ (27).wintersday  :colo wintersday<CR>
 
 "submenu blue
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).adam  :colo adam<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).adaryn  :colo adaryn<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).aqua  :colo aqua<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).astronaut  :colo astronaut<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).asu1dark  :colo asu1dark<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).blue  :colo blue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).bluegreen  :colo bluegreen<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).borland  :colo borland<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).breeze  :colo breeze<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).caramel  :colo caramel<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).cleanphp  :colo cleanphp<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).*cool  :colo cool<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).darkblue  :colo darkblue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).darkblue2  :colo darkblue2<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).denim  :colo denim<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).desertedocean  :colo desertedocean<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).dusk  :colo dusk<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).edo_sea  :colo edo_sea<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).hhazure  :colo hhazure<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).ibmedit  :colo ibmedit<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).midnight  :colo midnight<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).midnight2  :colo midnight2<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).navajo-night  :colo navajo-night<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).nightshimmer  :colo nightshimmer<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).northsky  :colo northsky<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).oceandeep  :colo oceandeep<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).sea  :colo sea<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).softblue  :colo softblue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).transparent  :colo transparent<CR>
-9000amenu &ColorSchemes.&Colors\ (190).blue\ (30).turbo  :colo turbo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).adam  :colo adam<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).adaryn  :colo adaryn<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).asu1dark  :colo asu1dark<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).blue  :colo blue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).bluegreen  :colo bluegreen<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).breeze  :colo breeze<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).caramel  :colo caramel<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).clarity  :colo clarity<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).cleanphp  :colo cleanphp<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).*cool  :colo cool<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).darkblue  :colo darkblue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).darkblue2  :colo darkblue2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).denim  :colo denim<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).desertedocean  :colo desertedocean<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).dusk  :colo dusk<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).edo_sea  :colo edo_sea<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).ekvoli  :colo ekvoli<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).hhazure  :colo hhazure<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).midnight  :colo midnight<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).midnight2  :colo midnight2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).navajo-night  :colo navajo-night<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).nightshimmer  :colo nightshimmer<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).northsky  :colo northsky<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).oceandeep  :colo oceandeep<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).sea  :colo sea<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).softblue  :colo softblue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).transparent  :colo transparent<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).blue\ (28).turbo  :colo turbo<CR>
 
 "submenu cyan
-9000amenu &ColorSchemes.&Colors\ (190).cyan\ (3).darkslategray  :colo darkslategray<CR>
-9000amenu &ColorSchemes.&Colors\ (190).cyan\ (3).gor  :colo gor<CR>
-9000amenu &ColorSchemes.&Colors\ (190).cyan\ (3).marklar  :colo marklar<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).cyan\ (3).darkslategray  :colo darkslategray<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).cyan\ (3).gor  :colo gor<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).cyan\ (3).marklar  :colo marklar<CR>
 
 "submenu darkgrey
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).candycode  :colo candycode<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).darkdot  :colo darkdot<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).darktango  :colo darktango<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).greyblue  :colo greyblue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).hhspring  :colo hhspring<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).hhteal  :colo hhteal<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).hhviolet  :colo hhviolet<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).lettuce  :colo lettuce<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).night  :colo night<CR>
-9000amenu &ColorSchemes.&Colors\ (190).darkgrey\ (10).rdark  :colo rdark<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).candycode  :colo candycode<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).darkdot  :colo darkdot<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).darkspectrum  :colo darkspectrum<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).darktango  :colo darktango<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).*earendel  :colo earendel<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).greyblue  :colo greyblue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).hhspring  :colo hhspring<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).hhteal  :colo hhteal<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).hhviolet  :colo hhviolet<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).lettuce  :colo lettuce<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).night  :colo night<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).railscasts  :colo railscasts<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).railscasts2  :colo railscasts2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).rdark  :colo rdark<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).*skammer  :colo skammer<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).tango2  :colo tango2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).twilight2  :colo twilight2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).twilight_  :colo twilight_<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).two2tango  :colo two2tango<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).darkgrey\ (20).wombat  :colo wombat<CR>
 
 "submenu green
-9000amenu &ColorSchemes.&Colors\ (190).green\ (2).earth  :colo earth<CR>
-9000amenu &ColorSchemes.&Colors\ (190).green\ (2).*tabula  :colo tabula<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).green\ (2).earth  :colo earth<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).green\ (2).*tabula  :colo tabula<CR>
 
 "submenu grey
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).biogoo  :colo biogoo<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).blackdust  :colo blackdust<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).camo  :colo camo<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).*dawn  :colo dawn<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).desert  :colo desert<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).desertEx  :colo desertEx<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).evening  :colo evening<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).fog  :colo fog<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).freya  :colo freya<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).jhlight  :colo jhlight<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).neon  :colo neon<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).slate  :colo slate<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).toothpik  :colo toothpik<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).umber-green  :colo umber-green<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).whitedust  :colo whitedust<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).xemacs  :colo xemacs<CR>
-9000amenu &ColorSchemes.&Colors\ (190).grey\ (17).*zenburn  :colo zenburn<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).biogoo  :colo biogoo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).blackdust  :colo blackdust<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).freya  :colo freya<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).jhlight  :colo jhlight<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).neon  :colo neon<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).no_quarter  :colo no_quarter<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).*peaksea  :colo peaksea<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).twilight  :colo twilight<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).umber-green  :colo umber-green<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).whitedust  :colo whitedust<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).xemacs  :colo xemacs<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).xoria256  :colo xoria256<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).grey\ (13).*zenburn  :colo zenburn<CR>
 
 "submenu magenta
-9000amenu &ColorSchemes.&Colors\ (190).magenta\ (1).lilac  :colo lilac<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).magenta\ (1).lilac  :colo lilac<CR>
 
 "submenu offwhite
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).automation  :colo automation<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).autumn  :colo autumn<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).autumn2  :colo autumn2<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).autumnleaf  :colo autumnleaf<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).*baycomb  :colo baycomb<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).bmichaelsen  :colo bmichaelsen<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).fine_blue  :colo fine_blue<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).fruit  :colo fruit<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).habiLight  :colo habiLight<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).ironman  :colo ironman<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).mod_tcsoft  :colo mod_tcsoft<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).morning  :colo morning<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).nedit  :colo nedit<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).nedit2  :colo nedit2<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).nuvola  :colo nuvola<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).oceanlight  :colo oceanlight<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).pyte  :colo pyte<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).python  :colo python<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).seashell  :colo seashell<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).sf  :colo sf<CR>
-9000amenu &ColorSchemes.&Colors\ (190).offwhite\ (21).simpleandfriendly  :colo simpleandfriendly<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).autumn  :colo autumn<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).autumn2  :colo autumn2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).autumnleaf  :colo autumnleaf<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).*baycomb  :colo baycomb<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).bmichaelsen  :colo bmichaelsen<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).dark-ruby  :colo dark-ruby<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).fine_blue  :colo fine_blue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).fruit  :colo fruit<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).habiLight  :colo habiLight<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).ironman  :colo ironman<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).nuvola  :colo nuvola<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).oceanlight  :colo oceanlight<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).pyte  :colo pyte<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).python  :colo python<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).sf  :colo sf<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).soso  :colo soso<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).offwhite\ (17).spring  :colo spring<CR>
 
 "submenu orange
-9000amenu &ColorSchemes.&Colors\ (190).orange\ (1).*mars  :colo mars<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).orange\ (1).*mars  :colo mars<CR>
 
 "submenu red
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).ChocolateLiquor  :colo ChocolateLiquor<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).aiseered  :colo aiseered<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).chocolateliquor  :colo chocolateliquor<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).hhpink  :colo hhpink<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).*navajo  :colo navajo<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).peachpuff  :colo peachpuff<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).tibet  :colo tibet<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).tomatosoup  :colo tomatosoup<CR>
-9000amenu &ColorSchemes.&Colors\ (190).red\ (9).xian  :colo xian<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).red\ (5).aiseered  :colo aiseered<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).red\ (5).chocolateliquor  :colo chocolateliquor<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).red\ (5).hhpink  :colo hhpink<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).red\ (5).*navajo  :colo navajo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).red\ (5).xian  :colo xian<CR>
 
 "submenu unknown
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).brown  :colo brown<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).bw  :colo bw<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).c  :colo c<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).calmar256-light  :colo calmar256-light<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).chela_light  :colo chela_light<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).coffee  :colo coffee<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).colorscheme_template  :colo colorscheme_template<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).default  :colo default<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).desert256  :colo desert256<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).impact  :colo impact<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).psql  :colo psql<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).reloaded  :colo reloaded<CR>
-9000amenu &ColorSchemes.&Colors\ (190).unknown\ (13).vc  :colo vc<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).adrian  :colo adrian<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).aqua  :colo aqua<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).astronaut  :colo astronaut<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).automation  :colo automation<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).billw  :colo billw<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*black_angus  :colo black_angus<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).blackbeauty  :colo blackbeauty<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).blacksea  :colo blacksea<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).blue  :colo blue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).bog  :colo bog<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).borland  :colo borland<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).brown  :colo brown<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).bw  :colo bw<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).c  :colo c<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).calmar256-light  :colo calmar256-light<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).camo  :colo camo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).chela_light  :colo chela_light<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).coffee  :colo coffee<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).colorer  :colo colorer<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).colorscheme_template  :colo colorscheme_template<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).dante  :colo dante<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).darkblack  :colo darkblack<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*dawn  :colo dawn<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).default  :colo default<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).delek  :colo delek<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).desert  :colo desert<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).desert256  :colo desert256<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).desertEx  :colo desertEx<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).elflord  :colo elflord<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).emacs  :colo emacs<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).evening  :colo evening<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).fog  :colo fog<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).golden  :colo golden<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdblue  :colo hhdblue<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdcyan  :colo hhdcyan<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdgray  :colo hhdgray<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdgreen  :colo hhdgreen<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdmagenta  :colo hhdmagenta<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdred  :colo hhdred<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).hhdyellow  :colo hhdyellow<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).ibmedit  :colo ibmedit<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).impact  :colo impact<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).jammy  :colo jammy<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).koehler  :colo koehler<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).less  :colo less<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).lingodirector  :colo lingodirector<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*macvim  :colo macvim<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).martin_krischik  :colo martin_krischik<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).metacosm  :colo metacosm<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).mod_tcsoft  :colo mod_tcsoft<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).morning  :colo morning<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*motus  :colo motus<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).murphy  :colo murphy<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).nedit  :colo nedit<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).nedit2  :colo nedit2<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).nightwish  :colo nightwish<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).papayawhip  :colo papayawhip<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).peachpuff  :colo peachpuff<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).potts  :colo potts<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).print_bw  :colo print_bw<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).psql  :colo psql<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).putty  :colo putty<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).redblack  :colo redblack<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).reloaded  :colo reloaded<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).ron  :colo ron<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).sand  :colo sand<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).satori  :colo satori<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).sean  :colo sean<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).seashell  :colo seashell<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).shine  :colo shine<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*sienna  :colo sienna<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).simpleandfriendly  :colo simpleandfriendly<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).slate  :colo slate<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).synic  :colo synic<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).thegoodluck  :colo thegoodluck<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).tibet  :colo tibet<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).tolerable  :colo tolerable<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).tomatosoup  :colo tomatosoup<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).toothpik  :colo toothpik<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*torte  :colo torte<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).vc  :colo vc<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).vcbc  :colo vcbc<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).vibrantink  :colo vibrantink<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).*vividchalk  :colo vividchalk<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).white  :colo white<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).wuye  :colo wuye<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).xterm16  :colo xterm16<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).unknown\ (88).zellner  :colo zellner<CR>
 
 "submenu white
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).bog  :colo bog<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).delek  :colo delek<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).eclipse  :colo eclipse<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).emacs  :colo emacs<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).gobo  :colo gobo<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).lingodirector  :colo lingodirector<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).martin_krischik  :colo martin_krischik<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).*moria  :colo moria<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).print_bw  :colo print_bw<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).*scite  :colo scite<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).shine  :colo shine<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).*sienna  :colo sienna<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).taqua  :colo taqua<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).tcsoft  :colo tcsoft<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).tolerable  :colo tolerable<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).vcbc  :colo vcbc<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).white  :colo white<CR>
-9000amenu &ColorSchemes.&Colors\ (190).white\ (18).zellner  :colo zellner<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).eclipse  :colo eclipse<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).gobo  :colo gobo<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).*moria  :colo moria<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).*scite  :colo scite<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).taqua  :colo taqua<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).white\ (6).tcsoft  :colo tcsoft<CR>
 
 "submenu yellow
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).PapayaWhip  :colo PapayaWhip<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).buttercream  :colo buttercream<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).hhorange  :colo hhorange<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).olive  :colo olive<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).papayawhip  :colo papayawhip<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).professional  :colo professional<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).robinhood  :colo robinhood<CR>
-9000amenu &ColorSchemes.&Colors\ (190).yellow\ (8).sand  :colo sand<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).yellow\ (5).buttercream  :colo buttercream<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).yellow\ (5).hhorange  :colo hhorange<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).yellow\ (5).olive  :colo olive<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).yellow\ (5).professional  :colo professional<CR>
+9000amenu Plugin.&ColorSchemes.&Colors\ (216).yellow\ (5).robinhood  :colo robinhood<CR>
 "Themes by name:
 
 
 "submenu A
-amenu &ColorSchemes.&Names\ (190).A\ (12).adam  :colo adam<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).adaryn  :colo adaryn<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).adrian  :colo adrian<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).*af  :colo af<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).aiseered  :colo aiseered<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).aqua  :colo aqua<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).astronaut  :colo astronaut<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).asu1dark  :colo asu1dark<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).automation  :colo automation<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).autumn  :colo autumn<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).autumn2  :colo autumn2<CR>
-amenu &ColorSchemes.&Names\ (190).A\ (12).autumnleaf  :colo autumnleaf<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).adam  :colo adam<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).adaryn  :colo adaryn<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).adrian  :colo adrian<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).aiseered  :colo aiseered<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).aqua  :colo aqua<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).astronaut  :colo astronaut<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).asu1dark  :colo asu1dark<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).automation  :colo automation<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).autumn  :colo autumn<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).autumn2  :colo autumn2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).A\ (11).autumnleaf  :colo autumnleaf<CR>
 
 "submenu B
-amenu &ColorSchemes.&Names\ (190).B\ (18).*baycomb  :colo baycomb<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).billw  :colo billw<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).biogoo  :colo biogoo<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).*black_angus  :colo black_angus<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).blackbeauty  :colo blackbeauty<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).blackdust  :colo blackdust<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).blacksea  :colo blacksea<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).blue  :colo blue<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).bluegreen  :colo bluegreen<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).blugrine  :colo blugrine<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).bmichaelsen  :colo bmichaelsen<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).bog  :colo bog<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).borland  :colo borland<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).breeze  :colo breeze<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).brookstream  :colo brookstream<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).brown  :colo brown<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).buttercream  :colo buttercream<CR>
-amenu &ColorSchemes.&Names\ (190).B\ (18).bw  :colo bw<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).*baycomb  :colo baycomb<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).billw  :colo billw<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).biogoo  :colo biogoo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).*black_angus  :colo black_angus<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).blackbeauty  :colo blackbeauty<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).blackdust  :colo blackdust<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).blacksea  :colo blacksea<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).blue  :colo blue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).bluegreen  :colo bluegreen<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).blugrine  :colo blugrine<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).bmichaelsen  :colo bmichaelsen<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).bog  :colo bog<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).borland  :colo borland<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).breeze  :colo breeze<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).brookstream  :colo brookstream<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).brown  :colo brown<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).buttercream  :colo buttercream<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).B\ (18).bw  :colo bw<CR>
 
 "submenu C
-amenu &ColorSchemes.&Names\ (190).C\ (14).ChocolateLiquor  :colo ChocolateLiquor<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).c  :colo c<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).calmar256-light  :colo calmar256-light<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).camo  :colo camo<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).candy  :colo candy<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).candycode  :colo candycode<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).caramel  :colo caramel<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).chela_light  :colo chela_light<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).chocolateliquor  :colo chocolateliquor<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).cleanphp  :colo cleanphp<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).coffee  :colo coffee<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).colorer  :colo colorer<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).colorscheme_template  :colo colorscheme_template<CR>
-amenu &ColorSchemes.&Names\ (190).C\ (14).*cool  :colo cool<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).c  :colo c<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).calmar256-light  :colo calmar256-light<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).camo  :colo camo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).candy  :colo candy<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).candycode  :colo candycode<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).caramel  :colo caramel<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).chela_light  :colo chela_light<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).chlordane  :colo chlordane<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).chocolateliquor  :colo chocolateliquor<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).clarity  :colo clarity<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).cleanphp  :colo cleanphp<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).coffee  :colo coffee<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).colorer  :colo colorer<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).colorscheme_template  :colo colorscheme_template<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).C\ (15).*cool  :colo cool<CR>
 
 "submenu D
-amenu &ColorSchemes.&Names\ (190).D\ (24).dante  :colo dante<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkblack  :colo darkblack<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkblue  :colo darkblue<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkblue2  :colo darkblue2<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkdot  :colo darkdot<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkocean  :colo darkocean<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darkslategray  :colo darkslategray<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).darktango  :colo darktango<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).*dawn  :colo dawn<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).default  :colo default<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).delek  :colo delek<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).denim  :colo denim<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).desert  :colo desert<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).desert256  :colo desert256<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).desertEx  :colo desertEx<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).desertedocean  :colo desertedocean<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dusk  :colo dusk<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_blue  :colo dw_blue<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_cyan  :colo dw_cyan<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_green  :colo dw_green<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_orange  :colo dw_orange<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_purple  :colo dw_purple<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_red  :colo dw_red<CR>
-amenu &ColorSchemes.&Names\ (190).D\ (24).dw_yellow  :colo dw_yellow<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dante  :colo dante<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dark-ruby  :colo dark-ruby<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkblack  :colo darkblack<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkblue  :colo darkblue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkblue2  :colo darkblue2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkdot  :colo darkdot<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkocean  :colo darkocean<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkslategray  :colo darkslategray<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darkspectrum  :colo darkspectrum<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).darktango  :colo darktango<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).*dawn  :colo dawn<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).default  :colo default<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).delek  :colo delek<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).denim  :colo denim<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).desert  :colo desert<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).desert256  :colo desert256<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).desertEx  :colo desertEx<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).desertedocean  :colo desertedocean<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dusk  :colo dusk<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_blue  :colo dw_blue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_cyan  :colo dw_cyan<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_green  :colo dw_green<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_orange  :colo dw_orange<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_purple  :colo dw_purple<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_red  :colo dw_red<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).D\ (26).dw_yellow  :colo dw_yellow<CR>
 
 "submenu E
-amenu &ColorSchemes.&Names\ (190).E\ (6).earth  :colo earth<CR>
-amenu &ColorSchemes.&Names\ (190).E\ (6).eclipse  :colo eclipse<CR>
-amenu &ColorSchemes.&Names\ (190).E\ (6).edo_sea  :colo edo_sea<CR>
-amenu &ColorSchemes.&Names\ (190).E\ (6).elflord  :colo elflord<CR>
-amenu &ColorSchemes.&Names\ (190).E\ (6).emacs  :colo emacs<CR>
-amenu &ColorSchemes.&Names\ (190).E\ (6).evening  :colo evening<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).*earendel  :colo earendel<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).earth  :colo earth<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).eclipse  :colo eclipse<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).edo_sea  :colo edo_sea<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).ekvoli  :colo ekvoli<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).elflord  :colo elflord<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).emacs  :colo emacs<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).E\ (8).evening  :colo evening<CR>
 
 "submenu F
-amenu &ColorSchemes.&Names\ (190).F\ (5).fine_blue  :colo fine_blue<CR>
-amenu &ColorSchemes.&Names\ (190).F\ (5).fnaqevan  :colo fnaqevan<CR>
-amenu &ColorSchemes.&Names\ (190).F\ (5).fog  :colo fog<CR>
-amenu &ColorSchemes.&Names\ (190).F\ (5).freya  :colo freya<CR>
-amenu &ColorSchemes.&Names\ (190).F\ (5).fruit  :colo fruit<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).F\ (5).fine_blue  :colo fine_blue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).F\ (5).fnaqevan  :colo fnaqevan<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).F\ (5).fog  :colo fog<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).F\ (5).freya  :colo freya<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).F\ (5).fruit  :colo fruit<CR>
 
 "submenu G
-amenu &ColorSchemes.&Names\ (190).G\ (5).gobo  :colo gobo<CR>
-amenu &ColorSchemes.&Names\ (190).G\ (5).golden  :colo golden<CR>
-amenu &ColorSchemes.&Names\ (190).G\ (5).gor  :colo gor<CR>
-amenu &ColorSchemes.&Names\ (190).G\ (5).gothic  :colo gothic<CR>
-amenu &ColorSchemes.&Names\ (190).G\ (5).greyblue  :colo greyblue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).G\ (5).gobo  :colo gobo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).G\ (5).golden  :colo golden<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).G\ (5).gor  :colo gor<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).G\ (5).gothic  :colo gothic<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).G\ (5).greyblue  :colo greyblue<CR>
 
 "submenu H
-amenu &ColorSchemes.&Names\ (190).H\ (14).habiLight  :colo habiLight<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhazure  :colo hhazure<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdblue  :colo hhdblue<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdcyan  :colo hhdcyan<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdgray  :colo hhdgray<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdgreen  :colo hhdgreen<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdmagenta  :colo hhdmagenta<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdred  :colo hhdred<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhdyellow  :colo hhdyellow<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhorange  :colo hhorange<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhpink  :colo hhpink<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhspring  :colo hhspring<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhteal  :colo hhteal<CR>
-amenu &ColorSchemes.&Names\ (190).H\ (14).hhviolet  :colo hhviolet<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).habiLight  :colo habiLight<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhazure  :colo hhazure<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdblue  :colo hhdblue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdcyan  :colo hhdcyan<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdgray  :colo hhdgray<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdgreen  :colo hhdgreen<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdmagenta  :colo hhdmagenta<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdred  :colo hhdred<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhdyellow  :colo hhdyellow<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhorange  :colo hhorange<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhpink  :colo hhpink<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhspring  :colo hhspring<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhteal  :colo hhteal<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).H\ (14).hhviolet  :colo hhviolet<CR>
 
 "submenu I
-amenu &ColorSchemes.&Names\ (190).I\ (4).ibmedit  :colo ibmedit<CR>
-amenu &ColorSchemes.&Names\ (190).I\ (4).impact  :colo impact<CR>
-amenu &ColorSchemes.&Names\ (190).I\ (4).*inkpot  :colo inkpot<CR>
-amenu &ColorSchemes.&Names\ (190).I\ (4).ironman  :colo ironman<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).I\ (4).ibmedit  :colo ibmedit<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).I\ (4).impact  :colo impact<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).I\ (4).*inkpot  :colo inkpot<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).I\ (4).ironman  :colo ironman<CR>
 
 "submenu J
-amenu &ColorSchemes.&Names\ (190).J\ (2).jhdark  :colo jhdark<CR>
-amenu &ColorSchemes.&Names\ (190).J\ (2).jhlight  :colo jhlight<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).J\ (3).jammy  :colo jammy<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).J\ (3).jhdark  :colo jhdark<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).J\ (3).jhlight  :colo jhlight<CR>
 
 "submenu K
-amenu &ColorSchemes.&Names\ (190).K\ (1).koehler  :colo koehler<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).K\ (1).koehler  :colo koehler<CR>
 
 "submenu L
-amenu &ColorSchemes.&Names\ (190).L\ (4).less  :colo less<CR>
-amenu &ColorSchemes.&Names\ (190).L\ (4).lettuce  :colo lettuce<CR>
-amenu &ColorSchemes.&Names\ (190).L\ (4).lilac  :colo lilac<CR>
-amenu &ColorSchemes.&Names\ (190).L\ (4).lingodirector  :colo lingodirector<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).L\ (5).leo  :colo leo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).L\ (5).less  :colo less<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).L\ (5).lettuce  :colo lettuce<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).L\ (5).lilac  :colo lilac<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).L\ (5).lingodirector  :colo lingodirector<CR>
 
 "submenu M
-amenu &ColorSchemes.&Names\ (190).M\ (13).manxome  :colo manxome<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).marklar  :colo marklar<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).*mars  :colo mars<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).martin_krischik  :colo martin_krischik<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).matrix  :colo matrix<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).metacosm  :colo metacosm<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).midnight  :colo midnight<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).midnight2  :colo midnight2<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).mod_tcsoft  :colo mod_tcsoft<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).*moria  :colo moria<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).morning  :colo morning<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).*motus  :colo motus<CR>
-amenu &ColorSchemes.&Names\ (190).M\ (13).murphy  :colo murphy<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).*macvim  :colo macvim<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).manxome  :colo manxome<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).marklar  :colo marklar<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).*mars  :colo mars<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).martin_krischik  :colo martin_krischik<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).matrix  :colo matrix<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).metacosm  :colo metacosm<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).midnight  :colo midnight<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).midnight2  :colo midnight2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).mod_tcsoft  :colo mod_tcsoft<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).*moria  :colo moria<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).morning  :colo morning<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).*motus  :colo motus<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).M\ (14).murphy  :colo murphy<CR>
 
 "submenu N
-amenu &ColorSchemes.&Names\ (190).N\ (11).*navajo  :colo navajo<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).navajo-night  :colo navajo-night<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).nedit  :colo nedit<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).nedit2  :colo nedit2<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).neon  :colo neon<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).neverness  :colo neverness<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).night  :colo night<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).nightshimmer  :colo nightshimmer<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).nightwish  :colo nightwish<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).northsky  :colo northsky<CR>
-amenu &ColorSchemes.&Names\ (190).N\ (11).nuvola  :colo nuvola<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).*navajo  :colo navajo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).navajo-night  :colo navajo-night<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).nedit  :colo nedit<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).nedit2  :colo nedit2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).neon  :colo neon<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).neverness  :colo neverness<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).night  :colo night<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).nightshimmer  :colo nightshimmer<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).nightwish  :colo nightwish<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).no_quarter  :colo no_quarter<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).northsky  :colo northsky<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).N\ (12).nuvola  :colo nuvola<CR>
 
 "submenu O
-amenu &ColorSchemes.&Names\ (190).O\ (4).oceanblack  :colo oceanblack<CR>
-amenu &ColorSchemes.&Names\ (190).O\ (4).oceandeep  :colo oceandeep<CR>
-amenu &ColorSchemes.&Names\ (190).O\ (4).oceanlight  :colo oceanlight<CR>
-amenu &ColorSchemes.&Names\ (190).O\ (4).olive  :colo olive<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).O\ (4).oceanblack  :colo oceanblack<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).O\ (4).oceandeep  :colo oceandeep<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).O\ (4).oceanlight  :colo oceanlight<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).O\ (4).olive  :colo olive<CR>
 
 "submenu P
-amenu &ColorSchemes.&Names\ (190).P\ (12).PapayaWhip  :colo PapayaWhip<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).pablo  :colo pablo<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).papayawhip  :colo papayawhip<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).peachpuff  :colo peachpuff<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).potts  :colo potts<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).print_bw  :colo print_bw<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).professional  :colo professional<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).*ps_color  :colo ps_color<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).psql  :colo psql<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).putty  :colo putty<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).pyte  :colo pyte<CR>
-amenu &ColorSchemes.&Names\ (190).P\ (12).python  :colo python<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).pablo  :colo pablo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).papayawhip  :colo papayawhip<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).peachpuff  :colo peachpuff<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).*peaksea  :colo peaksea<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).potts  :colo potts<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).print_bw  :colo print_bw<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).professional  :colo professional<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).*ps_color  :colo ps_color<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).psql  :colo psql<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).putty  :colo putty<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).pyte  :colo pyte<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).P\ (12).python  :colo python<CR>
 
 "submenu R
-amenu &ColorSchemes.&Names\ (190).R\ (7).rdark  :colo rdark<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).redblack  :colo redblack<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).relaxedgreen  :colo relaxedgreen<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).reloaded  :colo reloaded<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).revolutions  :colo revolutions<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).robinhood  :colo robinhood<CR>
-amenu &ColorSchemes.&Names\ (190).R\ (7).ron  :colo ron<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).railscasts  :colo railscasts<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).railscasts2  :colo railscasts2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).rdark  :colo rdark<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).redblack  :colo redblack<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).relaxedgreen  :colo relaxedgreen<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).reloaded  :colo reloaded<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).revolutions  :colo revolutions<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).robinhood  :colo robinhood<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).R\ (9).ron  :colo ron<CR>
 
 "submenu S
-amenu &ColorSchemes.&Names\ (190).S\ (11).sand  :colo sand<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).*scite  :colo scite<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).sea  :colo sea<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).sean  :colo sean<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).seashell  :colo seashell<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).sf  :colo sf<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).shine  :colo shine<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).*sienna  :colo sienna<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).simpleandfriendly  :colo simpleandfriendly<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).slate  :colo slate<CR>
-amenu &ColorSchemes.&Names\ (190).S\ (11).softblue  :colo softblue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).sand  :colo sand<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).satori  :colo satori<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).*scite  :colo scite<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).sea  :colo sea<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).sean  :colo sean<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).seashell  :colo seashell<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).sf  :colo sf<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).shine  :colo shine<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).*sienna  :colo sienna<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).simpleandfriendly  :colo simpleandfriendly<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).*skammer  :colo skammer<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).slate  :colo slate<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).softblue  :colo softblue<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).soso  :colo soso<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).spring  :colo spring<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).S\ (16).synic  :colo synic<CR>
 
 "submenu T
-amenu &ColorSchemes.&Names\ (190).T\ (11).*tabula  :colo tabula<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).tango  :colo tango<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).taqua  :colo taqua<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).tcsoft  :colo tcsoft<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).tibet  :colo tibet<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).tolerable  :colo tolerable<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).tomatosoup  :colo tomatosoup<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).toothpik  :colo toothpik<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).*torte  :colo torte<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).transparent  :colo transparent<CR>
-amenu &ColorSchemes.&Names\ (190).T\ (11).turbo  :colo turbo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).*tabula  :colo tabula<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tango  :colo tango<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tango2  :colo tango2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).taqua  :colo taqua<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tcsoft  :colo tcsoft<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).thegoodluck  :colo thegoodluck<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tibet  :colo tibet<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tolerable  :colo tolerable<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).tomatosoup  :colo tomatosoup<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).toothpik  :colo toothpik<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).*torte  :colo torte<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).transparent  :colo transparent<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).turbo  :colo turbo<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).twilight  :colo twilight<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).twilight2  :colo twilight2<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).twilight_  :colo twilight_<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).T\ (17).two2tango  :colo two2tango<CR>
 
 "submenu U
-amenu &ColorSchemes.&Names\ (190).U\ (1).umber-green  :colo umber-green<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).U\ (1).umber-green  :colo umber-green<CR>
 
 "submenu V
-amenu &ColorSchemes.&Names\ (190).V\ (4).vc  :colo vc<CR>
-amenu &ColorSchemes.&Names\ (190).V\ (4).vcbc  :colo vcbc<CR>
-amenu &ColorSchemes.&Names\ (190).V\ (4).vibrantink  :colo vibrantink<CR>
-amenu &ColorSchemes.&Names\ (190).V\ (4).*vividchalk  :colo vividchalk<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).V\ (4).vc  :colo vc<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).V\ (4).vcbc  :colo vcbc<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).V\ (4).vibrantink  :colo vibrantink<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).V\ (4).*vividchalk  :colo vividchalk<CR>
 
 "submenu W
-amenu &ColorSchemes.&Names\ (190).W\ (3).white  :colo white<CR>
-amenu &ColorSchemes.&Names\ (190).W\ (3).whitedust  :colo whitedust<CR>
-amenu &ColorSchemes.&Names\ (190).W\ (3).wintersday  :colo wintersday<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).W\ (5).white  :colo white<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).W\ (5).whitedust  :colo whitedust<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).W\ (5).wintersday  :colo wintersday<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).W\ (5).wombat  :colo wombat<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).W\ (5).wuye  :colo wuye<CR>
 
 "submenu X
-amenu &ColorSchemes.&Names\ (190).X\ (2).xemacs  :colo xemacs<CR>
-amenu &ColorSchemes.&Names\ (190).X\ (2).xian  :colo xian<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).X\ (4).xemacs  :colo xemacs<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).X\ (4).xian  :colo xian<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).X\ (4).xoria256  :colo xoria256<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).X\ (4).xterm16  :colo xterm16<CR>
 
 "submenu Z
-amenu &ColorSchemes.&Names\ (190).Z\ (2).zellner  :colo zellner<CR>
-amenu &ColorSchemes.&Names\ (190).Z\ (2).*zenburn  :colo zenburn<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).Z\ (2).zellner  :colo zellner<CR>
+amenu Plugin.&ColorSchemes.&Names\ (215).Z\ (2).*zenburn  :colo zenburn<CR>
 
-amenu &ColorSchemes.-Sep-	:
-amenu &ColorSchemes.Reload\ Menu	:ReloadColors<CR>
-amenu &ColorSchemes.Refresh\ Menu	:RefreshColors<CR>
+amenu Plugin.&ColorSchemes.-Sep-	:
+amenu Plugin.&ColorSchemes.Reload\ Menu	:ReloadColors<CR>
+amenu Plugin.&ColorSchemes.Refresh\ Menu	:RefreshColors<CR>
 
 command! -nargs=0		ReloadColors		call <SID>ReloadColors()
 command! -nargs=0		RefreshColors		call <SID>RefreshColors()
@@ -469,10 +520,10 @@ command! -nargs=0		RefreshColors		call <SID>RefreshColors()
 if !exists("g:running_ReloadColors")
 	function! <SID>ReloadColors()
 		let g:running_ReloadColors = 1
-		aunmenu &ColorSchemes
-		execute 'source /home/marty/.vim/plugin/ColorSchemes.vim'
+		aunmenu Plugin.&ColorSchemes
+		execute 'source /Users/skammer/.vim/plugin/ColorSchemes.vim'
 		unlet g:running_ReloadColors
-		echomsg 'Done Reloading /home/marty/.vim/plugin/ColorSchemes.vim'
+		echomsg 'Done Reloading /Users/skammer/.vim/plugin/ColorSchemes.vim'
 	endfunction
 endif
 if !exists("g:running_RefreshColors")
@@ -481,6 +532,6 @@ if !exists("g:running_RefreshColors")
 		call WriteColorSchemeMenu()
 		call <SID>ReloadColors()
 		unlet g:running_RefreshColors
-		echomsg 'Done Refreshing /home/marty/.vim/plugin/ColorSchemes.vim'
+		echomsg 'Done Refreshing /Users/skammer/.vim/plugin/ColorSchemes.vim'
 	endfunction
 endif

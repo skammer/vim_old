@@ -122,7 +122,7 @@ let s:C_LoadMenus      				= 'yes'
 let s:C_MenuHeader     				= 'yes'
 let s:C_OutputGvim            = 'vim'
 let s:C_Printheader           = "%<%f%h%m%<  %=%{strftime('%x %X')}     Page %N"
-let s:C_Root  	       				= '&C\/C\+\+.'           " the name of the root menu of this plugin
+let s:C_Root  	       				= 'Plugin.&C\/C\+\+.'           " the name of the root menu of this plugin
 let s:C_TypeOfH               = 'cpp'
 let s:C_Wrapper               = s:plugin_dir.'c-support/scripts/wrapper.sh'
 let s:C_XtermDefaults         = '-fa courier -fs 12 -geometry 80x24'
