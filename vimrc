@@ -6,6 +6,7 @@
 set nocompatible
 set ruler
 set visualbell"
+set linebreak
 
 filetype on
 filetype plugin on
@@ -14,7 +15,8 @@ filetype indent on
 "------------------
 " Внешний вид
 "------------------
-colorscheme wombat
+"colorscheme wombat
+colorscheme skammer
 syntax on
 
 set hidden
@@ -40,8 +42,10 @@ set incsearch
 set showmatch
 set background=dark
 set imd
-
 "set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
+
+let g:DrChipTopLvlMenu = "Plugin."
+"let s:C_Root = "Plugin.C\/C\+\+."
 
 " Строка состояния P.S. надо сделать более информативной
 set laststatus=2
@@ -49,7 +53,13 @@ set laststatus=2
 
 "set statusline=%<%{&ff}\ %t\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %{CountLettersInCurrentBuffer()}\ %=%03p%%\ [%04l,%04v]\ %L
 "set statusline=%<%{&ff}\ %t\ %Y\ %n\ %=%03p%%\ [%04l,%04v]\ %L
-set statusline=%<%{&ff}\ %t\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %=%03p%%\ [%04l,%04v]\ %L
+set statusline=%<%{&ff}\ %t\ %{GitBranchInfoString()}\ %Y\ %n\ %m%r%h%w\ %=%{CountLettersInCurrentLine()}\ %03p%%\ [%04l,%04v]\ %L
+
+"Git-branch-info stuff
+"let g:git_branch_status_head_current=1
+let g:git_branch_status_nogit="no_git"
+"let g:git_branch_status_ignore_remotes=1
+let g:git_branch_status_text="branch:" 
 
 fu! CountLettersInCurrentLine()
   let string = StrLen(getline("."))
@@ -59,7 +69,7 @@ endf
 fu! CountLettersInCurrentBuffer()
   let lines = getbufline(bufnr(bufname("%")), 1, "$")
   let number = 0
-  for item in lines
+    for item in lines
     let number += StrLen(item)
   endfor
   return number
@@ -77,7 +87,7 @@ endfunction
 set backspace=indent,eol,start
 
 let mapleader="."
-let maplocalleader="\"
+let maplocalleader='\'
 
 " Быстрый и простой make
 if filereadable("Makefile")
@@ -87,24 +97,35 @@ else
 	map <C-b> :make %:r<CR>:cw<CR>
 endif
 
-
 "map ,s :source %<CR>
 "map ,t :TMiniBufExplorer<CR>
 
 map <leader>nt :NERDTreeToggle<CR>
 map <leader>tl :TlistToggle<CR>
 map <leader>ed :e $MYVIMRC<CR>
+map <leader>rv :source $MYVIMRC<CR>
 map <leader>o :only<CR>
 map <leader>vsp :vsp<cr>
 map <leader>sp :sp<CR>
-map <C-f> zc "fold code
-map <C-d> zo "unfold folded code
-map <D-d> za
+map <C-f> zc
+"map <C-d> zo "unfold folded code
+"map <D-d> za
 imap <silent> <D-/> <Esc>,c<Space>a
 vmap <silent> <D-/> ,c<Space>
 nmap <silent> <D-/> V,c<Space>
 
-nnoremap <c-t>t :FuzzyFinderTextMate<CR>
+imap <D-]> <Esc>>>A
+vmap <D-]> ><D-Right>
+nmap <D-]> >>A
+
+imap <silent> <D-[> <Esc><<A
+vmap <silent> <D-[> <<D-Right>
+nmap <silent> <D-[> <<A
+
+nnoremap <C-t>t :FuzzyFinderTextMate<CR>
+imap <D-e> <Esc>:FuzzyFinderTextMate<CR>
+vmap <C-t>t :FuzzyFinderTextMate<CR>
+
 "map to bufexplorer
 nnoremap <leader>b :BufExplorer<cr>
 imap <D-Enter> <Esc>o
@@ -146,7 +167,7 @@ function! RemoveRubyEval() range
   set nolz
   redraw
 endfunction
-set invfullsreen
+"set invfullsreen
 fu! ToggleFullscreen()
   if &go == "amge"
     exec 'set go='."amg"
@@ -163,6 +184,8 @@ nmap <D-D> V<D-D>
 
 map <S-D-Left> :bp<cr>
 map <S-D-Right> :bn<cr>
+imap <S-D-Left> <ESC>:bp<cr>
+imap <S-D-Right> <ESC>:bn<cr>
 
 "imap <D-Enter> <Esc>A<cr>
 
@@ -252,9 +275,10 @@ runtime! macros/matchit.vim
 
 
 "folding settings
-set foldmethod=syntax   "fold based on indent
-set foldnestmax=3       "deepest fold is 3 levels
+set foldmethod=indent   "fold based on indent
+set foldnestmax=10       "deepest fold is 3 levels
 set nofoldenable        "dont fold by default
+set foldlevel=1
 
 set wildmode=list:longest,full   "make cmdline tab completion similar to bash
 set wildmenu                "enable ctrl-n and ctrl-p to scroll thru matches
@@ -262,36 +286,36 @@ set wildignore=*.o,*.obj,*~ "stuff to ignore when tab completing
 
 autocmd BufReadPost * call SetCursorPosition()
 function! SetCursorPosition()
-    if &filetype !~ 'commit\c'
-        if line("'\"") > 0 && line("'\"") <= line("$")
-            exe "normal g`\""
-        endif
-    end
+  if &filetype !~ 'commit\c'
+    if line("'\"") > 0 && line("'\"") <= line("$")
+      exe "normal g`\""
+    endif
+  end
 endfunction
 
 command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
-      \ adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
-      \ magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-      \ ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-      \ irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-      \ fugiat nulla pariatur.  Excepteur sint occaecat cupidatat non
-      \ proident, sunt in culpa qui officia deserunt mollit anim id est
-      \ laborum
+  \ adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+  \ magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+  \ ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+  \ irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+  \ fugiat nulla pariatur.  Excepteur sint occaecat cupidatat non
+  \ proident, sunt in culpa qui officia deserunt mollit anim id est
+  \ laborum
 
 
 " TwitVim related stuff
 fu! LoginTwitter()
-let a:user=input("Your twitter login: ")
-let a:pswd=inputsecret(a:user."'s password: ")
-let g:twitvim_login=a:user.':'.a:pswd
-echo "Credentials are saved"
+  let a:user=input("Your twitter login: ")
+  let a:pswd=inputsecret(a:user."'s password: ")
+  let g:twitvim_login=a:user.':'.a:pswd
+  echo "Credentials are saved"
 endf
 command! Twil :call LoginTwitter()
 "twittervim mappings
-nmap <C-t>p :PosttoTwitter<cr>
-nmap <C-t>f :FriendsTwitter<cr>
-nmap <C-t>l :Twil<cr>
-nmap <C-t>b :BPosttoTwitter<cr>
+nmap <C-f>p :PosttoTwitter<cr>
+nmap <C-f>f :FriendsTwitter<cr>
+nmap <C-f>l :Twil<cr>
+nmap <C-f>b :BPosttoTwitter<cr>
 
 let g:AutoComplPop_CompleteoptPreview = 0
 let g:AutoComplPop_MappingDriven = 1
