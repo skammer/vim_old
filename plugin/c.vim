@@ -2109,6 +2109,7 @@ function! C_Make()
 	" update : write source file if necessary
 	exe	":update"
 	" run make
+  "exe ":cd %:p:h"
 	exe		":!make ".s:C_MakeCmdLineArgs
 endfunction    " ----------  end of function C_Make ----------
 "

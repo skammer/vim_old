@@ -1,57 +1,62 @@
 "------------------------------------------------------------------------------
-" Name Of File: tasklist.vim
+"   Name Of File: tasklist.vim
 "
-"  Description: Vim plugin to search for a list of tokens and display a
-"               window with matches.
+"    Description: Vim plugin to search for a list of tokens and display a
+"                 window with matches.
 "
-"       Author: Juan Frias (juandfrias at gmail.com)
+"         Author: Juan Frias (juandfrias at gmail.com)
 "
-"  Last Change: 2009 Apr 10
-"      Version: 1.00
+"    Last Change: 2009 Apr 11
+"        Version: 1.0.1
 "
-"    Copyright: Permission is hereby granted to use and distribute this code,
-"               with or without modifications, provided that this header
-"               is included with it.
+"      Copyright: Permission is hereby granted to use and distribute this code,
+"                 with or without modifications, provided that this header
+"                 is included with it.
 "
-"               This script is to be distributed freely in the hope that it
-"               will be useful, but is provided 'as is' and without warranties
-"               as to performance of merchantability or any other warranties
-"               whether expressed or implied. Because of the various hardware
-"               and software environments into which this script may be put,
-"               no warranty of fitness for a particular purpose is offered.
+"                 This script is to be distributed freely in the hope that it
+"                 will be useful, but is provided 'as is' and without warranties
+"                 as to performance of merchantability or any other warranties
+"                 whether expressed or implied. Because of the various hardware
+"                 and software environments into which this script may be put,
+"                 no warranty of fitness for a particular purpose is offered.
 "
-"               GOOD DATA PROCESSING PROCEDURE DICTATES THAT ANY SCRIPT BE
-"               THOROUGHLY TESTED WITH NON-CRITICAL DATA BEFORE RELYING ON IT.
+"                 GOOD DATA PROCESSING PROCEDURE DICTATES THAT ANY SCRIPT BE
+"                 THOROUGHLY TESTED WITH NON-CRITICAL DATA BEFORE RELYING ON IT.
 "
-"               THE USER MUST ASSUME THE ENTIRE RISK OF USING THE SCRIPT.
+"                 THE USER MUST ASSUME THE ENTIRE RISK OF USING THE SCRIPT.
 "
-"               The author does not retain any liability on any damage caused
-"               through the use of this script.
+"                 The author does not retain any liability on any damage caused
+"                 through the use of this script.
 "
-"      Install: 1. Read the section titled 'Options'
-"               2. Setup any variables need in your vimrc file
-"               3. Copy 'tasklist.vim' to your plugin directory.
+"        Install: 1. Read the section titled 'Options'
+"                 2. Setup any variables need in your vimrc file
+"                 3. Copy 'tasklist.vim' to your plugin directory.
 "
-"  Mapped Keys: <Leader>t   Display list.
+"    Mapped Keys: <Leader>t   Display list.
 "
-"        Usage: Start the script with the mapped key, a new window appears
-"               with the matches found, moving around the window will also
-"               update the position of the current document.
+"          Usage: Start the script with the mapped key, a new window appears
+"                 with the matches found, moving around the window will also
+"                 update the position of the current document.
 "
-"               The following keys are mapped to the results window:
+"                 The following keys are mapped to the results window:
 "
-"                   q - Quit, and restore original cursor position.
+"                     q - Quit, and restore original cursor position.
 "
-"                   e - Exit, and keep results window open note that
-"                       movements on the result window will no longer be
-"                       updated.
+"                     e - Exit, and keep results window open note that
+"                         movements on the result window will no longer be
+"                         updated.
 "
-"                <cr> - Quit and place the cursor on the selected line.
+"                     <cr> - Quit and place the cursor on the selected line.
+"
+" Aknowledgments: Many thanks to Zhang Shuhan for taking the time to beta
+"                 test and suggest many of the improvements and features
+"                 found in the script.  I don't think I would have
+"                 implemented it wihout his help. Thanks!
 "
 "------------------------------------------------------------------------------
 " Please send me any bugs you find, so I can keep the script up to date.
 "------------------------------------------------------------------------------
-"
+
 " History: {{{1
 "------------------------------------------------------------------------------
 "
@@ -78,7 +83,7 @@
 "       This is the list of tokens to search for default is
 "       'FIXME TODO XXX'. The results are groupped and displayed in the
 "       order that they appear. to overwrite use:
-"           let: g:tlTokenList = ['TOKEN1', 'TOKEN2', 'TOKEN3']
+"           let g:tlTokenList = ['TOKEN1', 'TOKEN2', 'TOKEN3']
 "       in your vimrc file
 "
 " g:tlRememberPosition
@@ -86,17 +91,17 @@
 "       position where it last was closed. By default it will find the line
 "       closest to the current cursor position.
 "       to overwrite use:
-"           let: g:tlRememberPosition = 1
+"           let g:tlRememberPosition = 1
 "       in your vimrc file
 "
-"
+
 " Global variables: {{{1
 "------------------------------------------------------------------------------
-"
+
 " Load script once
 "------------------------------------------------------------------------------
 if exists("g:loaded_tasklist") || &cp
-  finish
+    finish
 endif
 let g:loaded_tasklist = 1
 
@@ -200,12 +205,15 @@ endfunction
 "--------------------------------------------------------------------------
 function! s:LineNumber()
     let l:text = getline(".")
-    if strlen(l:text) == 0 || strpart(l:text, 0, 5) == "File:"
+    if strpart(l:text, 0, 5) == "File:"
         return 0
+    endif
+    if strlen(l:text) == 0
+        return -1
     endif
     let l:num = matchstr(l:text, '[0-9]\+')
     if l:num == ''
-        return 0
+        return -1
     endif
     return l:num
 endfunction
@@ -214,8 +222,14 @@ endfunction
 "--------------------------------------------------------------------------
 function! s:UpdateDoc()
     let l:line_hit = <sid>LineNumber()
-    let l:buffnr = b:original_buffnr
+
     match none
+    if l:line_hit == -1
+        redraw
+        return
+    endif
+
+    let l:buffnr = b:original_buffnr
     exe 'match Search /\%'.line(".").'l.*/'
     if line(".") < (line("$") - (winheight(0) / 2)) + 1
         normal! zz
@@ -240,6 +254,7 @@ function! s:Exit(key)
     match none
 
     let l:original_line = b:original_line
+    let l:last_position = line('.')
 
     if a:key == -1
         nunmap <buffer> e
@@ -250,7 +265,7 @@ function! s:Exit(key)
         bd!
     endif
 
-    let b:last_position = line('.')
+    let b:last_position = l:last_position
 
     if a:key == 0
         exe "normal! ".l:original_line."G"
@@ -282,7 +297,7 @@ function! s:TaskList()
 
     " last position
     if !exists('b:last_position')
-        let b:last_position = 0
+        let b:last_position = 1
     endif
     let l:last_position = b:last_position
 
@@ -304,7 +319,7 @@ function! s:TaskList()
     " Make sure we at least have one hit.
     if l:count == 0
         echohl Search
-        echo "No matches found"
+        echo "tasklist.vim: No task information found."
         echohl None
         execute 'normal! '.l:original_line.'G'
         return
@@ -357,4 +372,4 @@ endif
 " Key map to Command
 nnoremap <unique> <script> <Plug>TaskList :TaskList<CR>
 
-" vim:fdm=marker:tw=75:
+" vim:fdm=marker:tw=75:ff=unix:

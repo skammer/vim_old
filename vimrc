@@ -7,6 +7,7 @@ set nocompatible
 set ruler
 set visualbell"
 set linebreak
+"set autochdir
 
 filetype on
 filetype plugin on
@@ -43,6 +44,7 @@ set showmatch
 set background=dark
 set imd
 "set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
+set guifont=DejaVu\ Sans\ Mono:h11
 
 let g:DrChipTopLvlMenu = "Plugin."
 "let s:C_Root = "Plugin.C\/C\+\+."
@@ -56,7 +58,7 @@ set laststatus=2
 set statusline=%<%{&ff}\ %t\ %{GitBranchInfoString()}\ %Y\ %n\ %m%r%h%w\ %=%{CountLettersInCurrentLine()}\ %03p%%\ [%04l,%04v]\ %L
 
 "Git-branch-info stuff
-"let g:git_branch_status_head_current=1
+let g:git_branch_status_head_current=1
 let g:git_branch_status_nogit="no_git"
 "let g:git_branch_status_ignore_remotes=1
 let g:git_branch_status_text="branch:" 
@@ -92,7 +94,7 @@ let maplocalleader='\'
 " Быстрый и простой make
 if filereadable("Makefile")
 	set makeprg = make\ -j
-	map <C-b> :make<CR>:cw<CR>
+	map <C-b> :cd %:p:h<cr>:make<CR>:cw<CR>
 else
 	map <C-b> :make %:r<CR>:cw<CR>
 endif
@@ -131,7 +133,7 @@ nnoremap <leader>b :BufExplorer<cr>
 imap <D-Enter> <Esc>o
 imap <D-S-Enter> <Esc>O
 
-" Рубиистические всякие вкусности
+" Рубинистические всякие вкусности
 
 " plain annotations
 map <silent> <D-r> !xmpfilter -a<cr>

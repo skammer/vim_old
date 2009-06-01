@@ -1,18 +1,14 @@
-@interface <+class+> : <+NSObject+>
+@interface ${1:`Filename('', 'object')`} : ${2:NSObject}
 {
 }
 @end
 
-@implementation <+class+>
-- (id)init
+@implementation $1
+- (id) init
 {
-  self = [super init]; 
-  if (self != nil)
-{
-
-<++>
-}
-  return self;
+	if (self = [super init])
+	{${3}
+	}
+	return self
 }
 @end
-<++>
