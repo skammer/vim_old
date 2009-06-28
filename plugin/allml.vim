@@ -201,7 +201,7 @@ function! s:Init()
         let b:surround_61 = "<%= \r %>"
     endif
     imap     <buffer> <C-X>= <SID>allmlOopen<SID>allmlOclose<Left>
-    imap     <buffer> <C-X>+ <C-V><NL><Esc>I<SID>allmlOopen<Space><Esc>A<Space><SID>allmlOclose<Esc>F<NL>s
+    imap     <buffer> <C-X>+ <C-V><NL><Esc>I<SID>allmlOopen<Esc>A<SID>allmlOclose<Esc>F<NL>s
     " <%\n\n%>
     if &ft == "cf"
         inoremap <buffer> <C-X>] <cfscript><CR></cfscript><Esc>O
