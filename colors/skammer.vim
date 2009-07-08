@@ -110,7 +110,7 @@ hi  Character      guifg=#E9C062
 "hi Number         guifg=#9B859D
 "hi Boolean        guifg=#CF6A4C
 "hi Float          guifg=#562D56
-"hi Identifier     guifg=#7587a6
+"hi Identifier     fg=#7587a6
 "hi Function       guifg=#8B98AB
 "hi Statement      guifg=#CF7D34
 "hi Conditional    guifg=#D2A8A1
@@ -144,3 +144,11 @@ hi Ignore         guifg=#565656
 "hi PmenuSel       guifg=#F8F8F8       guibg=#9B703F
 "hi PmenuSbar      guibg=#DAEFA3
 hi  PmenuThumb     guifg=#8F9D6A
+hi Special guifg=#9389D6
+
+hi DiffText gui=bold guibg=Red
+hi DiffAdd guibg=LightBlue
+hi DiffChange guibg=LightMagenta
+hi DiffDelete gui=bold guifg=Blue guibg=LightCyan
+
+hi IncSearch gui=reverse

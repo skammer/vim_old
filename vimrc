@@ -318,6 +318,9 @@ nmap <C-f>p :PosttoTwitter<cr>
 nmap <C-f>f :FriendsTwitter<cr>
 nmap <C-f>l :Twil<cr>
 nmap <C-f>b :BPosttoTwitter<cr>
+nmap <C-f>r :RefreshTwitter<cr>
+
+let twitvim_count = 50
 
 let g:AutoComplPop_CompleteoptPreview = 0
 let g:AutoComplPop_MappingDriven = 1

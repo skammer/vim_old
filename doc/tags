@@ -82,6 +82,7 @@
 :BackTwitter	twitvim.txt	/*:BackTwitter*
 :BitLy	twitvim.txt	/*:BitLy*
 :Brightness	xterm16.txt	/*:Brightness*
+:BuildMethods	cocoa.txt	/*:BuildMethods*
 :CPosttoTwitter	twitvim.txt	/*:CPosttoTwitter*
 :CSApproxSnapshot	CSApprox.txt	/*:CSApproxSnapshot*
 :Cligs	twitvim.txt	/*:Cligs*
@@ -90,6 +91,7 @@
 :ForwardTwitter	twitvim.txt	/*:ForwardTwitter*
 :FriendsTwitter	twitvim.txt	/*:FriendsTwitter*
 :IsGd	twitvim.txt	/*:IsGd*
+:ListMethods	cocoa.txt	/*:ListMethods*
 :LocationTwitter	twitvim.txt	/*:LocationTwitter*
 :MatchDebug	matchit.txt	/*:MatchDebug*
 :Metamark	twitvim.txt	/*:Metamark*
@@ -430,6 +432,16 @@ buffer-explorer	bufexplorer.txt	/*buffer-explorer*
 c-support	csupport.txt	/*c-support*
 clj-nailgun-server	clojure.txt	/*clj-nailgun-server*
 clojure.vim	clojure.txt	/*clojure.vim*
+cocoa	cocoa.txt	/*cocoa*
+cocoa-author	cocoa.txt	/*cocoa-author*
+cocoa-commands	cocoa.txt	/*cocoa-commands*
+cocoa-contact	cocoa.txt	/*cocoa-contact*
+cocoa-features	cocoa.txt	/*cocoa-features*
+cocoa-installation	cocoa.txt	/*cocoa-installation*
+cocoa-intro	cocoa.txt	/*cocoa-intro*
+cocoa-mappings	cocoa.txt	/*cocoa-mappings*
+cocoa-suggested-plugins	cocoa.txt	/*cocoa-suggested-plugins*
+cocoa.txt	cocoa.txt	/*cocoa.txt*
 config/rails.vim	rails.txt	/*config\/rails.vim*
 cpalette.pl	xterm16.txt	/*cpalette.pl*
 creating-snippets	snippets_emu.txt	/*creating-snippets*
@@ -1796,6 +1808,7 @@ g:bufExplorerShowUnlisted	bufexplorer.txt	/*g:bufExplorerShowUnlisted*
 g:bufExplorerSortBy	bufexplorer.txt	/*g:bufExplorerSortBy*
 g:bufExplorerSplitOutPathName	bufexplorer.txt	/*g:bufExplorerSplitOutPathName*
 g:loaded_rails	rails.txt	/*g:loaded_rails*
+g:objc_man_key	cocoa.txt	/*g:objc_man_key*
 g:rails_abbreviations	rails.txt	/*g:rails_abbreviations*
 g:rails_dbext	rails.txt	/*g:rails_dbext*
 g:rails_default_database	rails.txt	/*g:rails_default_database*
@@ -1828,6 +1841,7 @@ imaps.txt	imaps.txt	/*imaps.txt*
 imaps.txt-toc	imaps.txt	/*imaps.txt-toc*
 ji	clojure.txt	/*ji*
 jw	clojure.txt	/*jw*
+leopard-security-alert	cocoa.txt	/*leopard-security-alert*
 li	clojure.txt	/*li*
 list-snippets	snipMate.txt	/*list-snippets*
 lw	clojure.txt	/*lw*
