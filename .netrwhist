@@ -1,7 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =5
-let g:netrw_dirhist_1='/Users/skammer/.vim/plugin'
-let g:netrw_dirhist_2='/Applications/MacVim.app/Contents/Resources/vim/runtime/doc'
-let g:netrw_dirhist_3='/Users/skammer'
-let g:netrw_dirhist_4='/Users/skammer/Code/work/stretto-projects/demin-web/src/main/webapp'
-let g:netrw_dirhist_5='/Users/skammer/temp/tinyrb'
