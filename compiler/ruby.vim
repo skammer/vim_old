@@ -1,17 +1,22 @@
 " Vim compiler file
-" Language:		Ruby
-" Function:		Syntax check and/or error reporting
-" Maintainer:		Tim Hammerquist <timh at rubyforge.org>
-" Info:			$Id: ruby.vim,v 1.12 2006/04/15 12:01:18 dkearns Exp $
-" URL:			http://vim-ruby.rubyforge.org
-" Anon CVS:		See above site
-" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
+" Language:	Ruby
+" Function:	Syntax check and/or error reporting
+" Maintainer:	Tim Hammerquist <timh at rubyforge.org>
+" Info:		$Id$
+" URL:		http://vim-ruby.rubyforge.org
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
+" Disclaimer:
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
 " ----------------------------------------------------------------------------
 "
 " Changelog:
-" 0.2:	script saves and restores 'cpoptions' value to prevent problems with
-"	line continuations
-" 0.1:	initial release
+" 0.2:  script saves and restores 'cpoptions' value to prevent problems with
+"       line continuations
+" 0.1:  initial release
 "
 " Contributors:
 "   Hugh Sasse <hgs@dmu.ac.uk>

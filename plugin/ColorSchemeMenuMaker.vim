@@ -233,6 +233,8 @@ function! <SID>RgbTxt2Hexes() "{{{
 			let rgbtxt = "/usr/X11R6/lib/X11/rgb.txt"
 		elseif filereadable("/usr/share/X11/rgb.txt")
 			let rgbtxt = "/usr/share/X11/rgb.txt"
+    elseif filereadable("/Users/skammer/.vim/rgb.txt")
+      let rgbtxt = "/Users/skammer/.vim/rgb.txt"
 		endif
 	endif
 	let rgbdict = {}

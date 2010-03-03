@@ -1,10 +1,16 @@
 " Vim compiler file
-" Language:		eRuby
-" Maintainer:		Doug Kearns <dougkearns@gmail.com>
-" Info:			$Id: eruby.vim,v 1.6 2006/04/15 12:01:18 dkearns Exp $
-" URL:			http://vim-ruby.rubyforge.org
-" Anon CVS:		See above site
-" Release Coordinator:	Doug Kearns <dougkearns@gmail.com>
+" Language:	eRuby
+" Maintainer:	Doug Kearns <djkea2 at gus.gscit.monash.edu.au>
+" Info:		$Id$
+" URL:		http://vim-ruby.sourceforge.net
+" Anon CVS:	See above site
+" Licence:	GPL (http://www.gnu.org)
+" Disclaimer:
+"    This program is distributed in the hope that it will be useful,
+"    but WITHOUT ANY WARRANTY; without even the implied warranty of
+"    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+"    GNU General Public License for more details.
+" ----------------------------------------------------------------------------
 
 if exists("current_compiler")
   finish
@@ -18,22 +24,13 @@ endif
 let s:cpo_save = &cpo
 set cpo-=C
 
-if exists("eruby_compiler") && eruby_compiler == "eruby"
-  CompilerSet makeprg=eruby
-else
-  CompilerSet makeprg=erb
-endif
+CompilerSet makeprg=eruby
 
-CompilerSet errorformat=
-    \eruby:\ %f:%l:%m,
-    \%+E%f:%l:\ parse\ error,
-    \%W%f:%l:\ warning:\ %m,
-    \%E%f:%l:in\ %*[^:]:\ %m,
-    \%E%f:%l:\ %m,
-    \%-C%\tfrom\ %f:%l:in\ %.%#,
-    \%-Z%\tfrom\ %f:%l,
-    \%-Z%p^,
-    \%-G%.%#
+CompilerSet errorformat=eruby:\ %f:%l:%m,
+		       \%E%f:%l:\ %m,
+		       \%-Z%p^,
+		       \%C%m,
+		       \%-G%.%#
 
 let &cpo = s:cpo_save
 unlet s:cpo_save

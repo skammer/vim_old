@@ -23,7 +23,7 @@ setlocal nofoldenable
 "show tasks from context under the cursor
 function! s:ShowContext()
     let s:wordUnderCursor = expand("<cword>")
-    if(s:wordUnderCursor =~ "@\k*")
+    if(s:wordUnderCursor =~ "@.*")
         let @/ = "\\<".s:wordUnderCursor."\\>"
         "adapted from http://vim.sourceforge.net/tips/tip.php?tip_id=282
         setlocal foldexpr=(getline(v:lnum)=~@/)?0:1

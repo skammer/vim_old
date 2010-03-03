@@ -1,0 +1,10 @@
+STEP 1:
+	move c.vim to ~/.vim/syntax if there's no same name file.
+	or copy the contents to the original c.vim, both works.
+
+
+SNAPSHOT:
+	chars in black, u know that, standard functions.
+
+
+Enjoy it

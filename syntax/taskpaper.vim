@@ -22,7 +22,7 @@ syn case ignore
 syn match  taskpaperProject       /^.\+:\s*$/
 syn match  taskpaperLineContinue ".$" contained
 syn match  taskpaperListItem  "^\s*[-+]\s\+" 
-syn match  taskpaperContext  "@[A-Za-z0-9А-Яа-я_]\+"
+syn match  taskpaperContext  "@[A-Za-z0-9А-Яа-яёЁ_]\+"
 syn match  taskpaperDone "^\s*[-+]\s\+.*@[Dd]one.*$"
 
 syn region taskpaperProjectFold start=/^.\+:\s*$/ end=/^\s*$/ transparent fold
