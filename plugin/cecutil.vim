@@ -2,8 +2,8 @@
 "               save/restore mark position
 "               save/restore selected user maps
 "  Author:	Charles E. Campbell, Jr.
-"  Version:	18b	ASTRO-ONLY
-"  Date:	Aug 27, 2008
+"  Version:	18c	ASTRO-ONLY
+"  Date:	May 20, 2009
 "
 "  Saving Restoring Destroying Marks: {{{1
 "       call SaveMark(markname)       let savemark= SaveMark(markname)
@@ -33,7 +33,7 @@
 if &cp || exists("g:loaded_cecutil")
  finish
 endif
-let g:loaded_cecutil = "v18b"
+let g:loaded_cecutil = "v18c"
 let s:keepcpo        = &cpo
 set cpo&vim
 "DechoTabOn
@@ -416,11 +416,11 @@ fun! SaveUserMaps(mapmode,maplead,mapchx,suffix)
   let dobuffer = ""
   while mapmode =~ '^[bu]'
    if     mapmode =~ '^u'
-    let dounmap= 1
-    let mapmode= strpart(a:mapmode,1)
+    let dounmap = 1
+    let mapmode = strpart(a:mapmode,1)
    elseif mapmode =~ '^b'
-    let dobuffer= "<buffer> "
-    let mapmode= strpart(a:mapmode,1)
+    let dobuffer = "<buffer> "
+    let mapmode  = strpart(a:mapmode,1)
    endif
   endwhile
 "  call Decho("dounmap=".dounmap."  dobuffer<".dobuffer.">")
@@ -453,7 +453,7 @@ fun! SaveUserMaps(mapmode,maplead,mapchx,suffix)
    let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|silent! ".mapmode."unmap ".dobuffer.amap
    if maparg(a:mapchx,mapmode) != ""
     let maprhs                  = substitute(maparg(amap,mapmode),'|','<bar>','ge')
-	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".amap." ".dobuffer.maprhs
+	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".dobuffer.amap." ".maprhs
    endif
    if dounmap
 	exe "silent! ".mapmode."unmap ".dobuffer.amap
@@ -471,7 +471,7 @@ fun! SaveUserMaps(mapmode,maplead,mapchx,suffix)
 	let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|silent! ".mapmode."unmap ".dobuffer.amap
     if maparg(amap,mapmode) != ""
      let maprhs                  = substitute(maparg(amap,mapmode),'|','<bar>','ge')
-	 let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".amap." ".dobuffer.maprhs
+	 let s:restoremap_{a:suffix} = s:restoremap_{a:suffix}."|".mapmode."map ".dobuffer.amap." ".maprhs
     endif
 	if dounmap
 	 exe "silent! ".mapmode."unmap ".dobuffer.amap

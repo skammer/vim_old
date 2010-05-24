@@ -1,3 +1,22 @@
+"------------------------------------------------------------
+"
+"       _                                             _
+"  ___ | | __ __ _  _ __ ___   _ __ ___    ___  _ __ ( )___
+" / __|| |/ // _` || '_ ` _ \ | '_ ` _ \  / _ \| '__||// __|
+" \__ \|   <| (_| || | | | | || | | | | ||  __/| |     \__ \
+" |___/|_|\_\\__,_||_| |_| |_||_| |_| |_| \___||_|     |___/
+"
+"
+"
+"
+"              __   __(_) _ __ ___   _ __  ___
+"              \ \ / /| || '_ ` _ \ | '__|/ __|
+"              _\ V / | || | | | | || |  | (__
+"             (_)\_/  |_||_| |_| |_||_|   \___|
+"
+"
+"------------------------------------------------------------
+
 "set backspace&
 
 "------------------
@@ -7,6 +26,8 @@ set nocompatible
 set ruler
 set visualbell"
 set linebreak
+set breakat=\ ^I!@*-+;:,./?
+"set showbreak=>
 "set autochdir
 set backup            " keep a backup file
 
@@ -28,18 +49,19 @@ syntax on
 call pathogen#runtime_append_all_bundles()
 
 
-set enc=utf-8 fileencodings
+set enc=utf8 fileencodings nobomb
+set penc=utf8
 set hidden
 set shortmess=atI
 "set lines=45 columns=130
-"set textwidth=80
+set textwidth=80
 "set transparency=5
 set showcmd
 " Нумерация строк
 set nu
 " Убираем полосы прокрутки, но оставляем клевые табы
-set guioptions-=T
-set guioptions=amge
+set go=amge
+"set guioptions-=T
 " Люблю пробелы вместо табов. И отступы по 2 пробела
 set autoindent
 set smartindent
@@ -65,6 +87,11 @@ set scrolloff=3
 "set cursorline
 set ignorecase
 set smartcase
+set gdefault
+nmap <silent> <C-H> :silent noh<CR>
+set showmatch
+
+"set gcr=i:block
 
 "" Highligth in red more then 80 columns
 
@@ -73,7 +100,11 @@ set smartcase
 
 
 " Display extra whitespace
-set list listchars=tab:~·,trail:·
+nmap <localleader>l :set list!<cr>
+set list
+"set listchars=tab:~·,trail:·
+set listchars=tab:▸\ ,trail:·,eol:¬
+
 
 let g:ruby_debugger_progname = 'mvim'
 
@@ -170,6 +201,10 @@ imap <silent> <D-/> <Esc>,c<Space>a
 vmap <silent> <D-/> ,c<Space>
 nmap <silent> <D-/> V,c<Space>
 
+"--------------------------------------------------
+" TODO Desperateky needs some rework!!!
+"-------------------------------------------------- 
+
 imap <D-]> <Esc>mX>>`X2la
 "vmap <D-]> ><D-Right>
 vmap <D-]> >gv
@@ -183,9 +218,9 @@ imap <silent> <D-[> <Esc>mX<<`X2ha
 vmap <silent> <D-[> <gv
 nmap <silent> <D-[> mX<<`X2h
 
-nnoremap <C-q> :FuzzyFinderTextMate<CR>
-imap <D-e> <Esc>:FuzzyFinderTextMate<CR>
-vmap <C-q> :FuzzyFinderTextMate<CR>
+
+imap <D-e> <Esc>:CommandT<CR>
+nmap <D-e> <Esc>:CommandT<CR>
 
 "map to bufexplorer
 nnoremap <leader>buf :BufExplorer<cr>
@@ -226,7 +261,6 @@ map ,t <Plug>TaskList
 " Press ^F from insert mode to insert the current file name
 imap <C-F> <C-R>=expand("%")<CR>
 
-
 function! RemoveRubyEval() range
   let begv = a:firstline
   let endv = a:lastline
@@ -240,19 +274,22 @@ endfunction
 
 "set invfullsreen
 
+let g:is_fulscreen = 0
 fu! ToggleFullscreen()
-  if &go == "amge"
-    exec 'set go='."amg"
+  if g:is_fulscreen == 0
     let g:old_lines=&lines
     let g:old_columns=&columns
-    set lines=9999
-    set columns=9999
+    set go-=e
+    set lines=999
+    set columns=999
     set invfullscreen
+    let g:is_fulscreen = 1
   else
-    exec 'set go='."amge"
+    set go+=e
     exec 'set columns='.g:old_columns
     exec 'set lines='.g:old_lines
-    exec 'set invfullscreen'
+    set invfullscreen
+    let g:is_fulscreen = 0
   endif
 endf
 
@@ -296,7 +333,10 @@ let NERDTreeShowHidden=0
 
 let Tlist_Ctags_Cmd="/opt/local/bin/ctags"
 
-let g:fuzzy_matching_limit = 40
+"let g:fuzzy_matching_limit = 40
+
+let g:CommandTMaxFiles=20000
+
 
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
@@ -311,10 +351,12 @@ augroup filetypedetect
   au! BufRead,BufNewFile *.haml setfiletype haml
   autocmd BufNewFile,BufRead *.yml setf eruby
   au! BufRead,BufNewFile *.vm  set filetype=velocity
-  au! BufRead,BufNewFile *.less set syntax=less filetype=less
+  au! BufRead,BufNewFile *.less set syntax=less filetype=less expandtab
   au! BufRead,BufNewFile *.b set syntax=brainfuck filetype=brainfuck
-  au! BufRead,BufNewFile *.chords set syntax=chords filetype=chords
+  au! BufRead,BufNewFile *.tab set syntax=chords filetype=chords
+  au! BufRead,BufNewFile *.coffee set syntax=coffee filetype=coffee
 augroup END
+autocmd BufRead *.java,*.c,*.h,*.cc set formatoptions=tcroq cindent comments=sr:/**,mb:*,elx:*/,sr:/*,mb:*,elx:*/,://
 
 autocmd BufNewFile,BufRead *_test.rb source ~/.vim/ftplugin/shoulda.vim
 
@@ -405,11 +447,11 @@ let twitvim_count = 60
 " Настройки для acp
 
 let g:acp_enableAtStartup = 1
-let g:acp_completeoptPreview = 0
-let g:acp_behaviorSnipmateLength = -1
-let g:acp_behaviorHtmlOmniLength = 0
-let g:acp_behaviorCssOmniPropertyLength = 0
 let g:acp_completeoptPreview = 1
+let g:acp_behaviorKeywordLength = 3
+let g:acp_behaviorCssOmniPropertyLength = 3
+let g:acp_behaviorHtmlOmniLength = 3
+let g:acp_behaviorRubyOmniSymbolLength = 2
 let g:acp_mappingDriven = 1
 let g:acp_ignorecaseOption = 0
 
@@ -475,9 +517,93 @@ endfun
 
 command! StripTrailingWhitespaces :call StripTrailingWhitespaces()
 
+fun! Beautify()
+  retab
+  call StripTrailingWhitespaces()
+endf
+
+command! Beautify :call Beautify()
 
 imap <C-D-t> <C-O>:call Toggle()<CR>
 nmap <C-D-t> :call Toggle()<CR>
 vmap <C-D-t> <ESC>:call Toggle()<CR>
 
+let g:rsenseUseOmniFunc = 0
+let g:rsenseHome = "/Users/skammer/rep/rsense/"
 
+set grepprg=ack
+
+"--------------------------------------------------
+" Маппим кириллические символы
+"--------------------------------------------------
+map ё ´
+map й j
+map ц c
+map у u
+map к k
+map е e
+map н n
+map г g
+map ш w
+map щ `
+map з z
+map х x
+map ъ =
+map ф f
+map ы y
+map в v
+map а a
+map п p
+map р r
+map о o
+map л l
+map д d
+map ж ]
+map э \
+map я q
+map ч h
+map с s
+map м m
+map и i
+map т t
+map ь -
+map б b
+map ю [
+
+map Ё ´
+map Й J
+map Ц C
+map У U
+map К K
+map Е E
+map Н N
+map Г G
+map Ш W
+map Щ `
+map З Z
+map Х X
+map Ъ =
+map Ф F
+map Ы Y
+map В V
+map А A
+map П P
+map Р R
+map О O
+map Л L
+map Д D
+map Ж ]
+map Э \
+map Я Q
+map Ч H
+map С S
+map М M
+map И I
+map Т T
+map Ь -
+map Б B
+map Ю [
+
+let g:sparkupNextMapping = '<c-l>'
+
+map <leader>ss ?{<CR>jV/^\s*\}\=$<CR>k:sort<CR>:let @/=''<CR>

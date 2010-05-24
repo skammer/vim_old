@@ -1,0 +1,71 @@
+*open-terminal*  Open Terminal, Filemanager for various platform
+       
+                       Open Terminal Help File 
+
+Introduction                                    |open-terminal-introduction|
+Commmands                                       |open-terminal-commands|
+Requires                                        |open-terminal-requires|
+Key map examples                                |open-terminal-keymap|
+Changelog                                       |open-terminal-changelog|
+About                                           |open-terminal-about|
+
+==============================================================================
+Introduction                                    *open-terminal-introduction*
+
+Some vim user want to shell like emacs's eshell. But vim don't support shell, 
+terminal interface in vim (at least  7.x version). 
+
+In this situation, I use native terminal software open script for my various
+working platforms. 
+
+==============================================================================
+Commmands                                          *open-terminal-commands*
+
+                                                            *OpenTerminal*
+:OpenTerminal           Open native terminal sw. Check |requires| list
+
+                                                           *OpenFilemanager*
+:OpenFilemanager        Open native file manager. Check |requires| list
+
+
+==============================================================================
+Map key examples                                 *open-terminal-keymap*
+>
+   nnoremap <silent> <F9> :OpenTerminal<CR>
+   nnoremap <silent> <F10> :OpenFilemanager<CR><CR>
+<
+
+==============================================================================
+Requires (per platform)                             *open-terminal-requires*
+
+I use Mac, Gnome, Windows(gvim). I don't test in KDE environment.
+
+     Platform   Terminal             File manager ~
+>
+     Mac        Terminal.app         Finder       
+                (with Applescript)                
+     Gnome      gnome-terminal       nautilus     
+     KDE        konsole              konqueror    
+     Windows    cmd                  explorer     
+                (with start)                      
+     cygwin     bash                 explorer     
+<
+==============================================================================
+Changelog                                          *open-terminal-changelog*
+
+0.1:
+  - First release used script for everyone. 
+
+
+==============================================================================
+About                                                  *open-terminal-about*
+
+  Copyright (c) 2009 by neocoin ~
+  File:	    open_terminal.vim
+  Author:   Sangmin Ryu (neocoin@gmail.com)
+  Date:	    Tue Dec 22 13:33:32 PST 2009
+  License:  The MIT License
+
+==============================================================================
+
+ vim:tw=78:ts=8:ft=help:norl:

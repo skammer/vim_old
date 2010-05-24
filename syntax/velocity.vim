@@ -21,7 +21,7 @@ endif
 syn keyword	velocityTodo	contained TODO FIXME XXX
 
 " redefine HTML Strings so they contain velocity stuff:
-syn region  htmlString   contained start=+"+ end=+"+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,velocityReference,velocityFormalReference
+"syn region  htmlString   contained start=+"+ end=+"+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,velocityReference,velocityFormalReference
 syn region  htmlString   contained start=+'+ end=+'+ contains=htmlSpecialChar,javaScriptExpression,@htmlPreproc,velocityReference,velocityFormalReference
 
 " the both reference types support the silent mode: $!variableName

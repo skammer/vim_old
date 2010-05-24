@@ -1,16 +1,26 @@
-" Copyright (C) 2006    Mauricio Fernandez <mfp@acm.org>
+" Copyright (C) 2006-2007    Mauricio Fernandez <mfp@acm.org>
 " Plugin for simple search-based folding
-" Designed for use with Ruby, but can be tailored to other filetypes.
-"     Version:    0.4.0b 2006-05-12
+" Ships with support for Ruby, Perl, Java, PHP, Objective Caml, but can be
+" easily tailored to other filetypes.
+"     Version:    0.5.0 2007-04-16
 "      Author:    Mauricio Fernandez <mfp@acm.org>
 "  Maintainer:    Mauricio Fernandez <mfp@acm.org> http://eigenclass.org
-"     License:    Ruby's license (dual GPL/"Ruby artistic license")
+"     License:    GPL
+"
+" Changelog
+" ---------
+" 0.5.0 (tested on vim 7.0)
+"  * changed configuration system: use g:xxx_simplefold_* variables instead of
+"    autocmd (you can also use w:xxx_simplefold_* or b:xxx_simplefold_* for
+"    window/buffer-specific settings)
+"  * added Perl, PHP, Objective Caml support
 " 
 " Mappings and commands
 " ---------------------
 " Defines the :Fold command; use it as 
 "   :Fold \v^function
-" You can try it with this very file to see what happens.
+" You can try it with this very file to see what happens (note that the fold
+" corresponding to the current cursor position is left open).
 " The default mapping to fold the current file using the default fold
 " expression (more on this below) is
 "    map <unique> <silent> <Leader>f <Plug>SimpleFold_Foldsearch
@@ -28,31 +38,50 @@
 " Fold expressions
 " ----------------
 " The default fold expression for most filetypes is
-"   let b:simplefold_expr = '\v^\s*[#%"0-9]{0,4}\s*\{(\{\{|!!)'
+"   let g:simplefold_expr = '\v^\s*[#%"0-9]{0,4}\s*\{(\{\{|!!)'
 " The expressions for the extra marker-based folding phase are:
-"   let b:simplefold_marker_start = '\v\{\{\{\{'
-"   let b:simplefold_marker_end = '\v\}\}\}\}'
+"   let g:simplefold_marker_start = '\v\{\{\{\{'
+"   let g:simplefold_marker_end = '\v\}\}\}\}'
 "
-" You can tailor the fold expressions to other filetypes, taking the
-" expressions for Ruby as an example:
+" You can tailor the fold expressions to other filetypes by defining variables
+" named after the filetype (scroll to the bottom of this file for further,
+" actual examples):
 "
-"    au Filetype ruby let b:simplefold_expr = 
+" " folds start with the xxx_simplefold_expr; a line matching this expression
+" " marks the end of the previous fold (if any) and the start of a new one
+"    let g:ruby_simplefold_expr = 
 "	    \'\v(^\s*(def|class|module|attr_reader|attr_accessor|alias_method|' .
 "                 \   'attr|module_function' . ')\s' . 
 "           \ '\v^\s*(public|private|protected)>' .
 "	    \ '|^\s*\w+attr_(reader|accessor)\s|^\s*[#%"0-9]{0,4}\s*\{\{\{[^{])' .
 "	    \ '|^\s*[A-Z]\w+\s*\=[^=]'
-"    au Filetype ruby let b:simplefold_nestable_start_expr = 
+"
+" g:xxx_simplefold_end_expr (not used in the default definitions in this file)
+" can be used to mark the end of a fold without starting a new one (leaving
+" all the lines between the end of the fold and the start of the next one
+" unfolded).
+"
+" " once a line matches xxx_simplefold_expr, lines immediately before it
+" " matching the following expression are also included in the fold (but not
+" " shown when the fold is closed). Useful to place comments in the same fold as 
+" " the definition they apply to
+"    let g:ruby_simplefold_prefix = '\v^\s*(#([^{]+|\{[^{]|\{\{[^{])*)?$'
+"
+" " xxx_simplefold_nestable_{start,end}_expr define nestable folds (always
+" " inside a top-level fold)
+"
+"    let g:ruby_simplefold_nestable_start_expr = 
 "		\ '\v^\s*(def>|if>|unless>|while>.*(<do>)?|' . 
 "                \         'until>.*(<do>)?|case>|for>|begin>)' .
 "                \ '|^[^#]*.*<do>\s*(\|.*\|)?'
-"    au Filetype ruby let b:simplefold_nestable_end_expr = 
+"    let g:ruby_simplefold_nestable_end_expr = 
 "		\ '\v^\s*end'
 "
 " Here's the (simpler) setup for Java:
 " Java support
-"    au Filetype java let b:simplefold_expr = 
+"    let g:java_simplefold_expr = 
 "			 \ '\(^\s*\(\(private\|public\|protected\|class\)\>\)\)'
+"
 
 if exists("loaded_simplefold")
     finish
@@ -69,6 +98,32 @@ let s:sid = maparg("<SID>xx")
 unmap <SID>xx
 let s:sid = substitute(s:sid, 'xx', '', '')
 
+"{{{ s:GetOption
+" grab a user-specified option to override the default provided.  options are
+" searched in the window, buffer, then global spaces.
+function! s:GetOption(name, ...)
+    if exists("w:{&filetype}_" . a:name)
+	execute "return w:{&filetype}_".a:name
+    elseif exists("w:" . a:name)
+	execute "return w:".a:name
+    elseif exists("b:{&filetype}_" . a:name)
+	execute "return b:{&filetype}_".a:name
+    elseif exists("b:" . a:name)
+	execute "return b:".a:name
+    elseif exists("g:{&filetype}_" . a:name)
+	execute "return g:{&filetype}_".a:name
+    elseif exists("g:" . a:name)
+	execute "return g:".a:name
+    else
+	return a:1
+    endif
+endfunction
+
+function! s:IsOptionSet(name)
+    let bogus_val = "df hdsoi3y98 hjsdfhdkj"
+    return s:GetOption(a:name, bogus_val) == bogus_val ? 0 : 1
+endfunction
+
 "{{{ FoldText
 function! s:Num2S(num, len)
     let filler = "                                                            "
@@ -78,18 +133,20 @@ endfunction
 
 function! s:SimpleFold_FoldText()
     let linenum = v:foldstart
-    if match(getline(linenum), b:simplefold_marker_start) != -1
+    if match(getline(linenum), s:GetOption("simplefold_marker_start")) != -1
 	let line = getline(linenum)
     else
 	while linenum <= v:foldend
 	    let line = getline(linenum)
-	    if !exists("b:simplefold_prefix") || match(line, b:simplefold_prefix) == -1
+	    if !s:IsOptionSet("simplefold_prefix") || 
+			\ match(line, s:GetOption("simplefold_prefix")) == -1
 		break
 	    else
 		let linenum = linenum + 1
 	    endif
 	endwhile
-	if exists("b:simplefold_prefix") && match(line, b:simplefold_prefix) != -1
+	if IsOptionSet("simplefold_prefix") && 
+		    \ match(line, s:GetOption("simplefold_prefix")) != -1
 	    " all lines matched the prefix regexp
 	    let line = getline(v:foldstart)
 	endif
@@ -99,12 +156,61 @@ function! s:SimpleFold_FoldText()
     return  '+' . v:folddashes . '[' . s:Num2S(diff,3) . ']' . sub
 endfunction
 
-"{{{~ Foldsearch adapted from t77: Fold on search result
+"{{{~ Foldsearch originally based on t77: Fold on search result
+
+" Returns -1 if no match, 1 if fold start, 2 if fold end.
+function! s:search_boundary(fold_start_re, combined_re, use_combined, flags)
+    let saved_cursor_pos = getpos(".")
+    "echo "SEARCH BOUNDARY at "
+    "echo saved_cursor_pos
+    "echo "COMBINED: " . a:combined_re
+    if a:use_combined
+	"echo "combined search"
+	let matched = search(a:combined_re, a:flags)
+	if matched < 0
+	    "echo "NO MATCH"
+	    return -1
+	endif
+	let cursor_pos = getpos(".")
+	let line1 = line(".")               " line where combined RE matched
+	"echo "MATCH at " . getline(".")
+	call setpos('.', saved_cursor_pos)
+	let matched = search(a:fold_start_re, a:flags)
+	if matched < 0
+	    " no match for fold start RE, was end of fold
+	    call setpos('.', cursor_pos)
+	    return 2
+	end
+	"echo "MATCH' at " . getline(".")
+	let line2 = line(".")               " line where fold start RE matches
+	" determine which part matched, the fold start RE or the fold end RE
+	if line1 < line2
+	    " the end of fold RE
+	    call setpos('.', cursor_pos)
+	    "echo "was END OF FOLD"
+	    return 2
+	else " the fold start RE
+	    "echo "was START OF FOLD"
+	    "echo getpos(".")
+	    return 1
+	end
+    else
+	"echo "simple search (start only)"
+	let matched = search(a:fold_start_re, a:flags)
+	if matched < 0
+	    "echo "NO MATCH"
+	    return -1
+	else
+	    "echo "MATCH at " . getline(".")
+	    return 1
+	end
+    end
+endfunction
+
 function! s:Foldsearch(search)
-    call s:SimpleFold_SetupBuffer()
     " set manual
     setlocal fdm=manual
-    let origlineno = line(".")
+    let orig_cursor_pos = getpos(".")
     normal zE
     normal G$
     " set the foldtext
@@ -114,28 +220,51 @@ function! s:Foldsearch(search)
     let flags = "w"    "allow wrapping
     let first_code_line = 0
     if a:search == ""
-	if exists("b:simplefold_expr")
-	    let searchre = b:simplefold_expr
+	if s:IsOptionSet("simplefold_expr")
+	    let searchre = s:GetOption("simplefold_expr")
 	else
 	    let searchre = '\v^\s*[#%"0-9]{0,4}\s*\{(\{\{|!!)'
 	endif
     else
 	let searchre = a:search
     endif
-    while search(searchre, flags) > 0 
+    " combined_re is  fold_start_re | fold_end_re
+    if a:search == "" && s:IsOptionSet("simplefold_end_expr")
+	let combined_re = '\v(\m' . searchre . '\v)|(\m' . s:GetOption("simplefold_end_expr") . '\v\zs)'
+    else
+	let combined_re = searchre
+    endif
+    let in_fold = 0
+    let first_fold = 1
+    let prev_cpos = getpos(".")
+    while 1
+	let boundary_match = s:search_boundary(searchre, combined_re, in_fold, flags)
+	let cpos = getpos(".")
+	if boundary_match < 0 || cpos == prev_cpos
+	    break
+	end
+	let set_in_fold_to = 0
 	let  line2 = line(".")
-	while line2 - 1 >= line1 && line2 - 1 > 0 "sanity check
-	    let prevline = getline(line2 - 1)
-	    if exists("b:simplefold_prefix") && (match(prevline, b:simplefold_prefix) != -1)
-		let line2 = line2 - 1
-	    else
-		break
-	    endif
-	endwhile
-	if (line2 - 1 >= line1)
+	if boundary_match == 1 " start of fold, end of prev one
+	    "echo "start of fold boundary"
+	    let next_re = combined_re
+	    while line2 - 1 >= line1 && line2 - 1 > 0 "sanity check
+		let prevline = getline(line2 - 1)
+		if s:IsOptionSet("simplefold_prefix") && 
+			    \ (match(prevline, s:GetOption("simplefold_prefix")) != -1)
+		    let line2 = line2 - 1
+		else
+		    break
+		endif
+	    endwhile
+	    let set_in_fold_to = 1
+	else " was the end of the fold as found by the end of fold RE component of combined_re
+	    let set_in_fold_to = 0
+	end
+	if (in_fold || first_fold) && (line2 - 1 >= line1)
 	    execute ":" . line1 . "," . (line2-1) . "fold"
 	    "echo "fold " . line1 . " - " . (line2 - 1)
-	    if g:SimpleFold_use_subfolds
+	    if s:GetOption("SimpleFold_use_subfolds")
 		call s:FoldNestableBlocks(first_code_line + 1, line2 - 2, "", "")
 	    endif
 	    let folded = 1       "at least one fold has been found
@@ -143,7 +272,12 @@ function! s:Foldsearch(search)
 	let line1 = line2     "update marker
 	let first_code_line = line2 + 1
 	let flags = "W"       "turn off wrapping
+	"echo "setting in_fold to " . set_in_fold_to
+	let in_fold = set_in_fold_to
+	let first_fold = 0
+	let prev_cpos = cpos
     endwhile
+
     let line2 = line("$")
     if (line2  >= line1 && folded == 1)
 	execute ":". line1 . "," . line2 . "fold"
@@ -155,25 +289,25 @@ function! s:Foldsearch(search)
 	endif
 	let line1 = line1 + 1
 	"echo "last call: " line1 . " - " . line2
-	if g:SimpleFold_use_subfolds
+	if s:GetOption("SimpleFold_use_subfolds")
 	    call s:FoldNestableBlocks(line1, line2, "", "")
 	endif
     endif
-    call s:FoldNestableBlocks(1, line("$"), b:simplefold_marker_start, 
-	\			 b:simplefold_marker_end)
-    normal zM
-    execute "normal " . origlineno . "G"
+    call s:FoldNestableBlocks(1, line("$"), 
+		\ s:GetOption("simplefold_marker_start"), 
+		\ s:GetOption("simplefold_marker_end"))
+    call setpos(".", orig_cursor_pos)
+    silent! normal zMzO
 endfunction
 
 function! s:FoldNestableBlocks(start, end, start_expr, end_expr)
-    call s:SimpleFold_SetupBuffer()
     if a:end - a:start < 1
 	return 0
     endif
 
     if a:start_expr == ""
-	if exists("b:simplefold_nestable_start_expr")
-	    let start_expr = b:simplefold_nestable_start_expr
+	if s:IsOptionSet("simplefold_nestable_start_expr")
+	    let start_expr = s:GetOption("simplefold_nestable_start_expr")
 	else
 	    return
 	endif
@@ -181,8 +315,8 @@ function! s:FoldNestableBlocks(start, end, start_expr, end_expr)
 	let start_expr = a:start_expr
     endif
     if a:end_expr == ""
-	if exists("b:simplefold_nestable_end_expr")
-	    let end_expr = b:simplefold_nestable_end_expr
+	if s:IsOptionSet("simplefold_nestable_end_expr")
+	    let end_expr = s:GetOption("simplefold_nestable_end_expr")
 	else
 	    return
 	endif
@@ -223,18 +357,6 @@ function! s:FoldNestableBlocks(start, end, start_expr, end_expr)
     "echo "RET " . a:start . " - " . a:end " -> " . origlineno
 endfunction
 
-function! s:SimpleFold_SetupBuffer()
-    if !exists("b:simplefold_expr")
-	let b:simplefold_expr = '\v^\s*[#%"0-9]{0,4}\s*\{(\{\{|!!)'
-    endif
-    if !exists("b:simplefold_marker_start")
-	let b:simplefold_marker_start = '\v\{\{\{\{'
-    endif
-    if !exists("b:simplefold_marker_end")
-	let b:simplefold_marker_end = '\v\}\}\}\}'
-    endif
-endfunction
-
 "{{{~fold commands
 
 if !exists(":Fold")
@@ -248,33 +370,78 @@ endif
 noremap <unique> <script> <Plug>SimpleFold_Foldsearch <SID>FoldSearch
 noremap <SID>FoldSearch :call <SID>Foldsearch("")<cr>
 
-let g:SimpleFold_use_subfolds = 1
+if !exists("g:SimpleFold_use_subfolds")
+    let g:SimpleFold_use_subfolds = 1
+endif
 
 "{{{ Fold expressions for different filetypes
 
-" default expression
-aug SimpleFold
-    au!
-    au BufEnter * call s:SimpleFold_SetupBuffer()
-    " Ruby support
-    au Filetype ruby let b:simplefold_expr = 
+let g:simplefold_expr = '\v^\s*[#%"0-9]{0,4}\s*\{(\{\{|!!)'
+let g:simplefold_marker_start = '\v\{\{\{\{'
+let g:simplefold_marker_end = '\v\}\}\}\}'
+" Ruby support
+let g:ruby_simplefold_expr = 
 	    \'\v(^\s*(def|class|module|attr_reader|attr_accessor|alias_method|' .
-                 \   'attr|module_function' . ')\s' . 
-            \ '|\v^\s*(public|private|protected)>' .
+	    \    'attr|module_function' . ')\s' . 
+	    \ '|\v^\s*(public|private|protected)>' .
 	    \ '|^\s*\w+attr_(reader|accessor)\s|^\s*[#%"0-9]{0,4}\s*\{\{\{[^{])' .
 	    \ '|^\s*[A-Z]\w+\s*\=[^=]|^__END__$'
-    au Filetype ruby let b:simplefold_nestable_start_expr = 
-		\ '\v^\s*(def>|if>|unless>|while>.*(<do>)?|' . 
-                \         'until>.*(<do>)?|case>|for>|begin>)' .
-                \ '|^[^#]*.*<do>\s*(\|.*\|)?'
-    au Filetype ruby let b:simplefold_nestable_end_expr = 
-		\ '\v^\s*end'
+let g:ruby_simplefold_nestable_start_expr = 
+	    \ '\v^\s*(def>|if>|unless>|while>.*(<do>)?|' . 
+		\         'until>.*(<do>)?|case>|for>|begin>)' .
+		\ '|^[^#]*.*<do>\s*(\|.*\|)?'
+let g:ruby_simplefold_nestable_end_expr = '\v^\s*end'
     
-    au Filetype ruby let b:simplefold_prefix='\v^\s*(#.*)?$'
+let g:ruby_simplefold_prefix = '\v^\s*(#([^{]+|\{[^{]|\{\{[^{])*)?$'
 
-    " Java support
-    au Filetype java let b:simplefold_expr = 
-			 \ '\(^\s*\(\(private\|public\|protected\|class\)\s\)\)'
-aug END
+" Java support
+let g:java_simplefold_expr = 
+	    \ '\(^\s*\(\(private\|public\|protected\|class\)\s\)\)'
+
+
+" Perl support
+let g:perl_simplefold_expr =
+     \ '\v(^\s*(package|use|sub)>\s)'
+let g:perl_simplefold_nestable_end_expr =
+     \ '\v^\s*(\}|\);|\)\};)'                           
+let g:perl_simplefold_prefix =
+     \ '\v^\s*(#.*)?$'         
+let g:perl_simplefold_nestable_start_expr =
+	    \ '\v^\s*(((els)?if|for(each)?|unless|while)>\s*\(.*\)\s*\{' .
+		\ '|else\s*\{' .
+		    \ '|foreach>\s*my[^\(]+\s*\(.*\)\s*\{' .
+		    \ '|(my>|our>)?\s*[@%\$].*\($)'
+
+" PHP support
+let g:php_simplefold_expr =
+   \ '\v^\s*(class|function|const|public|private|define)>' .
+   \ '|^\s*[#%"0-9]{0,4}\s*\{\{\{[^{]'
+let g:php_simplefold_nestable_start_expr =
+   \ '\v^\s*(if|for(each)?|while|switch)\s*\(.*\)\_s*\{'
+let g:php_simplefold_nestable_end_expr =
+   \ '\v^\s*\}'
+let g:php_simplefold_prefix =
+   \ '\v^\s*((/\*\_.*\*/)|((#|//).*))?$'
+
+" Objective Caml support
+let g:ocaml_simplefold_expr = 
+   \ '\v(' .
+   \ '^\s*(exception|type|module|class|val|method|inherit|initializer)\s' .
+   \ ')|(' .
+   \ '^\s*($|\(\*.*\*\).*|.*\*\)\s*)\n\s*let\zs\s' . 
+   \ ')'
+let g:ocaml_simplefold_nestable_start_expr = 
+   \ '\v^\s*(if|match|try|for|while)(\s+|\s*$)'
+let g:ocaml_simplefold_nestable_end_expr = 
+   \ '\v^\s*$'
+
+let g:ocaml_simplefold_prefix =
+     \ '\v^\s*(\*|\(\*|.*\*\))?$'         
+
+let g:omlet_simplefold_expr = g:ocaml_simplefold_expr
+let g:omlet_simplefold_nestable_start_expr = g:ocaml_simplefold_nestable_start_expr
+let g:omlet_simplefold_nestable_end_expr = g:ocaml_simplefold_nestable_end_expr
+let g:omlet_simplefold_prefix = g:ocaml_simplefold_prefix
+
 
 let &cpo = s:save_cpo

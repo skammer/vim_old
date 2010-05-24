@@ -1,10 +1,10 @@
 " Vim syntax file
-" Language:	LESS Cascading Style Sheets
-" Maintainer:	Leaf Corcoran <leafot@gmail.com>
-" Modifier:	Bryan J Swift <bryan@bryanjswift.com>
-" URL: 		http://leafo.net/lessphp/vim/less.vim
-" URL:		http://gist.github.com/161047
-" Last Change:	2009 August 4
+" Language:     LESS Cascading Style Sheets
+" Maintainer:   Leaf Corcoran <leafot@gmail.com>
+" Modifier:     Bryan J Swift <bryan@bryanjswift.com>
+" URL:          http://leafo.net/lessphp/vim/less.vim
+" URL:          http://gist.github.com/161047
+" Last Change:  2009 August 4
 " LESS by Leaf Corcoran
 " CSS2 by Nikolai Weibull
 " Full CSS2, HTML4 support by Yeti
