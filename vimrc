@@ -35,6 +35,8 @@ filetype on
 filetype plugin on
 filetype indent on
 
+syntax on
+
 "------------------
 " Внешний вид
 "------------------
@@ -43,7 +45,6 @@ filetype indent on
 "colorscheme github
 
 colorscheme skammer
-syntax on
 
 "Load pathogene
 call pathogen#runtime_append_all_bundles()
@@ -76,13 +77,21 @@ set showmatch
 set background=dark
 set imd
 "set timeoutlen=250  " Time to wait after ESC (default causes an annoying delay)
-"set guifont=DejaVu\ Sans\ Mono:h11
-"set guifont=Anonymous\ Pro:h11
-set guifont=Liberation\ Mono:h11
-"set guifont=Monaco:h11
+
+" Просто неплохие шрифты
+
+"set guifont=DejaVu\ Sans\ Mono:h10
 "set guifont=Andale\ Mono:h11
 "set guifont=Menlo\ Regular:h11
-"set noanti
+"set guifont=Monaco:h11
+
+" Шрифт для варианта без сглаживания
+set guifont=Anonymous\ Pro:h11
+set noanti
+
+" Шрифт, кода я использую сглаживание
+"set guifont=Liberation\ Mono:h11
+"set anti
 set scrolloff=3
 "set cursorline
 set ignorecase
@@ -446,14 +455,14 @@ let twitvim_count = 60
 
 " Настройки для acp
 
-let g:acp_enableAtStartup = 1
-let g:acp_completeoptPreview = 1
-let g:acp_behaviorKeywordLength = 3
-let g:acp_behaviorCssOmniPropertyLength = 3
-let g:acp_behaviorHtmlOmniLength = 3
-let g:acp_behaviorRubyOmniSymbolLength = 2
-let g:acp_mappingDriven = 1
-let g:acp_ignorecaseOption = 0
+"let g:acp_enableAtStartup = 1
+"let g:acp_completeoptPreview = 1
+"let g:acp_behaviorKeywordLength = 3
+"let g:acp_behaviorCssOmniPropertyLength = 3
+"let g:acp_behaviorHtmlOmniLength = 3
+"let g:acp_behaviorRubyOmniSymbolLength = 2
+"let g:acp_mappingDriven = 1
+"let g:acp_ignorecaseOption = 0
 
 function! InitBackupDir()
   let separator = "."
@@ -607,3 +616,4 @@ map Ю [
 let g:sparkupNextMapping = '<c-l>'
 
 map <leader>ss ?{<CR>jV/^\s*\}\=$<CR>k:sort<CR>:let @/=''<CR>
+
