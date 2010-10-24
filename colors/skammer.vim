@@ -1,4 +1,4 @@
-" Maintainer:	Max Vasiliev (skammer312@gmail.com)
+" Maintainer: Max Vasiliev (skammer312@gmail.com)
 
 set background=dark
 
@@ -42,6 +42,7 @@ if version >= 700
   "PmenuThumb
   hi Pmenu    guifg=#f6f3e8 guibg=#444444
   hi PmenuSel guifg=#000000 guibg=#cae682
+  hi  PmenuThumb     guifg=#8F9D6A
 endif
 
 
@@ -56,7 +57,7 @@ hi  Normal        guifg=#f6f3e8 guibg=#272727 gui=none
 "hi  NonText       guifg=#808080 guibg=#292929 gui=none
 hi  NonText       guifg=#333333
 hi  LineNr        guifg=#857b6f guibg=#000000 gui=none
-hi  StatusLine    guifg=#f6f3e8 guibg=#444444 gui=none
+hi  StatusLine    guifg=#f6f3e8 guibg=#555555 gui=none
 hi  StatusLineNC  guifg=#857b6f guibg=#444444 gui=none
 hi  VertSplit     guifg=#444444 guibg=#444444 gui=none
 "hi Folded        guibg=#384048 guifg=#a0a8b0 gui=none
@@ -66,7 +67,7 @@ hi  Title         guifg=#f6f3e8 guibg=NONE    gui=bold
 hi  Visual        guibg=#444444 gui=none
 "hi  SpecialKey    guifg=#808080 guibg=#343434 gui=none
 hi  SpecialKey    guifg=#666666 guibg=#333333
-    
+
 "hi Folded guibg=#384048 guifg=#a0a8b0 gui=italic
 hi FoldColumn guibg=#444444 guifg=#a0a8b0
 hi SignColumn guibg=#444444 guifg=#a0a8b0
@@ -152,7 +153,6 @@ hi  Ignore         guifg=#565656
 "hi Pmenu          guifg=#141414       guibg=#CDA869
 "hi PmenuSel       guifg=#F8F8F8       guibg=#9B703F
 "hi PmenuSbar      guibg=#DAEFA3
-hi  PmenuThumb     guifg=#8F9D6A
 hi  Special        guifg=#9389D6
 
 hi DiffText gui=bold guibg=Red guifg=fg
@@ -163,5 +163,7 @@ hi DiffDelete guibg=#901A15 gui=NONE guifg=fg
 hi IncSearch gui=reverse
 
 hi rubySymbol guifg=#6CA3D8 gui=NONE
+
+hi ColorColumn guibg=#252525 gui=NONE
 
 

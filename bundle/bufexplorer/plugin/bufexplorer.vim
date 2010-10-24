@@ -1,5 +1,5 @@
 "==============================================================================
-"    Copyright: Copyright (C) 2001-2009 Jeff Lanzarotta
+"    Copyright: Copyright (C) 2001-2010 Jeff Lanzarotta
 "               Permission is hereby granted to use and distribute this code,
 "               with or without modifications, provided that this copyright
 "               notice is copied with it. Like anything else that's free,
@@ -10,14 +10,14 @@
 " Name Of File: bufexplorer.vim
 "  Description: Buffer Explorer Vim Plugin
 "   Maintainer: Jeff Lanzarotta (delux256-vim at yahoo dot com)
-" Last Changed: Wednesday, 06 Jan 2010
+" Last Changed: Tuesday, 16 Feb 2010
 "      Version: See g:bufexplorer_version for version number.
 "        Usage: This file should reside in the plugin directory and be
 "               automatically sourced.
 "
 "               You may use the default keymappings of
 "
-"                 <Leader>be  - Opens BE.
+"                 <Leader>B  - Opens BE.
 "                 <Leader>bs  - Opens horizontally window BE.
 "                 <Leader>bv  - Opens vertically window BE.
 "
@@ -38,7 +38,7 @@ endif
 "1}}}
 
 " Version number
-let g:bufexplorer_version = "7.2.4"
+let g:bufexplorer_version = "7.2.7"
 
 " Check for Vim version 700 or greater {{{1
 if v:version < 700
@@ -47,8 +47,8 @@ if v:version < 700
 endif
 
 " Public Interface {{{1
-if maparg("<Leader>be") =~ 'BufExplorer'
-  nunmap <Leader>be
+if maparg("<Leader>B") =~ 'BufExplorer'
+  nunmap <Leader>B
 endif
 
 if maparg("<Leader>bs") =~ 'BufExplorerHorizontalSplit'
@@ -59,7 +59,7 @@ if maparg("<Leader>bv") =~ 'BufExplorerVerticalSplit'
   nunmap <Leader>bv
 endif
 
-nmap <script> <silent> <unique> <Leader>be :BufExplorer<CR>
+nmap <script> <silent> <unique> <Leader>B :BufExplorer<CR>
 nmap <script> <silent> <unique> <Leader>bs :BufExplorerHorizontalSplit<CR>
 nmap <script> <silent> <unique> <Leader>bv :BufExplorerVerticalSplit<CR>
 
@@ -225,14 +225,12 @@ endfunction
 function! s:BEDeactivateBuffer(remove)
   let _bufnr = str2nr(expand("<abuf>"))
 
+  call s:BEMRUPop(_bufnr)
+
   if a:remove
-    call s:BEMRUPop(_bufnr)
     call s:BEDeleteBufferListing(_bufnr)
   else
-    if ! s:BEIgnoreBuffer(_bufnr) == 1
-      " If the buffer is unlisted, refresh the list.
-      let s:refreshBufferList = 1
-    endif
+    let s:refreshBufferList = 1
   endif
 endfunction
 
@@ -359,6 +357,7 @@ function! StartBufExplorer(open)
   " Add zero to ensure the variable is treated as a Number.
   let s:originBuffer = bufnr("%") + 0
 
+  " Create or rebuild the raw buffer list if necessary.
   if !exists('s:raw_buffer_listing') || 
         \ empty(s:raw_buffer_listing) ||
         \ s:refreshBufferList == 1
@@ -434,13 +433,15 @@ function! s:BEMapKeys()
   nnoremap <buffer> <silent> o             :call <SID>BESelectBuffer()<cr>
   nnoremap <buffer> <silent> t             :call <SID>BESelectBuffer("tab")<cr>
   nnoremap <buffer> <silent> <s-cr>        :call <SID>BESelectBuffer("tab")<cr>
-  nnoremap <buffer> <silent> d             :call <SID>BERemoveBuffer("wipe", "n")<cr>
-  xnoremap <buffer> <silent> d             :call <SID>BERemoveBuffer("wipe", "v")<cr>
-  nnoremap <buffer> <silent> D             :call <SID>BERemoveBuffer("delete", "n")<cr>
-  xnoremap <buffer> <silent> D             :call <SID>BERemoveBuffer("delete", "v")<cr>
+
+  nnoremap <buffer> <silent> d             :call <SID>BERemoveBuffer("delete", "n")<cr>
+  xnoremap <buffer> <silent> d             :call <SID>BERemoveBuffer("delete", "v")<cr>
+  nnoremap <buffer> <silent> D             :call <SID>BERemoveBuffer("wipe", "n")<cr>
+  xnoremap <buffer> <silent> D             :call <SID>BERemoveBuffer("wipe", "v")<cr>
+
   nnoremap <buffer> <silent> m             :call <SID>BEMRUListShow()<cr>
   nnoremap <buffer> <silent> p             :call <SID>BEToggleSplitOutPathName()<cr>
-  nnoremap <buffer> <silent> q             :call <SID>BEClose()<cr>
+  nnoremap <buffer> <silent> q             :call <SID>BEClose("quit")<cr>
   nnoremap <buffer> <silent> r             :call <SID>BESortReverse()<cr>
   nnoremap <buffer> <silent> R             :call <SID>BEToggleShowRelativePath()<cr>
   nnoremap <buffer> <silent> s             :call <SID>BESortSelect()<cr>
@@ -551,8 +552,8 @@ function! s:BECreateHelp()
     call add(header, '" <F1> : toggle this help')
     call add(header, '" <enter> or o or Mouse-Double-Click : open buffer under cursor')
     call add(header, '" <shift-enter> or t : open buffer in another tab')
-    call add(header, '" D : delete buffer')
-    call add(header, '" d : wipe buffer')
+    call add(header, '" d : delete buffer')
+    call add(header, '" D : wipe buffer')
     call add(header, '" f : toggle find active buffer')
     call add(header, '" p : toggle spliting of file and path name')
     call add(header, '" q : quit')
@@ -625,7 +626,7 @@ function! s:BEGetBufferInfo(bufnr)
     let s:listedpads[n] = repeat(' ', max(listedwidths[n]))
   endfor
 
-  let s:refreshBufferList = 0
+  let s:refreshBufferList = 1
 
   return all
 endfunction
@@ -640,8 +641,10 @@ function! s:BEBuildBufferList()
       " Skip unlisted buffers if we are not to show them.
       continue
     endif
+
     if (g:bufExplorerShowTabBuffer)
       let show_buffer = 0
+
       for bufnr in s:tabSpace[tabpagenr()]
         if (buf.attributes =~ '^\s*'.bufnr.'\>')
           " Only buffers shown on the current tabpagenr
@@ -649,6 +652,7 @@ function! s:BEBuildBufferList()
           break
         endif
       endfor
+
       if show_buffer == 0 
         continue
       endif
@@ -712,7 +716,7 @@ function! s:BESelectBuffer(...)
 
   if bufexists(_bufNbr)
     if bufnr("#") == _bufNbr
-      return s:BEClose()
+      return s:BEClose("")
     endif
 
     " Are we suppose to open the selected buffer in a tab?
@@ -742,7 +746,7 @@ function! s:BESelectBuffer(...)
       " Are we suppose to move to the tab where this active buffer is?
       if bufloaded(_bufNbr) && g:bufExplorerFindActive
         " Close the BE window.
-        call s:BEClose()
+        call s:BEClose("")
 
         " Get the tab number where this buffer is located at.
         let tabNbr = s:BEGetTabNbr(_bufNbr)
@@ -849,6 +853,7 @@ function! s:BEDeleteBuffer(bufNbr, mode)
     "        \(10\|20\) - either a 10 or a 20
     "        \> - end of word (so it can't make 100 or 201)
     exec 'silent! g/^\s*\('.substitute(a:bufNbr, ' ', '\\|', 'g').'\)\>/d_'
+
     setlocal nomodifiable
 
     call s:BEDeleteBufferListing(a:bufNbr)
@@ -858,12 +863,13 @@ function! s:BEDeleteBuffer(bufNbr, mode)
 endfunction
 
 " BEClose {{{1
-function! s:BEClose()
+function! s:BEClose(mode)
   " Get only the listed buffers.
   let listed = filter(copy(s:MRUList), "buflisted(v:val)")
 
   " If we needed to split the main window, close the split one.
-  if (s:splitMode != "")
+"  if (s:splitMode)
+  if (s:splitMode != "" && a:mode == "quit")
     exec "wincmd c"
   endif
 

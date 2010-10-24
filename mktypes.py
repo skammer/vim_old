@@ -1,13 +1,17 @@
 #!/usr/bin/env python
-# Author: A. S. Budden
-# Date:   22nd May 2009
-# Version: r259
+#  Author:  A. S. Budden
+## Date::   29th March 2010      ##
+## RevTag:: r398                 ##
+
 import os
 import sys
 import optparse
 import re
 import fnmatch
 import glob
+import subprocess
+
+revision = "## RevTag:: r398 ##".strip('# ').replace('RevTag::', 'revision')
 
 field_processor = re.compile(
 r'''
@@ -20,15 +24,14 @@ r'''
 	;"                # The end of the search specifier (see http://ctags.sourceforge.net/FORMAT)
 	(?=\t)            # There MUST be a tab character after the ;", but we want to match it with zero width
 	.*\t              # There can be other fields before "kind", so catch them here.
-			          # Also catch the tab character from the previous line as there MUST be a tab before the field
+	                  # Also catch the tab character from the previous line as there MUST be a tab before the field
 	(kind:)?          # This is the "kind" field; "kind:" is optional
 	(?P<kind>\w)      # The kind is a single character: catch it
 	(\t|$)            # It must be followed either by a tab or by the end of the line
 	.*                # If it is followed by a tab, soak up the rest of the line; replace with the syntax keyword line
 ''', re.VERBOSE)
 
-field_trim = re.compile(r'ctags_[pF]')
-field_keyword = re.compile(r'syntax keyword (?P<kind>ctags_\w) (?P<keyword>.*)')
+field_keyword = re.compile(r'syntax keyword (?P<kind>CTags\w+) (?P<keyword>.*)')
 field_const = re.compile(r'\bconst\b')
 
 vim_synkeyword_arguments = [
@@ -62,6 +65,8 @@ def print_timing(func):
 
 def GetCommandArgs(options):
 	Configuration = {}
+	Configuration['CTAGS_OPTIONS'] = ''
+
 	if options.recurse:
 		Configuration['CTAGS_OPTIONS'] = '--recurse'
 		if options.include_locals:
@@ -91,7 +96,7 @@ def CreateCScopeFile(options):
 		run_cscope = True
 	
 	if os.path.exists('cscope.files'):
-		if options.build_cscopedb_if_filelist:
+		if options.build_cscopedb_if_file_exists:
 			run_cscope = True
 	else:
 		cscope_options += 'R'
@@ -115,7 +120,8 @@ def CreateTagsFile(config, languages, options):
 #	fh.write('\n')
 #	fh.close()
 
-	os.system(ctags_cmd)
+	#os.system(ctags_cmd)
+	subprocess.call(ctags_cmd, shell = (os.name != 'nt'))
 
 	tagFile = open('tags', 'r')
 	tagLines = [line.strip() for line in tagFile]
@@ -131,30 +137,40 @@ def CreateTagsFile(config, languages, options):
 
 def GetLanguageParameters(lang):
 	params = {}
+	# Default value for iskeyword
+	params['iskeyword'] = '@,48-57,_,192-255'
 	if lang == 'c':
 		params['suffix'] = 'c'
+		params['name'] = 'c'
 		params['extensions'] = r'[ch]\w*'
-		params['iskeyword'] = '@,48-57,_,192-255'
 	elif lang == 'python':
 		params['suffix'] = 'py'
+		params['name'] = 'python'
 		params['extensions'] = r'pyw?'
-		params['iskeyword'] = '@,48-57,_,192-255'
 	elif lang == 'ruby':
 		params['suffix'] = 'ruby'
+		params['name'] = 'ruby'
 		params['extensions'] = 'rb'
-		params['iskeyword'] = '@,48-57,_,192-255'
 	elif lang == 'java':
 		params['suffix'] = 'java'
+		params['name'] = 'java'
 		params['extensions'] = 'java'
-		params['iskeyword'] = '@,48-57,_,192-255'
 	elif lang == 'perl':
 		params['suffix'] = 'pl'
+		params['name'] = 'perl'
 		params['extensions'] = r'p[lm]'
-		params['iskeyword'] = '@,48-57,_,192-255'
 	elif lang == 'vhdl':
 		params['suffix'] = 'vhdl'
+		params['name'] = 'vhdl'
 		params['extensions'] = r'vhdl?'
-		params['iskeyword'] = '@,48-57,_,192-255'
+	elif lang == 'php':
+		params['suffix'] = 'php'
+		params['name'] = 'php'
+		params['extensions'] = r'php'
+	elif lang == 'c#':
+		params['suffix'] = 'cs'
+		params['name'] = 'c#'
+		params['extensions'] = 'cs'
 	else:
 		raise AttributeError('Language not recognised %s' % lang)
 	return params
@@ -221,7 +237,7 @@ def IsValidKeyword(keyword, iskeyword):
 	return True
 	
 #@print_timing
-def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = False, ParseConstants = False, IncludeLocals = False):
+def CreateTypesFile(config, Parameters, options):
 	outfile = 'types_%s.vim' % Parameters['suffix']
 	print "Generating " + outfile
 	lineMatcher = re.compile(r'^.*?\t[^\t]*\.(?P<extension>' + Parameters['extensions'] + ')\t')
@@ -229,11 +245,12 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 	#p = os.popen(ctags_cmd, "r")
 	p = open('tags', "r")
 
-	if IncludeLocals:
+	if options.include_locals:
 		LocalTagType = ',ctags_l'
 	else:
 		LocalTagType = ''
 
+	KindList = GetKindList()[Parameters['name']]
 	ctags_entries = []
 	while 1:
 		line = p.readline()
@@ -245,13 +262,13 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 
 		m = field_processor.match(line.strip())
 		if m is not None:
-			vimmed_line = 'syntax keyword ctags_' + m.group('kind') + ' ' + m.group('keyword')
+			vimmed_line = 'syntax keyword ' + KindList['ctags_' + m.group('kind')] + ' ' + m.group('keyword')
 
-			if ParseConstants and (Parameters['suffix'] == 'c') and (m.group('kind') == 'v'):
+			if options.parse_constants and (Parameters['suffix'] == 'c') and (m.group('kind') == 'v'):
 				if field_const.search(m.group('search')) is not None:
-					vimmed_line = vimmed_line.replace('ctags_v', 'ctags_k')
+					vimmed_line = vimmed_line.replace('CTagsGlobalVariable', 'CTagsConstant')
 
-			if not field_trim.match(vimmed_line):
+			if Parameters['suffix'] != 'c' or m.group('kind') != 'p':
 				ctags_entries.append(vimmed_line)
 	
 	p.close()
@@ -273,37 +290,42 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 				keywordDict[m.group('kind')] = []
 			keywordDict[m.group('kind')].append(m.group('keyword'))
 
-	if CheckKeywords:
+	if options.check_keywords:
 		iskeyword = GenerateValidKeywordRange(Parameters['iskeyword'])
 	
 	matchEntries = []
 	vimtypes_entries = []
 
-	vimtypes_entries.append('silent! syn clear ctags_c ctags_d ctags_e ctags_f ctags_p ctags_g ctags_m ctags_s ctags_t ctags_u ctags_v')
+	clear_string = 'silent! syn clear '
 
 	patternCharacters = "/@#':"
 	charactersToEscape = '\\' + '~[]*.$^'
-	UsedTypes = [
-			'ctags_c', 'ctags_d', 'ctags_e', 'ctags_f',
-			'ctags_g', 'ctags_k', 'ctags_m', 'ctags_p',
-			'ctags_s', 'ctags_t', 'ctags_u', 'ctags_v'
-			]
 
-	if IncludeLocals:
-		UsedTypes.append('ctags_l')
-		vimtypes_entries.append('silent! syn clear ctags_l')
-	
+	if not options.include_locals:
+		remove_list = []
+		for key, value in KindList.iteritems():
+			if value == 'CTagsLocalVariable':
+				remove_list.append(key)
+		for key in remove_list:
+			try:
+				del(KindList[key])
+			except KeyError:
+				pass
+
+	UsedTypes = KindList.values()
+
+	clear_string += " ".join(UsedTypes)
+
+	vimtypes_entries.append(clear_string)
+
 
 	# Specified highest priority first
 	Priority = [
-			'ctags_c', 'ctags_d', 'ctags_t',
-			'ctags_p', 'ctags_f', 'ctags_e',
-			'ctags_g', 'ctags_k', 'ctags_v',
-			'ctags_u', 'ctags_m', 'ctags_s',
+			'CTagsClass', 'CTagsDefinedName', 'CTagsType',
+			'CTagsFunction', 'CTagsEnumerationValue',
+			'CTagsEnumeratorName', 'CTagsConstant', 'CTagsGlobalVariable',
+			'CTagsUnion', 'CTagsMember', 'CTagsStructure',
 			]
-
-	if IncludeLocals:
-		Priority.append('ctags_l')
 
 	# Reverse the list as highest priority should be last!
 	Priority.reverse()
@@ -318,7 +340,7 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 			typeList.remove(thisType)
 	for thisType in typeList:
 		allTypes.append(thisType)
-#	print allTypes
+	#print allTypes
 
 	for thisType in allTypes:
 		if thisType not in UsedTypes:
@@ -327,7 +349,7 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 		keystarter = 'syntax keyword ' + thisType
 		keycommand = keystarter
 		for keyword in keywordDict[thisType]:
-			if CheckKeywords:
+			if options.check_keywords:
 				# In here we should check that the keyword only matches
 				# vim's \k parameter (which will be different for different
 				# languages).  This is quite slow so is turned off by
@@ -342,7 +364,8 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 							escapedKeyword = keyword
 							for ch in charactersToEscape:
 								escapedKeyword = escapedKeyword.replace(ch, '\\' + ch)
-							matchEntries.append('syntax match ' + thisType + ' ' + patChar + escapedKeyword + patChar)
+							if not options.skip_matches:
+								matchEntries.append('syntax match ' + thisType + ' ' + patChar + escapedKeyword + patChar)
 							matchDone = True
 							break
 
@@ -364,53 +387,33 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 		if keycommand != keystarter:
 			vimtypes_entries.append(keycommand)
 	
-	if not SkipMatches:
-		# Essentially a uniq() function
-		matchEntries = dict.fromkeys(matchEntries).keys()
-		# Sort the list
-		matchEntries.sort()
-
-		vimtypes_entries.append('')
-		for thisMatch in matchEntries:
-			vimtypes_entries.append(thisMatch)
+	# Essentially a uniq() function
+	matchEntries = dict.fromkeys(matchEntries).keys()
+	# Sort the list
+	matchEntries.sort()
 
 	vimtypes_entries.append('')
-	vimtypes_entries.append('" Class')
-	vimtypes_entries.append('hi link ctags_c ClassName')
-	vimtypes_entries.append('" Define')
-	vimtypes_entries.append('hi link ctags_d DefinedName')
-	vimtypes_entries.append('" Enumerator')
-	vimtypes_entries.append('hi link ctags_e Enumerator')
-	vimtypes_entries.append('" Function or method')
-	vimtypes_entries.append('hi link ctags_f Function')
-	vimtypes_entries.append('hi link ctags_p Function')
-	vimtypes_entries.append('" Enumeration name')
-	vimtypes_entries.append('hi link ctags_g EnumerationName')
-	vimtypes_entries.append('" Member (of structure or class)')
-	vimtypes_entries.append('hi link ctags_m Member')
-	vimtypes_entries.append('" Structure Name')
-	vimtypes_entries.append('hi link ctags_s Structure')
-	vimtypes_entries.append('" Typedef')
-	vimtypes_entries.append('hi link ctags_t Type')
-	vimtypes_entries.append('" Union Name')
-	vimtypes_entries.append('hi link ctags_u Union')
-	vimtypes_entries.append('" Global Constant')
-	vimtypes_entries.append('hi link ctags_k GlobalConstant')
-	vimtypes_entries.append('" Global Variable')
-	vimtypes_entries.append('hi link ctags_v GlobalVariable')
+	for thisMatch in matchEntries:
+		vimtypes_entries.append(thisMatch)
 
-	if IncludeLocals:
-		vimtypes_entries.append('" Local Variable')
-		vimtypes_entries.append('hi link ctags_l LocalVariable')
+	LanguageKinds = GetKindList()
+	AddList = 'add='
+
+	for thisType in allTypes:
+		if thisType in UsedTypes:
+			if AddList != 'add=':
+				AddList += ','
+			AddList += thisType;
+	AddList += ' '
 
 	if Parameters['suffix'] in ['c',]:
 		vimtypes_entries.append('')
 		vimtypes_entries.append("if exists('b:hlrainbow') && !exists('g:nohlrainbow')")
-		vimtypes_entries.append('\tsyn cluster cBracketGroup add=ctags_c,ctags_d,ctags_e,ctags_f,ctags_k,ctags_p,ctags_g,ctags_m,ctags_s,ctags_t,ctags_u,ctags_v' + LocalTagType)
-		vimtypes_entries.append('\tsyn cluster cCppBracketGroup add=ctags_c,ctags_d,ctags_e,ctags_f,ctags_k,ctags_p,ctags_g,ctags_m,ctags_s,ctags_t,ctags_u,ctags_v' + LocalTagType)
-		vimtypes_entries.append('\tsyn cluster cCurlyGroup add=ctags_c,ctags_d,ctags_e,ctags_f,ctags_k,ctags_p,ctags_g,ctags_m,ctags_s,ctags_t,ctags_u,ctags_v' + LocalTagType)
-		vimtypes_entries.append('\tsyn cluster cParenGroup add=ctags_c,ctags_d,ctags_e,ctags_f,ctags_k,ctags_p,ctags_g,ctags_m,ctags_s,ctags_t,ctags_u,ctags_v' + LocalTagType)
-		vimtypes_entries.append('\tsyn cluster cCppParenGroup add=ctags_c,ctags_d,ctags_e,ctags_f,ctags_k,ctags_p,ctags_g,ctags_m,ctags_s,ctags_t,ctags_u,ctags_v' + LocalTagType)
+		vimtypes_entries.append('\tsyn cluster cBracketGroup ' + AddList + LocalTagType)
+		vimtypes_entries.append('\tsyn cluster cCppBracketGroup ' + AddList + LocalTagType)
+		vimtypes_entries.append('\tsyn cluster cCurlyGroup ' + AddList + LocalTagType)
+		vimtypes_entries.append('\tsyn cluster cParenGroup ' + AddList + LocalTagType)
+		vimtypes_entries.append('\tsyn cluster cCppParenGroup ' + AddList + LocalTagType)
 		vimtypes_entries.append('endif')
 
 	try:
@@ -431,7 +434,7 @@ def CreateTypesFile(config, Parameters, CheckKeywords = False, SkipMatches = Fal
 
 def main():
 	import optparse
-	parser = optparse.OptionParser()
+	parser = optparse.OptionParser(version=("Types File Creator (%%prog) %s" % revision))
 	parser.add_option('-r','-R','--recurse',
 			action="store_true",
 			default=False,
@@ -439,7 +442,7 @@ def main():
 			help="Recurse into subdirectories")
 	parser.add_option('--ctags-dir',
 			action='store',
-			default='.',
+			default=None,
 			dest='ctags_dir',
 			type='string',
 			help='CTAGS Executable Directory')
@@ -447,22 +450,22 @@ def main():
 			action='store_true',
 			default=False,
 			dest='include_docs',
-			help='Include docs directory (stripped by default for speed)')
-	parser.add_option('--check-keywords',
-			action='store_true',
-			default=False,
+			help='Include docs or Documentation directory (stripped by default for speed)')
+	parser.add_option('--do-not-check-keywords',
+			action='store_false',
+			default=True,
 			dest='check_keywords',
-			help='Check validity of keywords (much slower)')
-	parser.add_option('--skip-matches',
-			action='store_true',
-			default=False,
+			help="Do not check validity of keywords (for speed)")
+	parser.add_option('--include-invalid-keywords-as-matches',
+			action='store_false',
+			default=True,
 			dest='skip_matches',
-			help='Skip syntax match // items (to speed up file loading time)')
-	parser.add_option('--analyse-constants',
-			action='store_true',
-			default=False,
+			help='Include invalid keywords as regular expression matches (may slow it loading)')
+	parser.add_option('--do-not-analyse-constants',
+			action='store_false',
+			default=True,
 			dest='parse_constants',
-			help='Treat constants as separate entries (Experimental)')
+			help="Do not treat constants as separate entries")
 	parser.add_option('--include-language',
 			action='append',
 			dest='languages',
@@ -474,10 +477,10 @@ def main():
 			default=False,
 			dest='build_cscopedb',
 			help="Also build a cscope database")
-	parser.add_option('--build-cscopedb-if-filelist',
+	parser.add_option('--build-cscopedb-if-cscope-file-exists',
 			action='store_true',
 			default=False,
-			dest='build_cscopedb_if_filelist',
+			dest='build_cscopedb_if_file_exists',
 			help="Also build a cscope database if cscope.files exists")
 	parser.add_option('--cscope-dir',
 			action='store',
@@ -494,22 +497,24 @@ def main():
 			action='store_true',
 			default=False,
 			dest='use_existing_tagfile',
-			help='Do not generate tags if a tag file already exists')
+			help="Do not generate tags if a tag file already exists")
 
 	options, remainder = parser.parse_args()
-	global ctags_exe
-	ctags_exe = options.ctags_dir + '/' + 'ctags'
-	global cscope_exe
+
+	if options.ctags_dir is not None:
+		global ctags_exe
+		ctags_exe = os.path.join(options.ctags_dir, 'ctags')
+
+
 	if options.cscope_dir is not None:
+		global cscope_exe
 		cscope_exe = options.cscope_dir + '/' + 'cscope'
-	else:
-		cscope_exe = "cscope"
 
 	Configuration = GetCommandArgs(options)
 
 	CreateCScopeFile(options)
 
-	full_language_list = ['c', 'java', 'perl', 'python', 'ruby', 'vhdl']
+	full_language_list = ['c', 'java', 'perl', 'python', 'ruby', 'vhdl', 'php', 'c#']
 	if len(options.languages) == 0:
 		# Include all languages
 		language_list = full_language_list
@@ -524,8 +529,321 @@ def main():
 
 	for language in language_list:
 		Parameters = GetLanguageParameters(language)
-		CreateTypesFile(Configuration, Parameters, options.check_keywords, options.skip_matches, options.parse_constants, options.include_locals)
+		CreateTypesFile(Configuration, Parameters, options)
+
+def GetKindList():
+	LanguageKinds = {}
+	LanguageKinds['asm'] = \
+	{
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_l': 'CTagsLabel',
+		'ctags_m': 'CTagsMacro',
+		'ctags_t': 'CTagsType',
+	}
+	LanguageKinds['asp'] = \
+	{
+		'ctags_c': 'CTagsConstant',
+		'ctags_f': 'CTagsFunction',
+		'ctags_s': 'CTagsSubroutine',
+		'ctags_v': 'CTagsVariable',
+	}
+	LanguageKinds['awk'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+	}
+	LanguageKinds['basic'] = \
+	{
+		'ctags_c': 'CTagsConstant',
+		'ctags_f': 'CTagsFunction',
+		'ctags_l': 'CTagsLabel',
+		'ctags_t': 'CTagsType',
+		'ctags_v': 'CTagsVariable',
+		'ctags_g': 'CTagsEnumeration',
+	}
+	LanguageKinds['beta'] = \
+	{
+		'ctags_f': 'CTagsFragment',
+		'ctags_p': 'CTagsPattern',
+		'ctags_s': 'CTagsSlot',
+		'ctags_v': 'CTagsVirtualPattern',
+	}
+	LanguageKinds['c'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_e': 'CTagsEnumerationValue',
+		'ctags_f': 'CTagsFunction',
+		'ctags_g': 'CTagsEnumeratorName',
+		'ctags_k': 'CTagsConstant',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsMember',
+		'ctags_n': 'CTagsNamespace',
+		'ctags_p': 'CTagsFunction',
+		'ctags_s': 'CTagsStructure',
+		'ctags_t': 'CTagsType',
+		'ctags_u': 'CTagsUnion',
+		'ctags_v': 'CTagsGlobalVariable',
+		'ctags_x': 'CTagsExtern',
+	}
+	LanguageKinds['c++'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_e': 'CTagsEnumerationValue',
+		'ctags_f': 'CTagsFunction',
+		'ctags_g': 'CTagsEnumerationName',
+		'ctags_k': 'CTagsConstant',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsMember',
+		'ctags_n': 'CTagsNamespace',
+		'ctags_p': 'CTagsFunction',
+		'ctags_s': 'CTagsStructure',
+		'ctags_t': 'CTagsType',
+		'ctags_u': 'CTagsUnion',
+		'ctags_v': 'CTagsGlobalVariable',
+		'ctags_x': 'CTagsExtern',
+	}
+	LanguageKinds['c#'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_e': 'CTagsEnumerationValue',
+		'ctags_E': 'CTagsEvent',
+		'ctags_f': 'CTagsField',
+		'ctags_g': 'CTagsEnumerationName',
+		'ctags_i': 'CTagsInterface',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsMethod',
+		'ctags_n': 'CTagsNamespace',
+		'ctags_p': 'CTagsProperty',
+		'ctags_s': 'CTagsStructure',
+		'ctags_t': 'CTagsType',
+	}
+	LanguageKinds['cobol'] = \
+	{
+		'ctags_d': 'CTagsData',
+		'ctags_f': 'CTagsFileDescription',
+		'ctags_g': 'CTagsGroupItem',
+		'ctags_p': 'CTagsParagraph',
+		'ctags_P': 'CTagsProgram',
+		'ctags_s': 'CTagsSection',
+	}
+	LanguageKinds['eiffel'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_f': 'CTagsFeature',
+		'ctags_l': 'CTagsEntity',
+	}
+	LanguageKinds['erlang'] = \
+	{
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_f': 'CTagsFunction',
+		'ctags_m': 'CTagsModule',
+		'ctags_r': 'CTagsRecord',
+	}
+	LanguageKinds['fortran'] = \
+	{
+		'ctags_b': 'CTagsBlockData',
+		'ctags_c': 'CTagsCommonBlocks',
+		'ctags_e': 'CTagsEntryPoint',
+		'ctags_f': 'CTagsFunction',
+		'ctags_i': 'CTagsInterfaceComponent',
+		'ctags_k': 'CTagsTypeComponent',
+		'ctags_l': 'CTagsLabel',
+		'ctags_L': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsModule',
+		'ctags_n': 'CTagsNamelist',
+		'ctags_p': 'CTagsProgram',
+		'ctags_s': 'CTagsSubroutine',
+		'ctags_t': 'CTagsType',
+		'ctags_v': 'CTagsGlobalVariable',
+	}
+	LanguageKinds['html'] = \
+	{
+		'ctags_a': 'CTagsAnchor',
+		'ctags_f': 'CTagsFunction',
+	}
+	LanguageKinds['java'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_e': 'CTagsEnumerationValue',
+		'ctags_f': 'CTagsField',
+		'ctags_g': 'CTagsEnumeratorName',
+		'ctags_i': 'CTagsInterface',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsMethod',
+		'ctags_p': 'CTagsPackage',
+	}
+	LanguageKinds['javascript'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+		'ctags_c': 'CTagsClass',
+		'ctags_m': 'CTagsMethod',
+		'ctags_p': 'CTagsProperty',
+		'ctags_v': 'CTagsGlobalVariable',
+	}
+	LanguageKinds['lisp'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+	}
+	LanguageKinds['lua'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+	}
+	LanguageKinds['make'] = \
+	{
+		'ctags_m': 'CTagsFunction',
+	}
+	LanguageKinds['pascal'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+		'ctags_p': 'CTagsFunction',
+	}
+	LanguageKinds['perl'] = \
+	{
+		'ctags_c': 'CTagsGlobalConstant',
+		'ctags_f': 'CTagsFormat',
+		'ctags_l': 'CTagsLabel',
+		'ctags_p': 'CTagsPackage',
+		'ctags_s': 'CTagsFunction',
+		'ctags_d': 'CTagsFunction',
+	}
+	LanguageKinds['php'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_i': 'CTagsInterface',
+		'ctags_d': 'CTagsGlobalConstant',
+		'ctags_f': 'CTagsFunction',
+		'ctags_v': 'CTagsGlobalVariable',
+		'ctags_j': 'CTagsFunction',
+	}
+	LanguageKinds['python'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_f': 'CTagsFunction',
+		'ctags_i': 'CTagsImport',
+		'ctags_m': 'CTagsMember',
+		'ctags_v': 'CTagsGlobalVariable',
+	}
+	LanguageKinds['rexx'] = \
+	{
+		'ctags_s': 'CTagsFunction',
+	}
+	LanguageKinds['ruby'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_f': 'CTagsMethod',
+		'ctags_m': 'CTagsModule',
+		'ctags_F': 'CTagsSingleton',
+	}
+	LanguageKinds['scheme'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+		'ctags_s': 'CTagsSet',
+	}
+	LanguageKinds['sh'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+	}
+	LanguageKinds['slang'] = \
+	{
+		'ctags_f': 'CTagsFunction',
+		'ctags_n': 'CTagsNamespace',
+	}
+	LanguageKinds['sml'] = \
+	{
+		'ctags_e': 'CTagsException',
+		'ctags_f': 'CTagsFunction',
+		'ctags_c': 'CTagsFunctionObject',
+		'ctags_s': 'CTagsSignature',
+		'ctags_r': 'CTagsStructure',
+		'ctags_t': 'CTagsType',
+		'ctags_v': 'CTagsGlobalVariable',
+	}
+	LanguageKinds['sql'] = \
+	{
+		'ctags_c': 'CTagsCursor',
+		'ctags_d': 'CTagsFunction',
+		'ctags_f': 'CTagsFunction',
+		'ctags_F': 'CTagsField',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_L': 'CTagsLabel',
+		'ctags_P': 'CTagsPackage',
+		'ctags_p': 'CTagsFunction',
+		'ctags_r': 'CTagsRecord',
+		'ctags_s': 'CTagsType',
+		'ctags_t': 'CTagsTable',
+		'ctags_T': 'CTagsTrigger',
+		'ctags_v': 'CTagsGlobalVariable',
+		'ctags_i': 'CTagsIndex',
+		'ctags_e': 'CTagsEvent',
+		'ctags_U': 'CTagsPublication',
+		'ctags_R': 'CTagsService',
+		'ctags_D': 'CTagsDomain',
+		'ctags_V': 'CTagsView',
+		'ctags_n': 'CTagsSynonym',
+	}
+	LanguageKinds['tcl'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_m': 'CTagsMethod',
+		'ctags_p': 'CTagsFunction',
+	}
+	LanguageKinds['vera'] = \
+	{
+		'ctags_c': 'CTagsClass',
+		'ctags_d': 'CTagsDefinedName',
+		'ctags_e': 'CTagsEnumerationValue',
+		'ctags_f': 'CTagsFunction',
+		'ctags_g': 'CTagsEnumeratorName',
+		'ctags_l': 'CTagsLocalVariable',
+		'ctags_m': 'CTagsMember',
+		'ctags_p': 'CTagsProgram',
+		'ctags_P': 'CTagsFunction',
+		'ctags_t': 'CTagsTask',
+		'ctags_T': 'CTagsType',
+		'ctags_v': 'CTagsGlobalVariable',
+		'ctags_x': 'CTagsExtern',
+	}
+	LanguageKinds['verilog'] = \
+	{
+		'ctags_c': 'CTagsGlobalConstant',
+		'ctags_e': 'CTagsEvent',
+		'ctags_f': 'CTagsFunction',
+		'ctags_m': 'CTagsModule',
+		'ctags_n': 'CTagsNetType',
+		'ctags_p': 'CTagsPort',
+		'ctags_r': 'CTagsRegisterType',
+		'ctags_t': 'CTagsTask',
+	}
+	LanguageKinds['vhdl'] = \
+	{
+		'ctags_c': 'CTagsGlobalConstant',
+		'ctags_t': 'CTagsType',
+		'ctags_T': 'CTagsTypeComponent',
+		'ctags_r': 'CTagsRecord',
+		'ctags_e': 'CTagsEntity',
+		'ctags_C': 'CTagsComponent',
+		'ctags_d': 'CTagsPrototype',
+		'ctags_f': 'CTagsFunction',
+		'ctags_p': 'CTagsFunction',
+		'ctags_P': 'CTagsPackage',
+		'ctags_l': 'CTagsLocalVariable',
+	}
+	LanguageKinds['vim'] = \
+	{
+		'ctags_a': 'CTagsAutoCommand',
+		'ctags_c': 'CTagsCommand',
+		'ctags_f': 'CTagsFunction',
+		'ctags_m': 'CTagsMap',
+		'ctags_v': 'CTagsGlobalVariable',
+	}
+	LanguageKinds['yacc'] = \
+	{
+		'ctags_l': 'CTagsLabel',
+	}
+	return LanguageKinds
+
 	
 if __name__ == "__main__":
 	main()
-

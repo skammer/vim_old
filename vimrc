@@ -25,11 +25,20 @@
 set nocompatible
 set ruler
 set visualbell"
+set colorcolumn=85
+set textwidth=85
+"set wrapmargin=85
+"set wrap
 set linebreak
 set breakat=\ ^I!@*-+;:,./?
-"set showbreak=>
+set showbreak=>
 "set autochdir
 set backup            " keep a backup file
+set backupdir=~/.vim/backup
+
+set undofile
+set undodir=~/.vim/undo
+
 
 filetype on
 filetype plugin on
@@ -50,12 +59,13 @@ colorscheme skammer
 call pathogen#runtime_append_all_bundles()
 
 
-set enc=utf8 fileencodings nobomb
-set penc=utf8
+"set enc=utf8 fileencodings nobomb
+"set penc=utf8
 set hidden
 set shortmess=atI
+
 "set lines=45 columns=130
-set textwidth=80
+
 "set transparency=5
 set showcmd
 " Нумерация строк
@@ -66,6 +76,7 @@ set go=amge
 " Люблю пробелы вместо табов. И отступы по 2 пробела
 set autoindent
 set smartindent
+set cindent
 set tabstop=2
 set shiftwidth=2
 set softtabstop=2
@@ -84,10 +95,12 @@ set imd
 "set guifont=Andale\ Mono:h11
 "set guifont=Menlo\ Regular:h11
 "set guifont=Monaco:h11
+"set guifont=Mensch:h11
 
 " Шрифт для варианта без сглаживания
-set guifont=Anonymous\ Pro:h11
-set noanti
+"set guifont=Terminus:h15
+set guifont=Anonymous\ Pro:h12
+"set noanti
 
 " Шрифт, кода я использую сглаживание
 "set guifont=Liberation\ Mono:h11
@@ -97,7 +110,6 @@ set scrolloff=3
 set ignorecase
 set smartcase
 set gdefault
-nmap <silent> <C-H> :silent noh<CR>
 set showmatch
 
 "set gcr=i:block
@@ -126,21 +138,16 @@ let g:DrChipTopLvlMenu = "Plugin."
 
 set laststatus=2
 
-" Какие-то непонятные статусные строки. Оставил просто так, чтобы были.
-"set statusline=%<%f\ %h%m%r%=%-20.(line=%l,col=%c%V,totlin=%L%)\%h%m%r%=%-40(,%n%Y%)\%P
-"set statusline=%<%{&ff}\ %t\ %Y\ %n\ %{CountLettersInCurrentLine()}\ %{CountLettersInCurrentBuffer()}\ %=%03p%%\ [%04l,%04v]\ %L
-"set statusline=%<%{&ff}\ %t\ %Y\ %n\ %=%03p%%\ [%04l,%04v]\ %L
-
 " Строка под комментрарием может пригодиться, если пользоваться twitvim. Тогда
 " можно будет посмотреть сколько символов в текущей строке.
 
 "set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %{GitBranchInfoString()}\ %Y\ %n\ %m%r%h%w\ %=%{CountLettersInCurrentLine()}\ %03p%%\ [%04l,%04v]\ %L
 "-------------------------------------------------
 
-"set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %{GitBranchInfoString()}\ %Y\ %n\ %m%r%h%w%{SyntasticStatuslineFlag()}\ %=\ %03p%%\ [%04l,%04v]\ %L
 
-"set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %{GitBranchInfoString()}\ %Y\ %n\ %m%r%h%w\ %=\ %03p%%\ [%04l,%04v]\ %L
-set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %Y\ %n\ %m%r%h%w\ %=\ %03p%%\ [%04l,%04v]\ %L
+"set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %Y\ %n\ %m%r%h%w\ %{fugitive#statusline()}\ %=%{CountLettersInCurrentLine()}\ %03p%%\ [%04l,%04v]\ %L
+
+set statusline=%<%{&ff}\ %{\"[\".(&fenc==\"\"?&enc:&fenc).((exists(\"+bomb\")\ &&\ &bomb)?\",B\":\"\").\"]\ \"}%t\ %Y\ %n\ %m%r%h%w\ %{fugitive#statusline()}\ %=%03p%%\ [%04l,%04v]\ %L
 
 "Git-branch-info stuff
 let g:git_branch_status_head_current=1
@@ -304,7 +311,7 @@ endf
 
 imap <D-D> <Esc>:call ToggleFullscreen()<cr>a
 vmap <D-D> ms:call ToggleFullscreen()<cr>
-nmap <D-D> V<D-D>
+nmap <D-D> v<D-D>
 
 function! CapitalizeCenterAndMoveDown()
    s/\<./\u&/g   "Built-in substitution capitalizes each word
@@ -341,6 +348,7 @@ let NERDTreeShowHidden=0
 "let g:miniBufExplMapCTabSwitchBufs = 1
 
 let Tlist_Ctags_Cmd="/opt/local/bin/ctags"
+let Tlist_Use_Right_Window = 1
 
 "let g:fuzzy_matching_limit = 40
 
@@ -355,30 +363,44 @@ let g:syntastic_auto_loc_list=1
 "------------------
 
 augroup filetypedetect
-  au! BufNewFile,BufRead *.ch setf cheat
-  au BufNewFile,BufRead *.liquid setf liquid
-  au! BufRead,BufNewFile *.haml setfiletype haml
-  autocmd BufNewFile,BufRead *.yml setf eruby
-  au! BufRead,BufNewFile *.vm  set filetype=velocity
-  au! BufRead,BufNewFile *.less set syntax=less filetype=less expandtab
-  au! BufRead,BufNewFile *.b set syntax=brainfuck filetype=brainfuck
-  au! BufRead,BufNewFile *.tab set syntax=chords filetype=chords
-  au! BufRead,BufNewFile *.coffee set syntax=coffee filetype=coffee
+  au! BufNewFile,BufRead *.ch     setf        cheat
+  au! BufNewFile,BufRead *.liquid setf        liquid
+  au! BufRead,BufNewFile *.haml   setfiletype haml
+  au! BufNewFile,BufRead *.yml    setf        eruby
+  au! BufRead,BufNewFile *.vm     set         filetype=velocity
+  au! BufRead,BufNewFile *.less   set         syntax=less       filetype=less      expandtab
+  au! BufRead,BufNewFile *.b      set         syntax=brainfuck  filetype=brainfuck
+  au! BufRead,BufNewFile *.tab    set         syntax=chords     filetype=chords
+  au! BufRead,BufNewFile *.coffee set         syntax=coffee     filetype=coffee
+  au! BufRead,BufNewFile *.4th    set         syntax=forth      filetype=forth
+  au! BufRead,BufNewFile *.4mu    set         syntax=forth      filetype=forth
+  au! BufRead *.log set autoread filetype=conf
 augroup END
+
 autocmd BufRead *.java,*.c,*.h,*.cc set formatoptions=tcroq cindent comments=sr:/**,mb:*,elx:*/,sr:/*,mb:*,elx:*/,://
 
 autocmd BufNewFile,BufRead *_test.rb source ~/.vim/ftplugin/shoulda.vim
 
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+
+autocmd! bufwritepost ~/.vimrc execute "normal! :source ~/.vimrc"
+
+autocmd FileType python        set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript    set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html          set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css           set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml           set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php           set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c             set omnifunc=ccomplete#Complete
+autocmd FileType velocity      set syntax=velocity
 autocmd FileType ruby,perl,tex set shiftwidth=2
-autocmd FileType velocity set syntax=velocity
+
+"ruby
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+"autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
+"autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+"autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+"improve autocomplete menu color
+highlight Pmenu ctermbg=238 gui=bold
 
 "au BufNewFile,BufRead *.todo set filetype=todo
 
@@ -451,57 +473,12 @@ nmap <C-f>r :RefreshTwitter<cr>
 
 
 " Мне можно сделать и больше. Часов за 5 успевает навалиться полторы сотни.
-let twitvim_count = 60
+let twitvim_count = 100
 
 " Настройки для acp
 
-"let g:acp_enableAtStartup = 1
-"let g:acp_completeoptPreview = 1
-"let g:acp_behaviorKeywordLength = 3
-"let g:acp_behaviorCssOmniPropertyLength = 3
-"let g:acp_behaviorHtmlOmniLength = 3
-"let g:acp_behaviorRubyOmniSymbolLength = 2
-"let g:acp_mappingDriven = 1
-"let g:acp_ignorecaseOption = 0
-
-function! InitBackupDir()
-  let separator = "."
-  let parent = $HOME .'/' . separator . 'vim/'
-  let backup = parent . 'backup/'
-  let tmp    = parent . 'tmp/'
-  if exists("*mkdir")
-    if !isdirectory(parent)
-      call mkdir(parent)
-    endif
-    if !isdirectory(backup)
-      call mkdir(backup)
-    endif
-    if !isdirectory(tmp)
-      call mkdir(tmp)
-    endif
-  endif
-  let missing_dir = 0
-  if isdirectory(tmp)
-    execute 'set backupdir=' . escape(backup, " ") . "/,."
-  else
-    let missing_dir = 1
-  endif
-  if isdirectory(backup)
-    execute 'set directory=' . escape(tmp, " ") . "/,."
-  else
-    let missing_dir = 1
-  endif
-  if missing_dir
-    echo "Warning: Unable to create backup directories: "
-    . backup ." and " . tmp
-    echo "Try: mkdir -p " . backup
-    echo "and: mkdir -p " . tmp
-    set backupdir=.
-    set directory=.
-  endif
-endfunction
-
-call InitBackupDir()
+let g:acp_enableAtStartup = 0
+let g:acp_behaviorKeywordLength = 3
 
 "let g:rgbtxt="$HOME/.vim/rgb.txt"
 "let g:running_RefreshColors=1
@@ -614,6 +591,48 @@ map Б B
 map Ю [
 
 let g:sparkupNextMapping = '<c-l>'
+let g:sparkupExecuteMapping = '<c-E>'
 
 map <leader>ss ?{<CR>jV/^\s*\}\=$<CR>k:sort<CR>:let @/=''<CR>
+
+
+"Neocomplpop
+
+" Use neocomplcache. 
+let g:NeoComplCache_EnableAtStartup = 1 
+" Use smartcase. 
+let g:NeoComplCache_SmartCase = 1 
+" Use camel case completion. 
+"let g:NeoComplCache_EnableCamelCaseCompletion = 1 
+" Use underbar completion. 
+let g:NeoComplCache_EnableUnderbarCompletion = 1 
+" Set minimum syntax keyword length. 
+let g:NeoComplCache_MinSyntaxLength = 3 
+" Set manual completion length. 
+let g:NeoComplCache_ManualCompletionStartLength = 0 
+" Set minimum keyword length. 
+let g:NeoComplCache_MinKeywordLength = 3 
+
+map <F6> :vimgrep /fixme\\|todo/j *.[c,cpp,h,hpp,py]<CR>:cw<CR>
+
+let g:defaultInputSourceIndex = 0
+let g:kls_focusSwitching = 1
+let g:kls_tabSwitching = 0
+
+" Sudo to write
+cmap w!! w !sudo tee % >/dev/null
+
+" Use the damn hjkl keys
+"map <up> <nop>
+"map <down> <nop>
+"map <left> <nop>
+"map <right> <nop>
+
+" And make them fucking work, too.
+nnoremap j gj
+nnoremap k gk
+
+" Easy buffer navigation
+map <leader>w <C-w>v<C-w>l
+
 

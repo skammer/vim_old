@@ -1,6 +1,7 @@
 *.swp
 .DS_Store
 backup/
+undo/
 view/
 snippets2.zip
 do_not_load_these_plugins/

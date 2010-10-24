@@ -1,0 +1,10 @@
+:Narrow	narrow.txt	/*:Narrow*
+:Widen	narrow.txt	/*:Widen*
+narrow#Narrow()	narrow.txt	/*narrow#Narrow()*
+narrow#Widen()	narrow.txt	/*narrow#Widen()*
+narrow-bugs	narrow.txt	/*narrow-bugs*
+narrow-changelog	narrow.txt	/*narrow-changelog*
+narrow-contents	narrow.txt	/*narrow-contents*
+narrow-functions	narrow.txt	/*narrow-functions*
+narrow-usage	narrow.txt	/*narrow-usage*
+narrow.txt	narrow.txt	/*narrow.txt*

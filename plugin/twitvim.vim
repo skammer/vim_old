@@ -2,12 +2,12 @@
 " TwitVim - Post to Twitter from Vim
 " Based on Twitter Vim script by Travis Jeffery <eatsleepgolf@gmail.com>
 "
-" Version: 0.4.6
+" Version: 0.5.3
 " License: Vim license. See :help license
 " Language: Vim script
 " Maintainer: Po Shan Cheah <morton@mortonfox.com>
 " Created: March 28, 2008
-" Last updated: February 5, 2010
+" Last updated: June 23, 2010
 "
 " GetLatestVimScripts: 2204 1 twitvim.vim
 " ==============================================================
@@ -22,10 +22,10 @@ let loaded_twitvim = 1
 let s:save_cpo = &cpo
 set cpo&vim
 
-" The extended character limit is 246. Twitter will display a tweet longer than
-" 140 characters in truncated form with a link to the full tweet. If that is
-" undesirable, set s:char_limit to 140.
-let s:char_limit = 246
+" Twitter character limit. Twitter used to accept tweets up to 246 characters
+" in length and display those in truncated form, but that is no longer the
+" case. So 140 is now the hard limit.
+let s:char_limit = 140
 
 " Allow the user to override the API root, e.g. for identi.ca, which offers a
 " Twitter-compatible API.
@@ -96,6 +96,17 @@ function! s:get_show_header()
     return exists('g:twitvim_show_header') ? g:twitvim_show_header : 1
 endfunction
 
+" User config for name of OAuth access token file.
+function! s:get_token_file()
+    return exists('g:twitvim_token_file') ? g:twitvim_token_file : $HOME . "/.twitvim.token"
+endfunction
+
+" User config to disable the OAuth access token file.
+function! s:get_disable_token_file()
+    return exists('g:twitvim_disable_token_file') ? g:twitvim_disable_token_file : 0
+endfunction
+
+
 " Display an error message in the message area.
 function! s:errormsg(msg)
     redraw
@@ -112,12 +123,13 @@ function! s:warnmsg(msg)
     echohl None
 endfunction
 
-" Get Twitter login info from twitvim_login in .vimrc or _vimrc.
+" Get Twitter login info from twitvim_login in vimrc.
 " Format is username:password
 " If twitvim_login_b64 exists, use that instead. This is the user:password
 " in base64 encoding.
-" Use this function if the API call doesn't require authentication but
-" can use it if available.
+"
+" This function is for services with Twitter-compatible APIs that use Basic
+" authentication, e.g. identi.ca
 function! s:get_twitvim_login_noerror()
     if exists('g:twitvim_login_b64') && g:twitvim_login_b64 != ''
 	return g:twitvim_login_b64
@@ -128,30 +140,35 @@ function! s:get_twitvim_login_noerror()
     endif
 endfunction
 
+" Dummy login string to force OAuth signing in run_curl_oauth().
+let s:ologin = "oauth:oauth"
+
 " Reset login info.
 function! s:reset_twitvim_login()
-    unlet! g:twitvim_login
-    unlet! g:twitvim_login_b64
+    let s:access_token = ""
+    let s:access_token_secret = ""
+    call delete(s:get_token_file())
+
+    let s:cached_username = ""
 endfunction
 
-" Verify login info. This will be used to check whether a username and password
-" pair entered by the user is a valid login.
+" Verify user credentials. This function is actually used to do an OAuth
+" handshake after deleting the access token.
 "
 " Returns 1 if login succeeded, 0 if login failed, <0 for other errors.
-function! s:check_twitvim_login(user, password)
-    let login = a:user.':'.a:password
-
+function! s:check_twitvim_login()
     redraw
     echo "Logging into Twitter..."
 
     let url = s:get_api_root()."/account/verify_credentials.xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
     if error =~ '401'
 	return 0
     endif
 
     if error != ''
-	call s:errormsg("Error logging into Twitter: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error logging into Twitter: ".(errormsg != '' ? errormsg : error))
 	return -1
     endif
 
@@ -174,102 +191,50 @@ function! s:check_twitvim_login(user, password)
     return 1
 endfunction
 
-" Ask user for Twitter login info.
-" Returns user:password. Also saves it in g:twitvim_login for future use.
-" Returns empty string if login canceled or failed.
+" Throw away OAuth access tokens and log in again. This is meant to allow the
+" user to switch to a different Twitter account.
 function! s:prompt_twitvim_login()
-    let failed = 0
-
-    while 1
-	call inputsave()
-	redraw
-	let user = input((failed ? 'Login failed. Try again. ' : 'Please log in. ')."Twitter username (Esc=exit): ")
-	call inputrestore()
-
-	if user == ''
-	    call s:warnmsg("Twitter login not set.")
-	    return ''
-	endif
-
-	call inputsave()
-	redraw
-	let pass = inputsecret("Twitter password (Esc=exit): ")
-	call inputrestore()
-
-	if pass == ''
-	    call s:warnmsg("Twitter login not set.")
-	    return ''
-	endif
-
-	let result = s:check_twitvim_login(user, pass)
-	if result < 0
-	    " Login didn't succeed or fail but there was some kind of error.
-	    return ''
-	endif
-
-	if result > 0
-	    " Login succeeded.
-	    break
-	endif
-
-	let failed = 1
-    endwhile
-
     call s:reset_twitvim_login()
-    let g:twitvim_login = user.':'.pass
-    return g:twitvim_login
-endfunction
-
-" Get Twitter login info from twitvim_login in .vimrc or _vimrc.
-" Format is username:password
-" If twitvim_login_b64 exists, use that instead. This is the user:password
-" in base64 encoding.
-function! s:get_twitvim_login()
-    let login = s:get_twitvim_login_noerror()
-    if login == ''
-
-	" Prompt user to enter login info if not already configured.
-	let login = s:prompt_twitvim_login()
-	if login == ''
-	    return ''
-	endif
-
-	" Beep and error-highlight 
-	" execute "normal \<Esc>"
-	" call s:errormsg('Twitter login not set. Please add to .vimrc: let twitvim_login="USER:PASS"')
-	" return ''
-    endif
-    return login
+    call s:check_twitvim_login()
 endfunction
 
 let s:cached_login = ''
 let s:cached_username = ''
 
+" See if we can save time by using the cached username.
+function! s:get_twitvim_cached_username()
+    if s:get_api_root() =~ 'twitter\.com'
+	if s:cached_username == ''
+	    return ''
+	endif
+    else
+	" In Twitter-compatible services that use Basic authentication, the
+	" user may have changed the login info on the fly. So we have to watch
+	" out for that.
+	let login = s:get_twitvim_login_noerror()
+	if login == '' || login != s:cached_login
+	    return ''
+	endif
+    endif
+    return s:cached_username
+endfunction
+
 " Get Twitter user name by verifying login credentials
 function! s:get_twitvim_username()
-    let login = s:get_twitvim_login()
-    if login == ''
-	return ''
-    endif
-
-    " If we already got the info, no need to get it again.
-    if login == s:cached_login
-	return s:cached_username
+    " If we already have the info, no need to get it again.
+    let username = s:get_twitvim_cached_username()
+    if username != ''
+	return username
     endif
 
     redraw
     echo "Verifying login credentials with Twitter..."
 
     let url = s:get_api_root()."/account/verify_credentials.xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
     if error != ''
-	call s:errormsg("Error verifying login credentials: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error verifying login credentials: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error verifying login credentials: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -280,8 +245,8 @@ function! s:get_twitvim_username()
 
     " Save it so we don't have to do it again unless the user switches to
     " a different login.
-    let s:cached_login = login
     let s:cached_username = username
+    let s:cached_login = s:get_twitvim_login_noerror()
 
     return username
 endfunction
@@ -428,24 +393,335 @@ endfunction
 
 " === End of time parser ===
 
+" === OAuth code ===
+
+" Check if we can use Perl for HMAC-SHA1 digests.
+function! s:check_perl_hmac()
+    let can_perl = 1
+    perl <<EOF
+eval {
+    require Digest::HMAC_SHA1;
+    Digest::HMAC_SHA1->import;
+};
+if ($@) {
+    VIM::DoCommand('let can_perl = 0');
+}
+EOF
+    return can_perl
+endfunction
+
+" Compute HMAC-SHA1 digest. (Perl version)
+function! s:perl_hmac_sha1_digest(key, str)
+    perl <<EOF
+require Digest::HMAC_SHA1;
+Digest::HMAC_SHA1->import;
+
+my $key = VIM::Eval('a:key');
+my $str = VIM::Eval('a:str');
+
+my $hmac = Digest::HMAC_SHA1->new($key);
+
+$hmac->add($str);
+my $signature = $hmac->b64digest; # Length of 27
+
+VIM::DoCommand("let signature = '$signature'");
+EOF
+
+    return signature
+endfunction
+
+" Check if we can use Python for HMAC-SHA1 digests.
+function! s:check_python_hmac()
+    let can_python = 1
+    python <<EOF
+import vim
+try:
+    import base64
+    import hashlib
+    import hmac
+except:
+    vim.command('let can_python = 0')
+EOF
+    return can_python
+endfunction
+
+" Compute HMAC-SHA1 digest. (Python version)
+function! s:python_hmac_sha1_digest(key, str)
+    python <<EOF
+import base64
+import hashlib
+import hmac
+import vim
+
+key = vim.eval("a:key")
+mstr = vim.eval("a:str")
+
+digest = hmac.new(key, mstr, hashlib.sha1).digest()
+signature = base64.encodestring(digest)[0:-1]
+
+vim.command("let signature='%s'" % signature)
+EOF
+    return signature
+endfunction
+
+" Find out which method we can use to compute a HMAC-SHA1 digest.
+function! s:get_hmac_method()
+    if !exists('s:hmac_method')
+	let s:hmac_method = 'perl'
+	if s:get_enable_perl() && has('perl') && s:check_perl_hmac()
+	    let s:hmac_method = 'perl'
+	elseif s:get_enable_python() && has('python') && s:check_python_hmac()
+	    let s:hmac_method = 'python'
+	endif
+    endif
+    return s:hmac_method
+endfunction
+
+function! s:hmac_sha1_digest(key, str)
+    return s:{s:get_hmac_method()}_hmac_sha1_digest(a:key, a:str)
+endfunction
+
+let s:gc_consumer_key = "HyshEU8SbcsklPQ6ouF0g"
+let s:gc_consumer_secret = "U1uvxLjZxlQAasy9Kr5L2YAFnsvYTOqx1bk7uJuezQ"
+
+let s:gc_req_url = "http://api.twitter.com/oauth/request_token"
+let s:gc_access_url = "http://api.twitter.com/oauth/access_token"
+let s:gc_authorize_url = "http://api.twitter.com/oauth/authorize"
+
+" Simple nonce value generator. This needs to be randomized better.
+function s:nonce()
+    if !exists("s:nonce_val") || s:nonce_val < 1
+	let s:nonce_val = localtime() + 109
+    endif
+
+    let retval = s:nonce_val
+    let s:nonce_val += 109
+
+    return retval
+endfunction
+
+" Split a URL into base and params.
+function s:split_url(url)
+    let urlarray = split(a:url, '?')
+    let baseurl = urlarray[0]
+    let parms = {}
+    if len(urlarray) > 1
+	for pstr in split(urlarray[1], '&')
+	    let [key, value] = split(pstr, '=')
+	    let parms[key] = value
+	endfor
+    endif
+    return [baseurl, parms]
+endfunction
+
+" Produce signed content using the parameters provided via parms using the
+" chosen method, url and provided token secret. Note that in the case of
+" getting a new Request token, the secret will be ""
+function s:getOauthResponse(url, method, parms, token_secret)
+    let parms = copy(a:parms)
+
+    " Add some constants to hash
+    let parms["oauth_consumer_key"] = s:gc_consumer_key
+    let parms["oauth_signature_method"] = "HMAC-SHA1"
+    let parms["oauth_version"] = "1.0"
+
+    " Get the timestamp and add to hash
+    let parms["oauth_timestamp"] = localtime()
+
+    let parms["oauth_nonce"] = s:nonce()
+
+    let [baseurl, urlparms] = s:split_url(a:url)
+    call extend(parms, urlparms)
+
+    " Alphabetically sort by key and form a string that has
+    " the format key1=value1&key2=value2&...
+    " Must UTF8 encode and then URL encode the values.
+    let content = ""
+
+    for key in sort(keys(parms))
+	let value = s:url_encode(parms[key])
+	let content .= key . "=" . value . "&"
+    endfor
+    let content = content[0:-2]
+
+    " Form the signature base string which is comprised of 3
+    " pieces, with each piece URL encoded.
+    " [METHOD_UPPER_CASE]&[url]&content
+    let signature_base_str = a:method . "&" . s:url_encode(baseurl) . "&" . s:url_encode(content)
+    let hmac_sha1_key = s:url_encode(s:gc_consumer_secret) . "&" . s:url_encode(a:token_secret)
+    let signature = s:hmac_sha1_digest(hmac_sha1_key, signature_base_str)
+
+    " Add padding character to make a multiple of 4 per the
+    " requirement of OAuth.
+    if strlen(signature) % 4
+	let signature .= "="
+    endif
+
+    let content = "OAuth "
+
+    for key in keys(parms)
+	if key =~ "oauth"
+	    let value = s:url_encode(parms[key])
+	    let content .= key . '="' . value . '", '
+	endif
+    endfor
+    let content .= 'oauth_signature="' . s:url_encode(signature) . '"'
+    return content
+endfunction
+
+" Perform the OAuth dance to authorize this client with Twitter.
+function! s:do_oauth()
+    " Call oauth/request_token to get request token from Twitter.
+
+    let parms = { "oauth_callback": "oob", "dummy" : "1" }
+    let oauth_hdr = s:getOauthResponse(s:gc_req_url, "POST", parms, "")
+
+    let [error, output] = s:run_curl(s:gc_req_url, oauth_hdr, s:get_proxy(), s:get_proxy_login(), { "dummy" : "1" })
+
+    if error != ''
+	call s:errormsg("Error from oauth/request_token: ".error)
+	return [-1, '', '']
+    endif
+
+    let matchres = matchlist(output, 'oauth_token=\([^&]\+\)&')
+    if matchres != []
+	let request_token = matchres[1]
+    endif
+
+    let matchres = matchlist(output, 'oauth_token_secret=\([^&]\+\)&')
+    if matchres != []
+	let token_secret = matchres[1]
+    endif
+
+    " Launch web browser to let user allow or deny the authentication request.
+    let auth_url = s:gc_authorize_url . "?oauth_token=" . request_token
+
+    " If user has not set up twitvim_browser_cmd, just display the
+    " authentication URL and ask the user to visit that URL.
+    if !exists('g:twitvim_browser_cmd') || g:twitvim_browser_cmd == ''
+
+	" Attempt to shorten the auth URL.
+	let newurl = s:call_isgd(auth_url)
+	if newurl != ""
+	    let auth_url = newurl
+	else
+	    let newurl = s:call_bitly(auth_url)
+	    if newurl != ""
+		let auth_url = newurl
+	    endif
+	endif
+
+	echo "Visit the following URL in your browser to authenticate TwitVim:"
+	echo auth_url
+    else
+	if s:launch_browser(auth_url) < 0
+	    return [-2, '', '']
+	endif
+    endif
+
+    call inputsave()
+    let pin = input("Enter Twitter OAuth PIN: ")
+    call inputrestore()
+
+    if pin == ""
+	call s:warnmsg("No OAuth PIN entered")
+	return [-3, '', '']
+    endif
+
+    " Call oauth/access_token to swap request token for access token.
+    
+    let parms = { "dummy" : 1, "oauth_token" : request_token, "oauth_verifier" : pin }
+    let oauth_hdr = s:getOauthResponse(s:gc_access_url, "POST", parms, token_secret)
+
+    let [error, output] = s:run_curl(s:gc_access_url, oauth_hdr, s:get_proxy(), s:get_proxy_login(), { "dummy" : 1 })
+
+    if error != ''
+	call s:errormsg("Error from oauth/access_token: ".error)
+	return [-4, '', '']
+    endif
+
+    let matchres = matchlist(output, 'oauth_token=\([^&]\+\)&')
+    if matchres != []
+	let request_token = matchres[1]
+    endif
+
+    let matchres = matchlist(output, 'oauth_token_secret=\([^&]\+\)&')
+    if matchres != []
+	let token_secret = matchres[1]
+    endif
+
+    return [ 0, request_token, token_secret ]
+endfunction
+
+" Sign a request with OAuth and send it.
+function! s:run_curl_oauth(url, login, proxy, proxylogin, parms)
+    if a:login != '' && a:url =~ 'twitter\.com'
+	if !exists('s:access_token') || s:access_token == ''
+
+	    let tokens = []
+
+	    if !s:get_disable_token_file() && filereadable(s:get_token_file())
+		" Try to read access tokens from token file.
+		let tokens = readfile(s:get_token_file(), "t", 3)
+	    endif
+
+	    if tokens == []
+
+		" If unsuccessful at reading token file, do the OAuth handshake.
+		let [ retval, s:access_token, s:access_token_secret ] = s:do_oauth()
+		if retval < 0
+		    return [ "Error from do_oauth(): ".retval, '' ]
+		endif
+
+		if !s:get_disable_token_file()
+		    " Save access tokens to the token file.
+		    let v:errmsg = ""
+		    if writefile([ s:access_token, s:access_token_secret ], s:get_token_file()) < 0
+			call s:errormsg('Error writing token file: '.v:errmsg)
+		    endif
+		endif
+	    else
+		let [s:access_token, s:access_token_secret] = tokens
+	    endif
+	endif
+
+	let parms = copy(a:parms)
+	let parms["oauth_token"] = s:access_token
+	let oauth_hdr = s:getOauthResponse(a:url, a:parms == {} ? 'GET' : 'POST', parms, s:access_token_secret)
+
+	return s:run_curl(a:url, oauth_hdr, a:proxy, a:proxylogin, a:parms)
+    else
+	if a:login != ''
+	    let login = s:get_twitvim_login_noerror()
+	    if login == ''
+		return [ 'Login info not set. Please add to vimrc: let twitvim_login="USER:PASS"', '' ]
+	    endif
+	else
+	    let login = a:login
+	endif
+	return s:run_curl(a:url, login, a:proxy, a:proxylogin, a:parms)
+    endif
+endfunction
+
+" === End of OAuth code ===
+
 " === Networking code ===
 
 function! s:url_encode_char(c)
     let utf = iconv(a:c, &encoding, "utf-8")
     if utf == ""
-	return a:c
-    else
-	let s = ""
-	for i in range(strlen(utf))
-	    let s .= printf("%%%02X", char2nr(utf[i]))
-	endfor
-	return s
+	let utf = a:c
     endif
+    let s = ""
+    for i in range(strlen(utf))
+	let s .= printf("%%%02X", char2nr(utf[i]))
+    endfor
+    return s
 endfunction
 
 " URL-encode a string.
 function! s:url_encode(str)
-    return substitute(a:str, '[^a-zA-Z0-9_-]', '\=s:url_encode_char(submatch(0))', 'g')
+    return substitute(a:str, '[^a-zA-Z0-9_.~-]', '\=s:url_encode_char(submatch(0))', 'g')
 endfunction
 
 " Use curl to fetch a web page.
@@ -472,7 +748,9 @@ function! s:curl_curl(url, login, proxy, proxylogin, parms)
     endif
 
     if a:login != ""
-	if stridx(a:login, ':') != -1
+	if a:login =~ "^OAuth "
+	    let curlcmd .= '-H "Authorization: '.a:login.'" '
+	elseif stridx(a:login, ':') != -1
 	    let curlcmd .= '-u "'.a:login.'" '
 	else
 	    let curlcmd .= '-H "Authorization: Basic '.a:login.'" '
@@ -530,7 +808,10 @@ try:
 
     login = vim.eval("a:login")
     if login != "":
-	req.add_header('Authorization', 'Basic %s' % make_base64(login))
+	if login[0:6] == "OAuth ":
+	    req.add_header('Authorization', login)
+	else:
+	    req.add_header('Authorization', 'Basic %s' % make_base64(login))
 
     proxy = vim.eval("a:proxy")
     if proxy != "":
@@ -544,6 +825,7 @@ try:
     out = ''.join(f.readlines())
 except urllib2.HTTPError, (httperr):
     vim.command("let error='%s'" % str(httperr).replace("'", "''"))
+    vim.command("let output='%s'" % httperr.read().replace("'", "''"))
 else:
     vim.command("let output='%s'" % out.replace("'", "''"))
 EOF
@@ -591,9 +873,6 @@ my $ua = LWP::UserAgent->new;
 
 my $url = VIM::Eval('a:url');
 
-my $login = VIM::Eval('a:login');
-$login ne '' and $ua->default_header('Authorization' => 'Basic '.make_base64($login));
-
 my $proxy = VIM::Eval('a:proxy');
 $proxy ne '' and $ua->proxy('http', "http://$proxy");
 
@@ -606,6 +885,19 @@ for $k (split(/\n/, $keys)) {
     $parms{$k} = VIM::Eval("a:parms['$k']");
 }
 
+my $login = VIM::Eval('a:login');
+if ($login ne '') {
+    if ($login =~ /^OAuth /) {
+	$ua->default_header('Authorization' => $login);
+	# VIM::Msg($login, "ErrorMsg");
+    }
+    else {
+	$ua->default_header('Authorization' => 'Basic '.make_base64($login));
+    }
+}
+
+# VIM::Msg($url, "ErrorMsg");
+# VIM::Msg(join(' ', keys(%parms)), "ErrorMsg");
 my $response = %parms ? $ua->post($url, \%parms) : $ua->get($url);
 if ($response->is_success) {
     my $output = $response->content;
@@ -613,6 +905,10 @@ if ($response->is_success) {
     VIM::DoCommand("let output ='$output'");
 }
 else {
+    my $output = $response->content;
+    $output =~ s/'/''/g;
+    VIM::DoCommand("let output ='$output'");
+
     my $error = $response->status_line;
     $error =~ s/'/''/g;
     VIM::DoCommand("let error ='$error'");
@@ -691,38 +987,57 @@ end
 
 parms = {}
 keys = VIM.evaluate('keys(a:parms)')
-keys.split(/\n/).each { |k|
+
+# Vim patch 7.2.374 adds support to if_ruby for Vim types. So keys() will
+# actually return a Ruby array instead of a newline-delimited string.
+# So we only need to split the string if VIM.evaluate returns a string.
+# If it's already an array, leave it alone.
+
+keys = keys.split(/\n/) if keys.is_a? String
+
+keys.each { |k|
     parms[k] = VIM.evaluate("a:parms['#{k}']")
 }
 
-res = net.start { |http| 
-    path = "#{url.path}?#{url.query}"
-    if parms == {}
-	req = Net::HTTP::Get.new(path)
+begin
+    res = net.start { |http| 
+	path = "#{url.path}?#{url.query}"
+	if parms == {}
+	    req = Net::HTTP::Get.new(path)
+	else
+	    req = Net::HTTP::Post.new(path)
+	    req.set_form_data(parms)
+	end
+
+	login = VIM.evaluate('a:login')
+	if login != ''
+	    if login =~ /^OAuth /
+		req.add_field 'Authorization', login
+	    else
+		req.add_field 'Authorization', "Basic #{make_base64(login)}"
+	    end
+	end
+
+	#    proxylogin = VIM.evaluate('a:proxylogin')
+	#    if proxylogin != ''
+	#	req.add_field 'Proxy-Authorization', "Basic #{make_base64(proxylogin)}"
+	#    end
+
+	http.request(req)
+    }
+    case res
+    when Net::HTTPSuccess
+	output = res.body.gsub("'", "''")
+	VIM.command("let output='#{output}'")
     else
-	req = Net::HTTP::Post.new(path)
-	req.set_form_data(parms)
+	error = "#{res.code} #{res.message}".gsub("'", "''")
+	VIM.command("let error='#{error}'")
+
+	output = res.body.gsub("'", "''")
+	VIM.command("let output='#{output}'")
     end
-
-    login = VIM.evaluate('a:login')
-    if login != ''
-	req.add_field 'Authorization', "Basic #{make_base64(login)}"
-    end
-
-    #    proxylogin = VIM.evaluate('a:proxylogin')
-    #    if proxylogin != ''
-    #	req.add_field 'Proxy-Authorization', "Basic #{make_base64(proxylogin)}"
-    #    end
-
-    http.request(req)
-}
-case res
-when Net::HTTPSuccess
-    output = res.body.gsub("'", "''")
-    VIM.command("let output='#{output}'")
-else
-    error = "#{res.code} #{res.message}".gsub("'", "''")
-    VIM.command("let error='#{error}'")
+rescue => exc
+    VIM.command("let error='#{exc.message}'")
 end
 EOF
 
@@ -785,7 +1100,11 @@ if { $proxylogin != "" } {
 
 set login [::vim::expr a:login]
 if { $login != "" } {
-    lappend headers "Authorization" "Basic [make_base64 $login]"
+    if {[string range $login 0 5] == "OAuth "} {
+	lappend headers "Authorization" $login
+    } else {
+	lappend headers "Authorization" "Basic [make_base64 $login]"
+    }
 }
 
 set parms [list]
@@ -806,6 +1125,8 @@ if { $state(status) == "ok" } {
     if { [ ::http::ncode $res ] >= 400 } {
 	set error $state(http)
 	::vim::command "let error = '$error'"
+	set output [string map {' ''} $state(body)]
+	::vim::command "let output = '$output'"
     } else {
 	set output [string map {' ''} $state(body)]
 	::vim::command "let output = '$output'"
@@ -829,26 +1150,16 @@ endfunction
 function! s:get_curl_method()
     if !exists('s:curl_method')
 	let s:curl_method = 'curl'
-
-	if s:get_enable_perl() && has('perl')
-	    if s:check_perl()
-		let s:curl_method = 'perl'
-	    endif
-	elseif s:get_enable_python() && has('python')
-	    if s:check_python()
-		let s:curl_method = 'python'
-	    endif
-	elseif s:get_enable_ruby() && has('ruby')
-	    if s:check_ruby()
-		let s:curl_method = 'ruby'
-	    endif
-	elseif s:get_enable_tcl() && has('tcl')
-	    if s:check_tcl()
-		let s:curl_method = 'tcl'
-	    endif
+	if s:get_enable_perl() && has('perl') && s:check_perl()
+	    let s:curl_method = 'perl'
+	elseif s:get_enable_python() && has('python') && s:check_python()
+	    let s:curl_method = 'python'
+	elseif s:get_enable_ruby() && has('ruby') && s:check_ruby()
+	    let s:curl_method = 'ruby'
+	elseif s:get_enable_tcl() && has('tcl') && s:check_tcl()
+	    let s:curl_method = 'tcl'
 	endif
     endif
-
     return s:curl_method
 endfunction
 
@@ -939,6 +1250,8 @@ function! s:save_buffer()
 	let s:curbuffer.buffer = getline(1, '$')
 	let s:curbuffer.view = winsaveview()
 	execute curwin .  "wincmd w"
+    else
+	let s:curbuffer.view = {}
     endif
 
     " If current buffer is the same type as buffer at the top of the stack,
@@ -1019,10 +1332,7 @@ function! s:add_update(output)
 
 	" Line number where new tweet will be inserted. It should be 3 if
 	" header is shown and 1 if header is hidden.
-	let insline = 1
-	if s:curbuffer.showheader
-	    let insline = 3
-	endif
+	let insline = s:curbuffer.showheader ? 3 : 1
 
 	" Add the status ID to the current buffer's statuses list.
 	call insert(s:curbuffer.statuses, s:xml_get_element(a:output, 'id'), insline)
@@ -1038,6 +1348,7 @@ function! s:add_update(output)
 	    call append(insline - 1, line)
 	    execute "normal! ".insline."G"
 	    set nomodifiable
+	    let s:curbuffer.buffer = getline(1, '$')
 	    execute curwin .  "wincmd w"
 	endif
     endif
@@ -1051,11 +1362,6 @@ endfunction
 
 " Common code to post a message to Twitter.
 function! s:post_twitter(mesg, inreplyto)
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     let parms = {}
 
     " Add in_reply_to_status_id if status ID is available.
@@ -1085,13 +1391,15 @@ function! s:post_twitter(mesg, inreplyto)
 	redraw
 	echo "Sending update to Twitter..."
 
-	let url = s:get_api_root()."/statuses/update.xml?source=twitvim"
+	let url = s:get_api_root()."/statuses/update.xml"
 	let parms["status"] = mesg
+	let parms["source"] = "twitvim"
 
-	let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), parms)
+	let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
 
 	if error != ''
-	    call s:errormsg("Error posting your tweet: ".error)
+	    let errormsg = s:xml_get_element(output, 'error')
+	    call s:errormsg("Error posting your tweet: ".(errormsg != '' ? errormsg : error))
 	else
 	    call s:add_update(output)
 	    redraw
@@ -1103,14 +1411,6 @@ endfunction
 " Prompt user for tweet and then post it.
 " If initstr is given, use that as the initial input.
 function! s:CmdLine_Twitter(initstr, inreplyto)
-    " Do this here too to check for twitvim_login. This is to avoid having the
-    " user type in the message only to be told that his configuration is
-    " incomplete.
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     call inputsave()
     redraw
     let mesg = input("Your Twitter: ", a:initstr)
@@ -1244,11 +1544,6 @@ function! s:Retweet_2()
 	return
     endif
 
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     let parms = {}
 
     " Force POST instead of GET.
@@ -1259,9 +1554,10 @@ function! s:Retweet_2()
     redraw
     echo "Retweeting..."
 
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), parms)
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
     if error != ''
-	call s:errormsg("Error retweeting: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error retweeting: ".(errormsg != '' ? errormsg : error))
     else
 	call s:add_update(output)
 	redraw
@@ -1279,24 +1575,14 @@ function! s:show_inreplyto()
 	return
     endif
 
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     redraw
     echo "Querying Twitter for in-reply-to tweet..."
 
     let url = s:get_api_root()."/statuses/show/".inreplyto.".xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
     if error != ''
-	call s:errormsg("Error getting in-reply-to tweet: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error getting in-reply-to tweet: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting in-reply-to tweet: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -1312,6 +1598,7 @@ function! s:show_inreplyto()
     set modifiable
     call append(lineno, '+ '.line)
     set nomodifiable
+    let s:curbuffer.buffer = getline(1, '$')
 
     redraw
     echo "In-reply-to tweet found."
@@ -1338,26 +1625,16 @@ function! s:do_delete_tweet()
 
     let id = get(isdm ? s:curbuffer.dmids : s:curbuffer.statuses, lineno)
 
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     " The delete API call requires POST, not GET, so we supply a fake parameter
     " to force run_curl() to use POST.
     let parms = {}
     let parms["id"] = id
 
     let url = s:get_api_root().'/'.(isdm ? "direct_messages" : "statuses")."/destroy/".id.".xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), parms)
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
     if error != ''
-	call s:errormsg("Error deleting ".obj.": ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error deleting ".obj.": ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error deleting ".obj.": ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -1372,6 +1649,7 @@ function! s:do_delete_tweet()
     set modifiable
     normal! dd
     set nomodifiable
+    let s:curbuffer.buffer = getline(1, '$')
 
     redraw
     echo uobj "deleted."
@@ -1458,7 +1736,10 @@ function! s:launch_browser(url)
 	echo "Web browser launched."
     else
 	call s:errormsg('Error launching browser: '.v:errmsg)
+	return -2
     endif
+
+    return 0
 endfunction
 
 " Launch web browser with the URL at the cursor position. If possible, this
@@ -1763,11 +2044,13 @@ function! s:show_timeline_xml(timeline, tline_name, username, page)
 	let title .= " for ".a:username
     endif
 
-    " Special case titles for Retweets.
+    " Special case titles for Retweets and Mentions.
     if a:tline_name == "retweeted_to_me"
 	let title = "Retweets by others"
     elseif a:tline_name == "retweeted_by_me"
 	let title = "Retweets by you"
+    elseif a:tline_name == "replies"
+	let title = "Mentions timeline"
     endif
 
     if a:page > 1
@@ -1808,58 +2091,59 @@ function! s:show_timeline_xml(timeline, tline_name, username, page)
 	let matchcount += 1
     endwhile
     call s:twitter_wintext(text, "timeline")
+    let s:curbuffer.buffer = text
+endfunction
+
+" Add a parameter to a URL.
+function! s:add_to_url(url, parm)
+    return a:url . (a:url =~ '?' ? '&' : '?') . a:parm
 endfunction
 
 " Generic timeline retrieval function.
 function! s:get_timeline(tline_name, username, page)
-    let gotparam = 0
-
     if a:tline_name == "public"
 	" No authentication is needed for public timeline.
 	let login = ''
     else
-	let login = s:get_twitvim_login()
-	if login == ''
-	    return -1
-	endif
+	let login = s:ologin
     endif
 
-    " Twitter API allows you to specify a username for user_timeline to
-    " retrieve another user's timeline.
-    let user = a:username == '' ? '' : '/'.a:username
-
-    let url_fname = (a:tline_name == "replies" || a:tline_name == "retweeted_to_me" || a:tline_name == "retweeted_by_me") ? a:tline_name.".xml" : a:tline_name == "friends" ? "home_timeline.xml" : a:tline_name."_timeline".user.".xml"
+    let url_fname = (a:tline_name == "retweeted_to_me" || a:tline_name == "retweeted_by_me") ? a:tline_name.".xml" : a:tline_name == "friends" ? "home_timeline.xml" : a:tline_name == "replies" ? "mentions.xml" : a:tline_name."_timeline.xml"
 
     " Support pagination.
     if a:page > 1
-	let url_fname .= '?page='.a:page
-	let gotparam = 1
+	let url_fname = s:add_to_url(url_fname, 'page='.a:page)
     endif
 
-    " Support count parameter in friends, user, and retweet timelines.
-    if a:tline_name == 'friends' || a:tline_name == 'user' || a:tline_name == 'retweeted_to_me' || a:tline_name == 'retweeted_by_me'
+    " Include retweets.
+    let url_fname = s:add_to_url(url_fname, 'include_rts=true')
+
+    " Twitter API allows you to specify a username for user_timeline to
+    " retrieve another user's timeline.
+    if a:username != ''
+	let url_fname = s:add_to_url(url_fname, 'screen_name='.a:username)
+    endif
+
+    " Support count parameter in friends, user, mentions, and retweet timelines.
+    if a:tline_name == 'friends' || a:tline_name == 'user' || a:tline_name == 'replies' || a:tline_name == 'retweeted_to_me' || a:tline_name == 'retweeted_by_me'
 	let tcount = s:get_count()
 	if tcount > 0
-	    let url_fname .= (gotparam ? '&' : '?').'count='.tcount
-	    let gotparam = 1
+	    let url_fname = s:add_to_url(url_fname, 'count='.tcount)
 	endif
     endif
 
+    let tl_name = a:tline_name == "replies" ? "mentions" : a:tline_name
+
     redraw
-    echo "Sending" a:tline_name "timeline request to Twitter..."
+    echo "Sending" tl_name "timeline request to Twitter..."
 
     let url = s:get_api_root()."/statuses/".url_fname
 
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, login, s:get_proxy(), s:get_proxy_login(), {})
 
     if error != ''
-	call s:errormsg("Error getting Twitter ".a:tline_name." timeline: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error getting Twitter ".a:tline_name." timeline: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting Twitter ".tl_name." timeline: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -1875,17 +2159,11 @@ function! s:get_timeline(tline_name, username, page)
     let foruser = a:username == '' ? '' : ' for user '.a:username
 
     " Uppercase the first letter in the timeline name.
-    echo substitute(a:tline_name, '^.', '\u&', '') "timeline updated".foruser."."
+    echo substitute(tl_name, '^.', '\u&', '') "timeline updated".foruser."."
 endfunction
 
 " Retrieve a Twitter list timeline.
 function! s:get_list_timeline(username, listname, page)
-    let gotparam = 0
-
-    let login = s:get_twitvim_login_noerror()
-    " No login is no problem because the list statuses API is documented 
-    " to not require authentication. However, you won't see tweets from
-    " protected timelines.
 
     let user = a:username
     if user == ''
@@ -1900,15 +2178,13 @@ function! s:get_list_timeline(username, listname, page)
 
     " Support pagination.
     if a:page > 1
-	let url .= '?page='.a:page
-	let gotparam = 1
+	let url = s:add_to_url(url, 'page='.a:page)
     endif
 
     " Support count parameter.
     let tcount = s:get_count()
     if tcount > 0
-	let url .= (gotparam ? '&' : '?').'count='.tcount
-	let gotparam = 1
+	let url = s:add_to_url(url, 'per_page='.tcount)
     endif
 
     redraw
@@ -1916,16 +2192,11 @@ function! s:get_list_timeline(username, listname, page)
 
     let url = s:get_api_root().url
 
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
 
     if error != ''
-	call s:errormsg("Error getting Twitter list timeline: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error getting Twitter list timeline: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting Twitter list timeline: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -1992,17 +2263,13 @@ function! s:show_dm_xml(sent_or_recv, timeline, page)
 	let matchcount += 1
     endwhile
     call s:twitter_wintext(text, "timeline")
+    let s:curbuffer.buffer = text
 endfunction
 
 " Get direct messages sent to or received by user.
 function! s:Direct_Messages(mode, page)
     let sent = (a:mode == "dmsent")
     let s_or_r = (sent ? "sent" : "received")
-
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
 
     " Support pagination.
     let pagearg = ''
@@ -2015,10 +2282,11 @@ function! s:Direct_Messages(mode, page)
 
     let url = s:get_api_root()."/direct_messages".(sent ? "/sent" : "").".xml".pagearg
 
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
 
     if error != ''
-	call s:errormsg("Error getting Twitter direct messages ".s_or_r." timeline: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting Twitter direct messages ".s_or_r." timeline: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -2099,6 +2367,9 @@ endif
 if !exists(":UserTwitter")
     command -range=1 -nargs=? UserTwitter :call <SID>get_timeline("user", <q-args>, <count>)
 endif
+if !exists(":MentionsTwitter")
+    command -count=1 MentionsTwitter :call <SID>get_timeline("replies", '', <count>)
+endif
 if !exists(":RepliesTwitter")
     command -count=1 RepliesTwitter :call <SID>get_timeline("replies", '', <count>)
 endif
@@ -2121,7 +2392,7 @@ endif
 nnoremenu Plugin.TwitVim.-Sep1- :
 nnoremenu Plugin.TwitVim.&Friends\ Timeline :call <SID>get_timeline("friends", '', 1)<cr>
 nnoremenu Plugin.TwitVim.&User\ Timeline :call <SID>get_timeline("user", '', 1)<cr>
-nnoremenu Plugin.TwitVim.&Replies\ Timeline :call <SID>get_timeline("replies", '', 1)<cr>
+nnoremenu Plugin.TwitVim.&Mentions\ Timeline :call <SID>get_timeline("replies", '', 1)<cr>
 nnoremenu Plugin.TwitVim.&Direct\ Messages :call <SID>Direct_Messages("dmrecv", 1)<cr>
 nnoremenu Plugin.TwitVim.Direct\ Messages\ &Sent :call <SID>Direct_Messages("dmsent", 1)<cr>
 nnoremenu Plugin.TwitVim.&Public\ Timeline :call <SID>get_timeline("public", '', 1)<cr>
@@ -2153,11 +2424,6 @@ nnoremenu Plugin.TwitVim.Reset\ Twitter\ Login :call <SID>reset_twitvim_login()<
 
 " Send a direct message.
 function! s:do_send_dm(user, mesg)
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     let mesg = a:mesg
 
     " Remove trailing newline. You see that when you visual-select an entire
@@ -2180,13 +2446,14 @@ function! s:do_send_dm(user, mesg)
 	redraw
 	echo "Sending message to ".a:user."..."
 
-	let url = s:get_api_root()."/direct_messages/new.xml?source=twitvim"
-	let parms = { "user" : a:user, "text" : mesg }
+	let url = s:get_api_root()."/direct_messages/new.xml"
+	let parms = { "source" : "twitvim", "user" : a:user, "text" : mesg }
 
-	let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), parms)
+	let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
 
 	if error != ''
-	    call s:errormsg("Error sending your message: ".error)
+	    let errormsg = s:xml_get_element(output, 'error')
+	    call s:errormsg("Error sending your message: ".(errormsg != '' ? errormsg : error))
 	else
 	    redraw
 	    echo "Your message was sent to ".a:user.". You used ".mesglen." characters."
@@ -2222,24 +2489,14 @@ endif
 
 " Call Twitter API to get rate limit information.
 function! s:get_rate_limit()
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     redraw
     echo "Querying Twitter for rate limit information..."
 
     let url = s:get_api_root()."/account/rate_limit_status.xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
     if error != ''
-	call s:errormsg("Error getting rate limit info: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error getting rate limit info: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting rate limit info: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -2257,26 +2514,16 @@ endif
 
 " Set location field on Twitter profile.
 function! s:set_location(loc)
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     redraw
     echo "Setting location on Twitter profile..."
 
     let url = s:get_api_root()."/account/update_location.xml"
     let parms = { 'location' : a:loc }
 
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), parms)
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
     if error != ''
-	call s:errormsg("Error setting location: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error setting location: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error setting location: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -2287,6 +2534,179 @@ endfunction
 if !exists(":LocationTwitter")
     command -nargs=+ LocationTwitter :call <SID>set_location(<q-args>)
 endif
+
+
+" Start following a user.
+function! s:follow_user(user)
+    redraw
+    echo "Following user ".a:user."..."
+
+    let parms = {}
+    let parms["screen_name"] = a:user
+
+    let url = s:get_api_root()."/friendships/create/".a:user.".xml"
+
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
+    if error != ''
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error following user: ".(errormsg != '' ? errormsg : error))
+    else
+	let protected = s:xml_get_element(output, 'protected')
+	redraw
+	if protected == "true"
+	    echo "Made request to follow ".a:user."'s protected timeline."
+	else
+	    echo "Now following ".a:user."'s timeline."
+	endif
+    endif
+endfunction
+
+if !exists(":FollowTwitter")
+    command -nargs=1 FollowTwitter :call <SID>follow_user(<q-args>)
+endif
+
+
+" Stop following a user.
+function! s:unfollow_user(user)
+    redraw
+    echo "Unfollowing user ".a:user."..."
+
+    let parms = {}
+    let parms["screen_name"] = a:user
+
+    let url = s:get_api_root()."/friendships/destroy.xml"
+
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
+    if error != ''
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error unfollowing user: ".(errormsg != '' ? errormsg : error))
+    else
+	redraw
+	echo "Stopped following ".a:user."'s timeline."
+    endif
+endfunction
+
+if !exists(":UnfollowTwitter")
+    command -nargs=1 UnfollowTwitter :call <SID>unfollow_user(<q-args>)
+endif
+
+
+" Block a user.
+function! s:block_user(user, unblock)
+    redraw
+    echo (a:unblock ? "Unblocking" : "Blocking")." user ".a:user."..."
+
+    let parms = {}
+    let parms["screen_name"] = a:user
+
+    let url = s:get_api_root()."/blocks/".(a:unblock ? "destroy" : "create").".xml"
+
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
+    if error != ''
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error ".(a:unblock ? "unblocking" : "blocking")." user: ".(errormsg != '' ? errormsg : error))
+    else
+	redraw
+	echo "User ".a:user." is now ".(a:unblock ? "unblocked" : "blocked")."."
+    endif
+endfunction
+
+if !exists(":BlockTwitter")
+    command -nargs=1 BlockTwitter :call <SID>block_user(<q-args>, 0)
+endif
+if !exists(":UnblockTwitter")
+    command -nargs=1 UnblockTwitter :call <SID>block_user(<q-args>, 1)
+endif
+
+
+" Report user for spam.
+function! s:report_spam(user)
+    redraw
+    echo "Reporting ".a:user." for spam..."
+
+    let parms = {}
+    let parms["screen_name"] = a:user
+
+    let url = s:get_api_root()."/report_spam.xml"
+
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
+    if error != ''
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error reporting user for spam: ".(errormsg != '' ? errormsg : error))
+    else
+	redraw
+	echo "Reported user ".a:user." for spam."
+    endif
+endfunction
+
+if !exists(":ReportSpamTwitter")
+    command -nargs=1 ReportSpamTwitter :call <SID>report_spam(<q-args>)
+endif
+
+
+" Add user to a list or remove user from a list.
+function! s:add_to_list(remove, listname, username)
+    let user = s:get_twitvim_username()
+    if user == ''
+	call s:errormsg('Twitter login not set. Please specify a username.')
+	return -1
+    endif
+
+    redraw
+    if a:remove
+	echo "Removing ".a:username." from list ".a:listname."..."
+    else
+	echo "Adding ".a:username." to list ".a:listname."..."
+    endif
+
+    let parms = {}
+    let parms["list_id"] = a:listname
+    let parms["id"] = a:username
+    if a:remove
+	let parms["_method"] = "DELETE"
+    endif
+
+    let url = s:get_api_root()."/".user."/".a:listname."/members.xml"
+
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), parms)
+    if error != ''
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error ".(a:remove ? "removing user from" : "adding user to")." list: ".(errormsg != '' ? errormsg : error))
+    else
+	redraw
+	if a:remove
+	    echo "Removed ".a:username." from list ".a:listname."."
+	else
+	    echo "Added ".a:username." to list ".a:listname."."
+	endif
+    endif
+endfunction
+
+function! s:do_add_to_list(arg1, ...)
+    if a:0 == 0
+	call s:errormsg("Syntax: :AddToListTwitter listname username")
+    else
+	call s:add_to_list(0, a:arg1, a:1)
+    endif
+endfunction
+
+if !exists(":AddToListTwitter")
+    command -nargs=+ AddToListTwitter :call <SID>do_add_to_list(<f-args>)
+endif
+
+
+function! s:do_remove_from_list(arg1, ...)
+    if a:0 == 0
+	call s:errormsg("Syntax: :RemoveFromListTwitter listname username")
+    else
+	call s:add_to_list(1, a:arg1, a:1)
+    endif
+endfunction
+
+if !exists(":RemoveFromListTwitter")
+    command -nargs=+ RemoveFromListTwitter :call <SID>do_remove_from_list(<f-args>)
+endif
+
 
 let s:user_winname = "TwitterUserInfo_".localtime()
 
@@ -2306,21 +2726,32 @@ function! s:format_user_info(output)
     call add(text, 'Following: '.s:xml_get_element(output, 'friends_count'))
     call add(text, 'Followers: '.s:xml_get_element(output, 'followers_count'))
     call add(text, 'Updates: '.s:xml_get_element(output, 'statuses_count'))
+    call add(text, 'Favorites: '.s:xml_get_element(output, 'favourites_count'))
     call add(text, '')
 
-    let status = s:xml_get_element(output, 'text')
-    let pubdate = s:time_filter(s:xml_get_element(output, 'created_at'))
-    call add(text, 'Status: '.s:convert_entity(status).' |'.pubdate.'|')
+    call add(text, 'Protected: '.s:xml_get_element(output, 'protected'))
+    call add(text, 'Following: '.s:xml_get_element(output, 'following'))
+    call add(text, '')
+
+    let usernode = s:xml_remove_elements(output, 'status')
+    let startdate = s:time_filter(s:xml_get_element(usernode, 'created_at'))
+    call add(text, 'Started on: |'.startdate.'|')
+    let timezone = s:convert_entity(s:xml_get_element(usernode, 'time_zone'))
+    call add(text, 'Time zone: '.timezone)
+    call add(text, '')
+
+    let statusnode = s:xml_get_element(output, 'status')
+    if statusnode != ""
+	let status = s:xml_get_element(statusnode, 'text')
+	let pubdate = s:time_filter(s:xml_get_element(statusnode, 'created_at'))
+	call add(text, 'Status: '.s:convert_entity(status).' |'.pubdate.'|')
+    endif
+
     return text
 endfunction
 
 " Call Twitter API to get user's info.
 function! s:get_user_info(username)
-    let login = s:get_twitvim_login()
-    if login == ''
-	return -1
-    endif
-
     if a:username == ''
 	call s:errormsg("Please specify a user name to retrieve info on.")
 	return
@@ -2329,16 +2760,11 @@ function! s:get_user_info(username)
     redraw
     echo "Querying Twitter for user information..."
 
-    let url = s:get_api_root()."/users/show/".a:username.".xml"
-    let [error, output] = s:run_curl(url, login, s:get_proxy(), s:get_proxy_login(), {})
+    let url = s:get_api_root()."/users/show.xml?screen_name=".a:username
+    let [error, output] = s:run_curl_oauth(url, s:ologin, s:get_proxy(), s:get_proxy_login(), {})
     if error != ''
-	call s:errormsg("Error getting user info: ".error)
-	return
-    endif
-
-    let error = s:xml_get_element(output, 'error')
-    if error != ''
-	call s:errormsg("Error getting user info: ".error)
+	let errormsg = s:xml_get_element(output, 'error')
+	call s:errormsg("Error getting user info: ".(errormsg != '' ? errormsg : error))
 	return
     endif
 
@@ -2792,6 +3218,7 @@ function! s:show_summize(searchres, page)
 	let matchcount += 1
     endwhile
     call s:twitter_wintext(text, "timeline")
+    let s:curbuffer.buffer = text
 endfunction
 
 " Query Twitter Search API and retrieve results
